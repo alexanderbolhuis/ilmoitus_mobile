@@ -8,5 +8,6 @@
     <string name="log_out">uitloggen</string>
     <string name="overvieuw">overzicht</string>
     <string name="settings">instellingen</string>
+    <string name="title_activity_declare">DeclareActivity</string>
 
 </resources>

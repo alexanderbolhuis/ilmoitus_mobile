@@ -77,4 +77,11 @@ public class MainActivity extends Activity {
 		Toast.makeText(getApplicationContext(), "On button Clicked" , Toast.LENGTH_SHORT).show();
 		
 	}
+	
+	public void onDeclareButtonClick(View view) {	
+		Toast.makeText(getApplicationContext(), "On Declare button Clicked" , Toast.LENGTH_SHORT).show();
+		
+		Intent intent = new Intent(MainActivity.this, DeclareActivity.class);
+		startActivity(intent);
+	}
 }
