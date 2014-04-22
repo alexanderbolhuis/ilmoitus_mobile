@@ -4,7 +4,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
     <scenes>
-        <!--Table View Controller - Item-->
+        <!--Table View Controller - Mijn declaraties-->
         <scene sceneID="JxL-X1-bH9">
             <objects>
                 <tableViewController id="8oB-aY-hRy" sceneMemberID="viewController">
@@ -27,7 +27,7 @@
                             <outlet property="delegate" destination="8oB-aY-hRy" id="sy1-Hb-FFb"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="fa5-9P-TTG"/>
+                    <tabBarItem key="tabBarItem" tag="1" title="Mijn declaraties" id="fa5-9P-TTG"/>
                     <connections>
                         <segue destination="Dzl-VB-KTd" kind="push" id="gRi-Uz-vEZ"/>
                     </connections>
@@ -68,7 +68,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="New Declaration" image="second" id="Z7h-1E-pvt"/>
+                    <tabBarItem key="tabBarItem" tag="2" title="Indienen" id="Z7h-1E-pvt"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3qq-4t-Ow8" sceneMemberID="firstResponder"/>
             </objects>
@@ -87,7 +87,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="sfF-ov-nUH"/>
+                    <tabBarItem key="tabBarItem" tag="3" title="Instellingen" id="sfF-ov-nUH"/>
                     <navigationItem key="navigationItem" id="SwR-bt-vkm"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DUn-BZ-SIt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -123,9 +123,9 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
+                        <segue destination="8oB-aY-hRy" kind="relationship" relationship="viewControllers" id="RAX-z1-Rml"/>
                         <segue destination="QUy-BD-bpt" kind="relationship" relationship="viewControllers" id="M8t-EP-wfW"/>
                         <segue destination="odh-cg-huu" kind="relationship" relationship="viewControllers" id="Ou2-ld-fG2"/>
-                        <segue destination="8oB-aY-hRy" kind="relationship" relationship="viewControllers" id="RAX-z1-Rml"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FNP-y4-bzi" sceneMemberID="firstResponder"/>
@@ -133,9 +133,6 @@
             <point key="canvasLocation" x="-228" y="504"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="second" width="30" height="30"/>
-    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
