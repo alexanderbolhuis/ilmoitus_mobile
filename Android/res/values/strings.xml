@@ -9,5 +9,6 @@
     <string name="overvieuw">overzicht</string>
     <string name="settings">instellingen</string>
     <string name="title_activity_declare">DeclareActivity</string>
+    <string name="title_activity_declare_item">DeclareItemActivity</string>
 
 </resources>

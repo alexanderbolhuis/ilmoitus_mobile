@@ -19,7 +19,7 @@
             android:orientation="vertical" >
 
             <TextView
-                android:id="@+id/textView1"
+                android:id="@+id/textTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
@@ -28,7 +28,7 @@
                 android:textColor="@color/coloredText" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textLeidingevende"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -36,14 +36,14 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <Spinner
-                android:id="@+id/spinner1"
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:drawable/btn_dropdown"
                 android:spinnerMode="dropdown" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textItems"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -52,28 +52,22 @@
                 android:textColor="@color/coloredText" />
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textTemp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Hier iets maken om alle items wer te geven"
+                android:text="Hier iets maken om alle items weer te geven in de linearlayout"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <linearLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:orientation="vertical" >
-            </linearLayout>
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/buttonAddItem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="onButtonClickAddItem"
                 android:text="Voeg Toe" />
 
             <TextView
-                android:id="@+id/textView4"
+                android:id="@+id/textOpmerking"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -82,7 +76,7 @@
                 android:textColor="@color/coloredText" />
 
             <EditText
-                android:id="@+id/editText1"
+                android:id="@+id/editTextOpmerking"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -90,10 +84,11 @@
             </EditText>
 
             <Button
-                android:id="@+id/button1"
+                android:id="@+id/buttonSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:onClick="onButtonClickSubmit"
                 android:text="Submit" />
         </LinearLayout>
     </ScrollView>
@@ -108,32 +103,36 @@
 
         <Button
             android:id="@+id/buttonOvervieuw"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onButtonClick"
             android:text="@string/overvieuw"
             android:textSize="12sp" />
 
         <Button
             android:id="@+id/buttonDeclare"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onDeclareButtonClick"
             android:text="@string/declare"
             android:textSize="12sp" />
 
         <Button
             android:id="@+id/buttonSetting"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onButtonClick"
             android:text="@string/settings"
             android:textSize="12sp" />
 
         <Button
             android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:onClick="onButtonClick"
             android:text="@string/log_out"
             android:textSize="12sp" />
