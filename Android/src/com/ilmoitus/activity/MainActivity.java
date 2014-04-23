@@ -1,4 +1,4 @@
-package com.example.ilmoitus;
+package com.ilmoitus.activity;
 
 import com.example.ilmoitus.R;
 
