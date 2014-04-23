@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical" >
+
+    <ScrollView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Declaratie Indienen"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@color/coloredText" />
+
+            <TextView
+                android:id="@+id/textLeidingevende"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Leidinggevende"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/btn_dropdown"
+                android:spinnerMode="dropdown" />
+
+            <TextView
+                android:id="@+id/textItems"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Declaratie Items"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/coloredText" />
+
+            <TextView
+                android:id="@+id/textTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hier iets maken om alle items weer te geven in de linearlayout"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+
+            <Button
+                android:id="@+id/buttonAddItem"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="onButtonClickAddItem"
+                android:text="Voeg Toe" />
+
+            <TextView
+                android:id="@+id/textOpmerking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="Opmerking"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/coloredText" />
+
+            <EditText
+                android:id="@+id/editTextOpmerking"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textMultiLine" >
+            </EditText>
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:onClick="onButtonClickSubmit"
+                android:text="Submit" />
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- footer here -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <!-- TODO: make icons for the buttons -->
+
+        <Button
+            android:id="@+id/buttonOvervieuw"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onButtonClick"
+            android:text="@string/overvieuw"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonDeclare"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onDeclareButtonClick"
+            android:text="@string/declare"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonSetting"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onButtonClick"
+            android:text="@string/settings"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onButtonClick"
+            android:text="@string/log_out"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -27,6 +27,14 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
+        <activity
+            android:name="com.example.ilmoitus.DeclareActivity"
+            android:label="@string/title_activity_declare" >
+        </activity>
+        <activity
+            android:name="com.example.ilmoitus.DeclareItemActivity"
+            android:label="@string/title_activity_declare_item" >
+        </activity>
     </application>
 
 </manifest>
