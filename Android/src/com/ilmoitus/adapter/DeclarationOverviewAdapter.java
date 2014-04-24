@@ -53,12 +53,13 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		View rowView = inflator.inflate(R.layout.row, null);
 		TextView top = (TextView) rowView.findViewById(R.id.text1);
 		TextView bottom = (TextView) rowView.findViewById(R.id.text2);
-		top.setText("Declaratie op " + openDeclaration.getCreatedAt().substring(0, 10));
 		if(openDeclaration != null){
+			top.setText("Declaratie op " + openDeclaration.getCreatedAt().substring(0, 10));
 			bottom.setText("open " + openDeclaration.getItemsTotalPrice());
 		}
 		if(closedDeclaration != null){
-			bottom.setText("in behandeling " + openDeclaration.getItemsTotalPrice());
+			top.setText("Declaratie op " + closedDeclaration.getCreatedAt().substring(0, 10));
+			bottom.setText("in behandeling " + closedDeclaration.getItemsTotalPrice());
 		}
 		return rowView;
 	}
