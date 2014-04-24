@@ -9,6 +9,9 @@
 #import "LoginViewController.h"
 
 @interface LoginViewController ()
+@property (weak, nonatomic) IBOutlet UITextField *usernamefield;
+@property (weak, nonatomic) IBOutlet UITextField *passwordfield;
+
 
 @end
 
@@ -27,6 +30,14 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    
+    self.usernamefield.delegate = self;
+    self.passwordfield.delegate = self;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
 }
 
 - (void)didReceiveMemoryWarning
