@@ -20,6 +20,8 @@ import com.example.ilmoitus.R;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 
+import android.content.Context;
+import android.content.Intent;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -36,10 +38,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
-/**
- * Activity which displays a login screen to the user, offering registration as
- * well.
- */
 public class LoginActivity extends Activity {
 	private UserLoginTask mAuthTask = null;
 	private String mEmail;
@@ -50,19 +48,17 @@ public class LoginActivity extends Activity {
 	private View mLoginStatusView;
 	private TextView mLoginStatusMessageView;
 
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
 		setContentView(R.layout.activity_login);
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
-
 		mPasswordView = (EditText) findViewById(R.id.password);
 		mLoginFormView = findViewById(R.id.login_form);
 		mLoginStatusView = findViewById(R.id.login_status);
 		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
-
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -79,21 +75,14 @@ public class LoginActivity extends Activity {
 		return true;
 	}
 
-	/**
-	 * Attempts to sign in or register the account specified by the login form.
-	 * If there are form errors (invalid email, missing fields, etc.), the
-	 * errors are presented and no actual login attempt is made.
-	 */
+
 	public void attemptLogin() {
 		if (mAuthTask != null) {
 			return;
 		}
-
-		// Reset errors.
 		mEmailView.setError(null);
 		mPasswordView.setError(null);
 
-		// Store values at the time of the login attempt.
 		mEmail = mEmailView.getText().toString();
 		mPassword = mPasswordView.getText().toString();
 
@@ -131,7 +120,7 @@ public class LoginActivity extends Activity {
 			// perform the user login attempt.
 			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
-			mAuthTask = new UserLoginTask();
+			mAuthTask = new UserLoginTask(this);
 			mAuthTask.execute((Void) null);
 		}
 	}
@@ -181,8 +170,14 @@ public class LoginActivity extends Activity {
 	 * Represents an asynchronous login/registration task used to authenticate
 	 * the user.
 	 */
-	public class UserLoginTask extends AsyncTask<Void, Void, String> {
-		@Override
+	private class UserLoginTask extends AsyncTask<Void, Void, String> {
+
+		private Context context;
+		
+		public UserLoginTask(Context context){
+			this.context = context.getApplicationContext();
+		}
+		
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
@@ -214,7 +209,12 @@ public class LoginActivity extends Activity {
 			showProgress(false);
 			try {
 				JSONObject person = new JSONObject(result);
-				LoggedInPerson.token = person.getString("token");
+				LoggedInPerson.token = (String) person.get("token");
+				LoggedInPerson.id = person.getLong("person_id");
+				LoggedInPerson.createPerson();
+				Intent intent = new Intent();
+				intent.setClass(getApplicationContext(), MainActivity.class);
+				startActivity(intent);
 			} catch (JSONException e) {
 				mPasswordView.setError(getString(R.string.error_incorrect_password));
 				mPasswordView.requestFocus();

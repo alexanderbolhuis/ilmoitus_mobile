@@ -4,15 +4,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <TextView
+ 		android:id="@+id/person_title"
+  		android:layout_width="wrap_content"
+  		android:layout_height="wrap_content"
+  		android:textSize="20sp"
+   		android:textColor="#00BFFF"
+   		android:layout_gravity="center_horizontal"/>
+    
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" 
-        android:gravity="center">
-    </ListView>
-
-    <!-- footer here -->
+        android:layout_marginTop="50dp"
+        android:gravity="center"/>
 
     <LinearLayout
         android:layout_width="match_parent"
