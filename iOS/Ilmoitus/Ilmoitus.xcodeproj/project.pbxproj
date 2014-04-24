@@ -25,6 +25,7 @@
 		46D94ED419063D12008E6C01 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D94ED319063D12008E6C01 /* SettingsViewController.m */; };
 		46D94ED719063EA2008E6C01 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D94ED619063EA2008E6C01 /* LoginViewController.m */; };
 		46D94EDA19063F82008E6C01 /* DeclarationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 46D94ED919063F82008E6C01 /* DeclarationDetailViewController.m */; };
+		A2A5B6A71909884C00CC70FB /* DeclarationLine.m in Sources */ = {isa = PBXBuildFile; fileRef = A2A5B6A61909884C00CC70FB /* DeclarationLine.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,8 @@
 		46D94ED619063EA2008E6C01 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		46D94ED819063F82008E6C01 /* DeclarationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeclarationDetailViewController.h; sourceTree = "<group>"; };
 		46D94ED919063F82008E6C01 /* DeclarationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeclarationDetailViewController.m; sourceTree = "<group>"; };
+		A2A5B6A51909884C00CC70FB /* DeclarationLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeclarationLine.h; sourceTree = "<group>"; };
+		A2A5B6A61909884C00CC70FB /* DeclarationLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeclarationLine.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +97,8 @@
 		46850DB21906A7E800498B6F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A2A5B6A51909884C00CC70FB /* DeclarationLine.h */,
+				A2A5B6A61909884C00CC70FB /* DeclarationLine.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -279,6 +284,7 @@
 			files = (
 				46D94EB419063A08008E6C01 /* NewDeclarationViewController.m in Sources */,
 				46D94EAB19063A08008E6C01 /* AppDelegate.m in Sources */,
+				A2A5B6A71909884C00CC70FB /* DeclarationLine.m in Sources */,
 				46D94ED719063EA2008E6C01 /* LoginViewController.m in Sources */,
 				46D94ED419063D12008E6C01 /* SettingsViewController.m in Sources */,
 				46D94EB119063A08008E6C01 /* MyDeclarationViewController.m in Sources */,
