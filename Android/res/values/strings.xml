@@ -4,5 +4,11 @@
     <string name="app_name">Ilmoitus</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="declare">indienen</string>
+    <string name="log_out">uitloggen</string>
+    <string name="overvieuw">overzicht</string>
+    <string name="settings">instellingen</string>
+    <string name="title_activity_declare">DeclareActivity</string>
+    <string name="title_activity_declare_item">DeclareItemActivity</string>
 
 </resources>
