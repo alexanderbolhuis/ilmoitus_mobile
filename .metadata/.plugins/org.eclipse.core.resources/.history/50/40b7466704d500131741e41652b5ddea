@@ -1,0 +1,58 @@
+package com.ilmoitus.model;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class Supervisor {
+	
+	private String firstName;
+	private String lastName;
+	private Long email;
+	private int employeeNumber;
+	private String department;
+	private Long supervisor;
+	
+	public Supervisor(String firstName, String lastName, Long email, int employeeNumber, String department, Long supervisor)
+	{
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.employeeNumber = employeeNumber;
+		this.department = department;
+		this.supervisor = supervisor;
+	}
+
+	public Supervisor(JSONObject object, String firstName, String lastName, Long email, int employeeNumber, String department, Long supervisor) throws JSONException {
+		// TODO Auto-generated constructor stub
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.employeeNumber = employeeNumber;
+		this.department = department;
+		this.supervisor = supervisor;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public Long getEmail() {
+		return email;
+	}
+
+	public int getEmployeeNumber() {
+		return employeeNumber;
+	}
+	
+	public String getDepartment() {
+		return department;
+	}
+	
+	public Long getSupervisor() {
+		return supervisor;
+	}
+}

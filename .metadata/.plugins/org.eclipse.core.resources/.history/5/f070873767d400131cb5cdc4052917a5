@@ -1,0 +1,23 @@
+package com.ilmoitus.model;
+
+public class Supervisor {
+	
+	public static String firstName;
+	public static String lastName;
+	public static Long email;
+	public static int employeeNumber;
+	public static String department;
+	public static Long supervisor;
+	
+	public Supervisor(String firstName, String lastName, Long email, int employeeNumber, String department, Long supervisor)
+	{
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.employeeNumber = employeeNumber;
+		this.department = department;
+		this.supervisor = supervisor;
+		
+	}
+
+}
