@@ -1,0 +1,30 @@
+package com.ilmoitus.model;
+
+public class Supervisor {
+	
+	private String firstName;
+	private String lastName;
+	private Long email;
+	private int employeeNumber;
+	private String department;
+	private Long supervisor;
+	
+	public Supervisor(String firstName, String lastName, Long email, int employeeNumber, String department, Long supervisor)
+	{
+		this.setFirstName(firstName);
+		this.lastName = lastName;
+		this.email = email;
+		this.employeeNumber = employeeNumber;
+		this.department = department;
+		this.supervisor = supervisor;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		Supervisor.firstName = firstName;
+	}
+
+}

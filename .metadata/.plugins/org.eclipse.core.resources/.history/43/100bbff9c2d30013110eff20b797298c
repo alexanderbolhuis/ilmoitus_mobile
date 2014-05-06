@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:ignore="all" >
+
+    <TextView
+        android:id="@+id/person_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Declaratie indienen"
+        android:textColor="#00BFFF"
+        android:textSize="30dp" />
+    
+    <TableLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Leidinggevende: "
+                android:textColor="#00BFFF"
+                android:textSize="15dp" 
+                android:gravity="center"/>
+
+            <Spinner
+                android:id="@+id/spinner1"
+                android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+                android:gravity="center"
+                android:prompt="@string/prompt_spinner"
+                android:width="10px" />
+        </TableRow>
+        
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal">
+            
+            <TextView
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+		        android:text="Declaratie items:"
+		        android:gravity="center"
+		        android:textSize="20dp"
+		        android:background="#1DA43F" />
+       </TableRow>
+	   
+	</TableLayout>
+       
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" >
+
+        <!-- TODO: make icons for the buttons -->
+
+        <Button
+            android:id="@+id/buttonOvervieuw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onButtonClick"
+            android:text="@string/overvieuw"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonDeclare"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onDeclareButtonClick"
+            android:text="@string/declare"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onButtonClick"
+            android:text="@string/settings"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onButtonClick"
+            android:text="@string/log_out"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+</LinearLayout>
