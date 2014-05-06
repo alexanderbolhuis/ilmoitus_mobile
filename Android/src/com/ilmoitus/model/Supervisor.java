@@ -14,7 +14,7 @@ public class Supervisor {
 	
 	public Supervisor(JSONObject object) throws JSONException {
 		// TODO Auto-generated constructor stub
-		this.id = object.getLong("id");
+		this.id = (object.getLong("id"));
 		this.firstName = object.getString("first_name");
 		this.lastName = object.getString("last_name");
 		this.email = object.getString("email");
@@ -45,5 +45,9 @@ public class Supervisor {
 	
 	public Long getDepartment() {
 		return department;
+	}
+
+	public Long getId() {
+		return id;
 	}
 }
