@@ -53,6 +53,13 @@ public class DeclareActivity extends Activity {
 	    Intent intent = new Intent(this, MainActivity.class);
 	    startActivity(intent);
 	}
+	
+	//TODO: alleen om te testen
+	public void onAddLineButtonClick(View view) {
+	    Intent intent = new Intent(this, DeclareLineActivity.class);
+	    startActivity(intent);
+	}
+	
 
 	private class GetSupervisors extends AsyncTask<Void, Void, String> {
 		private Activity activity;
