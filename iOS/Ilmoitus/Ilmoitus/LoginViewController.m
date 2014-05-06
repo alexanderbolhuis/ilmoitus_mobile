@@ -33,6 +33,12 @@
     self.usernamefield.delegate = self;
     self.passwordfield.delegate = self;
 }
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+}
+
 - (IBAction)loginAction:(id)sender {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
