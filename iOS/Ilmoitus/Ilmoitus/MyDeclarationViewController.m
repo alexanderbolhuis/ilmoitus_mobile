@@ -8,7 +8,7 @@
 
 #import "MyDeclarationViewController.h"
 #import "Declaration.h"
-#import "LockedDeclaration.h"
+#import "constants.h"
 
 @interface MyDeclarationViewController ()
 @property (nonatomic, strong) NSMutableArray *declarationList;
@@ -54,7 +54,8 @@
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
-    [manager GET:@"http://2.sns-ilmoitus.appspot.com/declarations/employee" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *url = [NSString stringWithFormat:@"%@/declarations/employee", baseURL];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseObject
@@ -67,6 +68,7 @@
                 Declaration *declaration = [[Declaration alloc] init];
                 declaration.status = decl[@"state"];
                 declaration.amount = 10.00;
+                // declaration.amount = decl[@"items_total_price"];
                 NSDateFormatter *formatter = [NSDateFormatter new];
                 formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
             
