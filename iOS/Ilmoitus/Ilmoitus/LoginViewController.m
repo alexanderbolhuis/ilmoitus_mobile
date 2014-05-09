@@ -7,6 +7,7 @@
 //
 
 #import "LoginViewController.h"
+#import "constants.h"
 
 @interface LoginViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *usernamefield;
@@ -43,7 +44,8 @@
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     NSDictionary *params = @{@"email":_usernamefield.text, @"password":_passwordfield.text};
-    AFHTTPRequestOperation *apiRequest = [manager POST:@"http://2.sns-ilmoitus.appspot.com/auth/login" parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *url = [NSString stringWithFormat:@"%@/auth/login", baseURL];
+    AFHTTPRequestOperation *apiRequest = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseObject
