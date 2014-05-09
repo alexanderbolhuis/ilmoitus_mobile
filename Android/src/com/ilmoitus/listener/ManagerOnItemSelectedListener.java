@@ -9,7 +9,6 @@ public class ManagerOnItemSelectedListener implements OnItemClickListener {
 
 	@SuppressWarnings("rawtypes")
 	public void onItemSelected(AdapterView parent, View view, int pos, long id) {
-
 		Toast.makeText(parent.getContext(), "Selected Country : " + parent.getItemAtPosition(pos).toString(), Toast.LENGTH_SHORT).show();
 	}
 

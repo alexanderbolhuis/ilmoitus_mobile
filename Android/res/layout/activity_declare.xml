@@ -110,44 +110,10 @@
 	   
 	</TableLayout>
        
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center" >
-
-        <!-- TODO: make icons for the buttons -->
-
-        <Button
-            android:id="@+id/buttonOvervieuw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onButtonClick"
-            android:text="@string/overvieuw"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/buttonDeclare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onDeclareButtonClick"
-            android:text="@string/declare"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/buttonSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onButtonClick"
-            android:text="@string/settings"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onButtonClick"
-            android:text="@string/log_out"
-            android:textSize="12sp" />
-    </LinearLayout>
+    <fragment android:name="com.ilmoitus.fragment.MenuFragment"
+              android:id="@+id/menu_fragment"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_gravity="center" />
 
 </LinearLayout>
