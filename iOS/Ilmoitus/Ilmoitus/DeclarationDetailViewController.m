@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *opmerking;
 
 @property (strong, nonatomic) NSMutableArray *declarationLines;
+@property (weak, nonatomic) IBOutlet UIScrollView *scroll;
 
 @end
 
@@ -32,6 +33,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.scroll setScrollEnabled:YES];
+    [self.scroll setContentSize:CGSizeMake(320, 831)];
     self.declarationLines = [[NSMutableArray alloc]init];
     [self fill];
     // Do any additional setup after loading the view.
