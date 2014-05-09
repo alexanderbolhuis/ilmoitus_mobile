@@ -61,7 +61,8 @@
             manager.responseSerializer = [AFHTTPResponseSerializer serializer];
             manager.requestSerializer = [AFHTTPRequestSerializer serializer];
             [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
-            [manager GET:@"http://2.sns-ilmoitus.appspot.com/current_user/details" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSString *url = [NSString stringWithFormat:@"%@/current_user/details", baseURL];
+            [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
                 NSError* error;
                 NSDictionary* json = [NSJSONSerialization
                                       JSONObjectWithData:responseObject
