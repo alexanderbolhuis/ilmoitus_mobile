@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="8YX-ce-x5E">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Fuc-rh-cuB">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -7,7 +7,7 @@
         <!--Navigation Controller - Mijn declaraties-->
         <scene sceneID="u7v-Oa-CEK">
             <objects>
-                <navigationController definesPresentationContext="YES" id="rNo-qa-H3S" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="Declarations" definesPresentationContext="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rNo-qa-H3S" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Mijn declaraties" id="wzF-LT-iz7"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="C4w-CP-stM">
                         <autoresizingMask key="autoresizingMask"/>
@@ -23,7 +23,7 @@
             </objects>
             <point key="canvasLocation" x="207" y="-138"/>
         </scene>
-        <!--My Declaration View Controller - Ingelogd als Mikel Maas (9120103)-->
+        <!--My Declaration View Controller - Mijn declaraties-->
         <scene sceneID="JxL-X1-bH9">
             <objects>
                 <tableViewController id="8oB-aY-hRy" customClass="MyDeclarationViewController" sceneMemberID="viewController">
@@ -82,7 +82,7 @@
                         </connections>
                     </tableView>
                     <tabBarItem key="tabBarItem" tag="1" title="Mijn declaraties" id="fa5-9P-TTG"/>
-                    <navigationItem key="navigationItem" title="Ingelogd als Mikel Maas (9120103)" id="R8V-DC-3Ms"/>
+                    <navigationItem key="navigationItem" id="R8V-DC-3Ms"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GNL-C8-Hfu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -234,7 +234,7 @@
         <!--Login View Controller - Item-->
         <scene sceneID="nsb-69-OZG">
             <objects>
-                <viewController id="Fuc-rh-cuB" customClass="LoginViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Login" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Fuc-rh-cuB" customClass="LoginViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9fy-FA-KYn"/>
                         <viewControllerLayoutGuide type="bottom" id="hwn-3t-tiP"/>
@@ -271,6 +271,9 @@
                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="loginAction:" destination="Fuc-rh-cuB" eventType="touchUpInside" id="UPx-MK-54N"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -282,6 +285,7 @@
                     <connections>
                         <outlet property="passwordfield" destination="fkC-G8-dVK" id="NpK-qB-u18"/>
                         <outlet property="usernamefield" destination="67v-fJ-lNf" id="kMY-Q4-oWV"/>
+                        <segue destination="8YX-ce-x5E" kind="modal" identifier="login_success" id="q5k-gc-4D9"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Z9b-dJ-OPr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -291,7 +295,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="Vex-rW-GRa">
             <objects>
-                <tabBarController id="8YX-ce-x5E" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="Start" useStoryboardIdentifierAsRestorationIdentifier="YES" id="8YX-ce-x5E" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="M4C-L8-V7Y"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" id="JQR-rB-NYL">
