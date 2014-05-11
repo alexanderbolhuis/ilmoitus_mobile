@@ -9,6 +9,7 @@
 #import "NewDeclarationViewController.h"
 
 @interface NewDeclarationViewController ()
+@property (weak, nonatomic) IBOutlet UIPickerView *supervisorList;
 
 @end
 
@@ -18,6 +19,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+
 }
 
 - (void)didReceiveMemoryWarning
