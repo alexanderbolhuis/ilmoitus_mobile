@@ -16,5 +16,6 @@
     <string name="pick_date">Selecteer datum</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_declare_line">DeclareLineActivity</string>
+    <string name="addImage">Afbeelding Toevoegen</string>
 
 </resources>
