@@ -40,8 +40,8 @@ import android.widget.TextView;
 
 public class LoginActivity extends Activity {
 	private UserLoginTask mAuthTask = null;
-	private String mEmail;
-	private String mPassword;
+	private String mEmail = "developers.42IN11EWa@gmail.com";
+	private String mPassword = "123456";
 	private EditText mEmailView;
 	private EditText mPasswordView;
 	private View mLoginFormView;

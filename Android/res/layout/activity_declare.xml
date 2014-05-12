@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    tools:ignore="all">
+    android:orientation="vertical"
+    tools:ignore="all" >
 
     <TextView
         android:id="@+id/person_title"
@@ -14,8 +14,8 @@
         android:text="Declaratie indienen"
         android:textColor="#00BFFF"
         android:textSize="20sp" />
- 
-   <TableLayout 
+
+    <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -29,56 +29,121 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Leidinggevende: "
-                android:textColor="#00BFFF"
-                android:gravity="center"/>
+                android:textColor="#00BFFF" />
 
             <Spinner
                 android:id="@+id/spinner1"
                 android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:background="@android:color/transparent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:gravity="center"
                 android:prompt="@string/prompt_spinner"
                 android:width="10px" />
-        </TableRow>   
-	</TableLayout>
+        </TableRow>
 
-            
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Declaratie items:"
+                android:textColor="#00BFFF"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <!--
+        <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="50dp"
+        android:gravity="center" />
+        -->
+
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="onAddLineButtonClick"
+                android:text="Voeg toe"
+                android:textSize="15dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Opmerkingen:"
+                android:textColor="#00BFFF"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal" >
+
+            <MultiAutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:width="250px" />
+        </TableRow>
+    </TableLayout>
+
     <TextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginTop="50dp"
-		android:text="Declaratie items:"
-		android:textColor="#00BFFF"
-		android:gravity="center"/>
-    
-
-              
- 	<Button
-		android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Voeg toe"
-        android:background="@android:color/transparent"
-		android:gravity="center"/>         
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Declaratie items:"
+        android:textColor="#00BFFF" />
 
- 	<TextView
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:text="Opmerkingen:"
-		android:textColor="#00BFFF"
-		android:gravity="center"/>
-
-
-  	<MultiAutoCompleteTextView
-       	android:layout_width="fill_parent"
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"  />
-             
-    <fragment android:name="com.ilmoitus.fragment.MenuFragment"
-              android:id="@+id/menu_fragment"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:layout_gravity="center" />
+        android:gravity="center"
+        android:onClick="onAddLineButtonClick"
+        android:text="Voeg toe" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Opmerkingen:"
+        android:textColor="#00BFFF" />
+
+    <MultiAutoCompleteTextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
+    <fragment
+        android:id="@+id/menu_fragment"
+        android:name="com.ilmoitus.fragment.MenuFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </LinearLayout>
