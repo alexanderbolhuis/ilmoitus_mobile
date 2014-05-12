@@ -14,7 +14,7 @@
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *createdAt;
 @property (nonatomic) int createdBy;
-@property (nonatomic) int assignedTo;
+@property (strong, nonatomic) NSArray *assignedTo;
 @property (strong, nonatomic) NSString *comment;
 @property (nonatomic) float itemsTotalPrice;
 @property (nonatomic) int itemsCount;
