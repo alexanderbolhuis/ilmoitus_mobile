@@ -1,3 +1,1 @@
 INDEX VERSION 1.126+D:\SCHOOL\H11 - H12 minor_everywhere_samen\H11-H12 project_sns_ewa12in42a_creation\ilmoitus_mobile\Android\.metadata\.plugins\org.eclipse.jdt.core
-3823177468.index
-1361623564.index

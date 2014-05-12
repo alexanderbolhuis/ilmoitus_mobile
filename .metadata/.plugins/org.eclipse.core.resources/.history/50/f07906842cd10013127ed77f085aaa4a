@@ -1,7 +1,0 @@
-package com.ilmoitus.activity;
-
-
-public class DeclareActivity extends Activity {
-
-	 	
-}
