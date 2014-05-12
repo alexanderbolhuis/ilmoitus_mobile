@@ -42,7 +42,7 @@ public class DeclareActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_declare);
+		setContentView(R.layout.activity_declare1);
 		declareButton = (Button) findViewById(R.id.buttonDeclare);
 		declareButton.setEnabled(false);
 		new GetSupervisors(this).execute();
