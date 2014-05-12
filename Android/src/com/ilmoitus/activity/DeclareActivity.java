@@ -42,7 +42,7 @@ public class DeclareActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_declare);
+		setContentView(R.layout.activity_declare1);
 		declareButton = (Button) findViewById(R.id.buttonDeclare);
 		declareButton.setEnabled(false);
 		new GetSupervisors(this).execute();
@@ -53,6 +53,13 @@ public class DeclareActivity extends Activity {
 	    Intent intent = new Intent(this, MainActivity.class);
 	    startActivity(intent);
 	}
+	
+	//TODO: alleen om te testen
+	public void onAddLineButtonClick(View view) {
+	    Intent intent = new Intent(this, DeclareLineActivity.class);
+	    startActivity(intent);
+	}
+	
 
 	private class GetSupervisors extends AsyncTask<Void, Void, String> {
 		private Activity activity;

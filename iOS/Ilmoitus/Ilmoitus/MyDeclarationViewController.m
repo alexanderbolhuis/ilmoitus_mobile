@@ -8,9 +8,11 @@
 
 #import "MyDeclarationViewController.h"
 #import "Declaration.h"
+#import "constants.h"
 
 @interface MyDeclarationViewController ()
 @property (nonatomic, strong) NSMutableArray *declarationList;
+@property (weak, nonatomic) IBOutlet UINavigationItem *navItem;
 
 @end
 
@@ -19,24 +21,74 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    // Init Refresh
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshInvoked:forState:) forControlEvents:UIControlEventValueChanged];
+    
 	// Do any additional setup after loading the view, typically from a nib.
+    self.navItem.title = [NSString stringWithFormat:@"Ingelogd als %@ %@ (%@)", [[NSUserDefaults standardUserDefaults] stringForKey:@"person_first_name"], [[NSUserDefaults standardUserDefaults] stringForKey:@"person_last_name"], [[NSUserDefaults standardUserDefaults] stringForKey:@"person_employee_number"]];
     
-    // Fake declaration
-    _declarationList = [[NSMutableArray alloc] init];
-    
-    Declaration *decl = [[Declaration alloc] init];
-    decl.status = @"In behandeling";
-    decl.createdAt = @"13-12-2013";
-    decl.amount = 25.00;
-    
-    Declaration *decl2 = [[Declaration alloc] init];
-    decl2.status = @"In behandeling";
-    decl2.createdAt = @"16-12-2013";
-    decl2.amount = 80.25;
-    
-    [_declarationList addObject:decl];
-    [_declarationList addObject:decl2];
+    // GET Actions when shwoing view
+    [self declarationsFromServer];
+}
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.navigationController.navigationBar.hidden = NO;
+    // GET Actions when showing view
+    [self declarationsFromServer];
+    
+}
+
+// For refreshing tableview
+-(void) refreshInvoked:(id)sender forState:(UIControlState)state {
+    [self declarationsFromServer];
+}
+
+- (void)declarationsFromServer
+{
+    // Do Request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+    NSString *url = [NSString stringWithFormat:@"%@/declarations/employee", baseURL];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSError* error;
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseObject
+                              
+                              options:kNilOptions
+                              error:&error];
+        
+        NSMutableArray *declarationsFound = [[NSMutableArray alloc] init];
+        for (NSDictionary *decl in json) {
+                Declaration *declaration = [[Declaration alloc] init];
+                declaration.status = decl[@"state"];
+                declaration.amount = 10.00;
+                // declaration.amount = decl[@"items_total_price"];
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
+            
+                NSDate *date = [formatter dateFromString:decl[@"created_at"]];
+                [formatter setDateFormat:@"dd-MM-yyyy"];
+                declaration.createdAt = [formatter stringFromDate:date];
+                [declarationsFound addObject:declaration];
+        }
+        
+        [_declarationList removeAllObjects];
+        _declarationList = declarationsFound;
+        
+        NSLog(@"%@", json);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+    
+    // Reload the data
+    [self.tableView reloadData];
+    [self.refreshControl endRefreshing];
 }
 
 - (void)didReceiveMemoryWarning
@@ -67,16 +119,19 @@
     UILabel *createdAtlabel;
     
     createdAtlabel = (UILabel *)[cell viewWithTag:1];
+    [createdAtlabel adjustsFontSizeToFitWidth];
     createdAtlabel.text = [NSString stringWithFormat:@"Declaratie op %@", declaration.createdAt];
     
     UILabel *statusLabel;
     
     statusLabel = (UILabel *)[cell viewWithTag:2];
+    [statusLabel adjustsFontSizeToFitWidth];
     statusLabel.text = declaration.status;
     
     UILabel *amountLabel;
     
     amountLabel = (UILabel *)[cell viewWithTag:3];
+    [amountLabel adjustsFontSizeToFitWidth];
     NSString* formattedAmount = [NSString stringWithFormat:@"%.02f", declaration.amount];
     amountLabel.text = [NSString stringWithFormat:@"€%@", formattedAmount];
     
