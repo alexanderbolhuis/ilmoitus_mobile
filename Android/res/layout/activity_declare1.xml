@@ -1,102 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
     
-<LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        
-    <TextView
-        android:id="@+id/person_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Declaratie indienen"
-        android:textColor="#00BFFF"
-        android:textSize="20sp" />
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_gravity="center_horizontal">
-        
-        <TextView
-        	android:layout_width="match_parent"
-           	android:layout_height="wrap_content"
-        	android:text="Leidinggevende: "
-        	android:textColor="#00BFFF"
-        	android:gravity="center"/>
-
-      	<Spinner
-         	android:id="@+id/spinner1"
-      	    android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:background="@android:color/transparent"
-	       	android:gravity="center"
-         	android:prompt="@string/prompt_spinner"
-         	android:width="10px" />
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="50dp"
-        android:layout_gravity="center_horizontal">
-        
-        <TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="Declaratie items:"
-			android:textColor="#00BFFF"
-			android:gravity="center"/>
-     
-     	<ListView
-     	    android:id="@+id/list"
-     	    android:layout_width="match_parent"
-     	    android:layout_height="0dp"
-     	    android:layout_weight="1"
-     	    android:gravity="center" />
-     	
- 		<Button
-			android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:text="Voeg toe"
-        android:onClick="onAddLineButtonClick"
-        	android:background="@android:color/transparent"
-			android:gravity="center"/>
-    </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
-        android:layout_gravity="center_horizontal">
-        
-       	<TextView
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="Opmerkingen:"
-			android:textColor="#00BFFF"
-			android:gravity="center"/>
-        
-      	<MultiAutoCompleteTextView
-       		android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:gravity="center"  />
-    </LinearLayout>
-    
-</LinearLayout>
     <fragment
-        android:id="@+id/menu_fragment"
-        android:name="com.ilmoitus.fragment.MenuFragment"
-        android:layout_alignParentBottom="true"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+        android:id="@+id/DeclareFragment"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        class="com.ilmoitus.fragment.DeclareFragment" />
+
+</LinearLayout> 
