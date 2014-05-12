@@ -9,12 +9,14 @@
 #import <Foundation/Foundation.h>
 
 @interface Declaration : NSObject
-@property (nonatomic) float itemsTotalPrice;
-@property (nonatomic) int itemsCount;
+// id
+@property (strong, nonatomic) NSString *className;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *createdAt;
 @property (nonatomic) int createdBy;
 @property (nonatomic) int assignedTo;
 @property (strong, nonatomic) NSString *comment;
+@property (nonatomic) float itemsTotalPrice;
+@property (nonatomic) int itemsCount;
 @property (strong, nonatomic) NSArray *lines;
 @end
