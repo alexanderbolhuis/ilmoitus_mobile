@@ -35,7 +35,7 @@
 
 - (void)saveDeclaration
 {
-    // Fake test declaration
+    // ------ FAKE TEST DATA -------------------------------------------------------
     Declaration *decl = [[Declaration alloc] init];
     decl.className = @"open_declaration";
     decl.status = @"Open";
@@ -62,6 +62,7 @@
     [ln addObject:line1];
     [ln addObject:line2];
     decl.lines = ln;
+    // ------------------------------------------------------------------------------
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
