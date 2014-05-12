@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
 Base application theme, dependent on API level. This theme is replaced
@@ -25,7 +25,41 @@ backward-compatibility can go here.
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
     </style>
+    
+    <style name="Container">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">16dp</item>
+    </style>
+    
+    <style name="ContainerItem">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="ContainerItemWithMarginTop">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
+    
+    <style name="ContainerButtonCommit">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+        
+    
     <color name="coloredText">#0000FF</color>
     <color name="background">#FFFFFF</color>
+    
+    <dimen name="TextSizeTitle">20sp</dimen>
+    <color name="ColorTitle">#00BFFF</color>
+    
+    <dimen name="TextSizeMain">14sp</dimen>
+    <color name="ColorMain">#00BFFF</color>
 
 </resources>
