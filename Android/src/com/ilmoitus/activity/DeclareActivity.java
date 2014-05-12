@@ -19,6 +19,7 @@ import com.ilmoitus.listener.ManagerOnItemSelectedListener;
 import com.ilmoitus.model.ClosedDeclaration;
 import com.ilmoitus.model.OpenDeclaration;
 import com.ilmoitus.model.Supervisor;
+import com.ilmoitus.fragment.DeclareFragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -33,31 +34,30 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-public class DeclareActivity extends Activity {
+public class DeclareActivity extends Activity implements DeclareFragment.OnClickListener {
 
 	private ArrayList<Supervisor> supervisors;
 	private Spinner spinner1;
-	private Button declareButton;
+	//private Button declareButton;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_declare1);
-		declareButton = (Button) findViewById(R.id.buttonDeclare);
-		declareButton.setEnabled(false);
+		
 		new GetSupervisors(this).execute();
 		//addListenerOnSpinnerItemSelection();
 	}
 	
-	public void onButtonClick(View view) {
-	    Intent intent = new Intent(this, MainActivity.class);
-	    startActivity(intent);
+	public void onButtonClick() {
+	    //Intent intent = new Intent(this, MainActivity.class);
+	    //startActivity(intent);
 	}
 	
 	//TODO: alleen om te testen
-	public void onAddLineButtonClick(View view) {
-	    Intent intent = new Intent(this, DeclareLineActivity.class);
-	    startActivity(intent);
+	public void onAddLineButtonClick() {
+		Intent intent = new Intent(this, DeclareLineActivity.class);
+		startActivity(intent);
 	}
 	
 
@@ -109,6 +109,13 @@ public class DeclareActivity extends Activity {
 					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner1.setAdapter(dataAdapter);
 		}
+	}
+
+	@Override
+	public void onOverviewButtonClick() {
+		// TODO Auto-generated method stub
+		Intent intent = new Intent(this, MainActivity.class);
+	    startActivity(intent);
 	}
 
 //	public void addListenerOnSpinnerItemSelection() {
