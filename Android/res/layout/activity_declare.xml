@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     tools:ignore="all" >
 
@@ -13,9 +13,9 @@
         android:layout_gravity="center_horizontal"
         android:text="Declaratie indienen"
         android:textColor="#00BFFF"
-        android:textSize="30dp" />
-    
-    <TableLayout 
+        android:textSize="20sp" />
+
+    <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -29,72 +29,74 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:text="Leidinggevende: "
-                android:textColor="#00BFFF"
-                android:textSize="15dp" 
-                android:gravity="center"/>
+                android:textColor="#00BFFF" />
 
             <Spinner
                 android:id="@+id/spinner1"
                 android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:gravity="center"
                 android:prompt="@string/prompt_spinner"
                 android:width="10px" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/tableRow2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-            
+            android:gravity="center_horizontal" >
+
             <TextView
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Declaratie items:"
-		        android:textColor="#00BFFF"
-		        android:gravity="center"
-		        android:textSize="20dp" />
-       </TableRow>
-       
-       <!-- <ListView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Declaratie items:"
+                android:textColor="#00BFFF"
+                android:textSize="20dp" />
+        </TableRow>
+
+        <!--
+        <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_marginTop="50dp"
-        android:gravity="center" /> -->
-            
+        android:gravity="center" />
+        -->
+
         <TableRow
             android:id="@+id/tableRow3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-            
+            android:gravity="center_horizontal" >
+
             <Button
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Voeg toe"
-		        android:gravity="center"
-		        android:onClick="onAddLineButtonClick"
-		        android:textSize="15dp" />         
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:onClick="onAddLineButtonClick"
+                android:text="Voeg toe"
+                android:textSize="15dp" />
         </TableRow>
-        
+
         <TableRow
             android:id="@+id/tableRow4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal">
-            
+            android:gravity="center_horizontal" >
+
             <TextView
-		        android:layout_width="match_parent"
-		        android:layout_height="wrap_content"
-		        android:text="Opmerkingen:"
-		        android:textColor="#00BFFF"
-		        android:gravity="center"
-		        android:textSize="20dp" />
-       </TableRow>
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Opmerkingen:"
+                android:textColor="#00BFFF"
+                android:textSize="20dp" />
+        </TableRow>
 
         <TableRow
             android:id="@+id/tableRow5"
@@ -105,50 +107,43 @@
             <MultiAutoCompleteTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center" 
+                android:gravity="center"
                 android:width="250px" />
         </TableRow>
-	   
-	</TableLayout>
-       
-    <LinearLayout
+    </TableLayout>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center" >
+        android:layout_marginTop="50dp"
+        android:gravity="center"
+        android:text="Declaratie items:"
+        android:textColor="#00BFFF" />
 
-        <!-- TODO: make icons for the buttons -->
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:onClick="onAddLineButtonClick"
+        android:text="Voeg toe" />
 
-        <Button
-            android:id="@+id/buttonOvervieuw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onButtonClick"
-            android:text="@string/overvieuw"
-            android:textSize="12sp" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Opmerkingen:"
+        android:textColor="#00BFFF" />
 
-        <Button
-            android:id="@+id/buttonDeclare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onDeclareButtonClick"
-            android:text="@string/declare"
-            android:textSize="12sp" />
+    <MultiAutoCompleteTextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
 
-        <Button
-            android:id="@+id/buttonSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onButtonClick"
-            android:text="@string/settings"
-            android:textSize="12sp" />
-
-        <Button
-            android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onButtonClick"
-            android:text="@string/log_out"
-            android:textSize="12sp" />
-    </LinearLayout>
+    <fragment
+        android:id="@+id/menu_fragment"
+        android:name="com.ilmoitus.fragment.MenuFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </LinearLayout>

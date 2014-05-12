@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/declare_line_fragment"
-        android:name="com.ilmoitus.activity.DeclareLineFragment"
+        android:name="com.ilmoitus.fragment.DeclareLineFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
 

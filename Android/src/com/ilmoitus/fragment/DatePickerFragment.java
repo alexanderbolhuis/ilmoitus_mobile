@@ -1,4 +1,4 @@
-package com.ilmoitus.activity;
+package com.ilmoitus.fragment;
 
 import java.util.Calendar;
 

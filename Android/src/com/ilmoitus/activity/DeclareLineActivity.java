@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.example.ilmoitus.R;
+import com.ilmoitus.fragment.DatePickerFragment;
+import com.ilmoitus.fragment.DeclareLineFragment;
 
 import android.os.Bundle;
 import android.text.InputFilter;
