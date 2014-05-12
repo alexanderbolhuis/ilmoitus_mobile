@@ -12,7 +12,7 @@
 
 @property (strong, nonatomic) NSString *date;
 @property (nonatomic) float cost;
-@property (nonatomic) int subtype;
+@property (nonatomic) int64_t subtype;
 
 - (instancetype)initWithDate:(NSString *)date SubType:(NSString *)subtype Cost:(float)cost;
 

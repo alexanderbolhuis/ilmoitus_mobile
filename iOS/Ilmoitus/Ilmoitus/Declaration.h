@@ -13,7 +13,7 @@
 @property (strong, nonatomic) NSString *className;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *createdAt;
-@property (nonatomic) int createdBy;
+@property (nonatomic) int64_t createdBy;
 @property (strong, nonatomic) NSArray *assignedTo;
 @property (strong, nonatomic) NSString *comment;
 @property (nonatomic) float itemsTotalPrice;
