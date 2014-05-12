@@ -9,7 +9,11 @@
 #import <Foundation/Foundation.h>
 
 @interface Declaration : NSObject
-@property (nonatomic) float amount;
+@property (nonatomic) float itemsTotalPrice;
+@property (nonatomic) int itemsCount;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *createdAt;
+@property (nonatomic) int createdBy;
+@property (nonatomic) int assignedTo;
+@property (strong, nonatomic) NSString *comment;
 @end

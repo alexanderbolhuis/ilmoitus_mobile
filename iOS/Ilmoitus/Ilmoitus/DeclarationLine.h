@@ -11,7 +11,7 @@
 @interface DeclarationLine : NSObject
 
 @property (strong, nonatomic) NSString *date;
-@property (strong, nonatomic) NSString *subtype;
+@property (nonatomic) int subtype;
 @property (nonatomic) float cost;
 
 - (instancetype)initWithDate:(NSString *)date SubType:(NSString *)subtype Cost:(float)cost;

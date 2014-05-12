@@ -67,7 +67,7 @@
         for (NSDictionary *decl in json) {
                 Declaration *declaration = [[Declaration alloc] init];
                 declaration.status = decl[@"state"];
-                declaration.amount = 10.00;
+                declaration.itemsTotalPrice = 10.00;
                 // declaration.amount = decl[@"items_total_price"];
                 NSDateFormatter *formatter = [NSDateFormatter new];
                 formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
@@ -132,7 +132,7 @@
     
     amountLabel = (UILabel *)[cell viewWithTag:3];
     [amountLabel adjustsFontSizeToFitWidth];
-    NSString* formattedAmount = [NSString stringWithFormat:@"%.02f", declaration.amount];
+    NSString* formattedAmount = [NSString stringWithFormat:@"%.02f", declaration.itemsTotalPrice];
     amountLabel.text = [NSString stringWithFormat:@"€%@", formattedAmount];
     
     return cell;
