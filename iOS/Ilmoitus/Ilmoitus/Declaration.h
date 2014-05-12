@@ -16,4 +16,5 @@
 @property (nonatomic) int createdBy;
 @property (nonatomic) int assignedTo;
 @property (strong, nonatomic) NSString *comment;
+@property (strong, nonatomic) NSArray *lines;
 @end
