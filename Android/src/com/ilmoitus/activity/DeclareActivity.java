@@ -2,7 +2,6 @@ package com.ilmoitus.activity;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -12,14 +11,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
-import com.ilmoitus.adapter.DeclarationOverviewAdapter;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
-import com.ilmoitus.listener.ManagerOnItemSelectedListener;
-import com.ilmoitus.model.ClosedDeclaration;
-import com.ilmoitus.model.OpenDeclaration;
+import com.ilmoitus.model.DeclarationLine;
 import com.ilmoitus.model.Supervisor;
-import com.ilmoitus.fragment.DeclareFragment;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,40 +22,68 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-public class DeclareActivity extends Activity implements DeclareFragment.OnClickListener {
+public class DeclareActivity extends Activity implements OnClickListener{
 
-	private ArrayList<Supervisor> supervisors;
+	private ArrayList<DeclarationLine> declarationLines;
+	private Button declareButton;
+	private Button mainButton;
+	private Button addLineButton;
 	private Spinner spinner1;
-	//private Button declareButton;
-
+	private ArrayList<Supervisor> supervisors;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_declare1);
-		
+		setContentView(R.layout.activity_declare);
+		declareButton = (Button) findViewById(R.id.buttonDeclare);
+		declareButton.setEnabled(false);
+		mainButton = (Button) findViewById(R.id.buttonOvervieuw);
+		mainButton.setOnClickListener(this);
+		addLineButton = (Button) findViewById(R.id.onAddLineButton);
+		addLineButton.setOnClickListener(this);
 		new GetSupervisors(this).execute();
-		//addListenerOnSpinnerItemSelection();
 	}
-	
-	public void onButtonClick() {
-	    //Intent intent = new Intent(this, MainActivity.class);
-	    //startActivity(intent);
-	}
-	
-	//TODO: alleen om te testen
-	public void onAddLineButtonClick() {
-		Intent intent = new Intent(this, DeclareLineActivity.class);
-		startActivity(intent);
+		
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(requestCode == 1){
+			if(resultCode == RESULT_OK){
+				if(declarationLines == null){
+					declarationLines = new ArrayList<DeclarationLine>();
+				}
+				Bundle b = data.getExtras();
+				DeclarationLine line = new DeclarationLine(b.getString("date"), b.getString("bedrag"), b.getString("declaratieSoort"),
+						b.getString("declaratieSubSoort"), null);
+				declarationLines.add(line);
+				ArrayList<String> temp = new ArrayList<String>();
+				for(int i = 0; i < declarationLines.size(); i++){
+					temp.add(declarationLines.get(i).getDatum() + " - " + declarationLines.get(i).getDeclaratieSoort() + " - " 
+							+ declarationLines.get(i).getBedrag());
+				}
+				ListView list = (ListView) findViewById(R.id.list);
+				ArrayAdapter<String> ad = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, temp);
+				list.setAdapter(ad);
+			}
+		}
 	}
 	
 
+	public void onAddLineButtonClick() {
+		Intent intent = new Intent(this, DeclareLineActivity.class);
+		startActivityForResult(intent, 1);
+	}
+	
+	public void onOverviewButtonClick() {
+		Intent intent = new Intent(this, MainActivity.class);
+	    startActivity(intent);
+	}
+	
 	private class GetSupervisors extends AsyncTask<Void, Void, String> {
 		private Activity activity;
 
@@ -103,7 +126,7 @@ public class DeclareActivity extends Activity implements DeclareFragment.OnClick
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			spinner1 = (Spinner) findViewById(R.id.spinner1);
+			spinner1 = (Spinner) activity.findViewById(R.id.spinner1);
 			ArrayAdapter<Supervisor> dataAdapter = new ArrayAdapter<Supervisor>(activity, android.R.layout.simple_spinner_item, supervisors);
 			dataAdapter
 					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -112,14 +135,14 @@ public class DeclareActivity extends Activity implements DeclareFragment.OnClick
 	}
 
 	@Override
-	public void onOverviewButtonClick() {
-		// TODO Auto-generated method stub
-		Intent intent = new Intent(this, MainActivity.class);
-	    startActivity(intent);
+	public void onClick(View v) {
+		switch (v.getId()){
+		case R.id.onAddLineButton:
+			onAddLineButtonClick();
+			break;
+		case R.id.buttonOvervieuw:
+			onOverviewButtonClick();
+			break;
+		}
 	}
-
-//	public void addListenerOnSpinnerItemSelection() {
-//		spinner1 = (Spinner) findViewById(R.id.spinner1);
-//		spinner1.setOnItemSelectedListener((OnItemSelectedListener) new ManagerOnItemSelectedListener());
-//	}
 }

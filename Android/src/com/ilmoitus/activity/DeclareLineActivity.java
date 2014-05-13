@@ -5,68 +5,77 @@ import java.util.Calendar;
 
 import com.example.ilmoitus.R;
 import com.ilmoitus.fragment.DatePickerFragment;
-import com.ilmoitus.fragment.DeclareLineFragment;
 
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.app.DialogFragment;
+import android.content.Intent;
 
-public class DeclareLineActivity extends Activity implements
-		DatePickerFragment.OnDateSelectedListener,
-		DeclareLineFragment.DeclareLineListener {
-
-	Calendar date;
-	DeclareLineFragment dlFragment;
-
+public class DeclareLineActivity extends Activity implements DatePickerFragment.OnDateSelectedListener,
+	OnClickListener{
+	
+	private Spinner spinnerDeclarationTypes, spinnerDeclarationSubTypes;
+	private Calendar date;
+	private TextView title;
+	private EditText currency;
+	private EditText dateField;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_declare_line);
-
-		EditText editCurrency = (EditText) findViewById(R.id.editCurrency);
-		editCurrency
-				.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
-
+		title = (TextView) findViewById(R.id.person_title);
+		Button addButton = (Button) findViewById(R.id.buttonAdd);
+		addButton.setOnClickListener(this);
+		dateField = (EditText) findViewById(R.id.editTextDate);
+		currency = (EditText) findViewById(R.id.editCurrency);
+		currency.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
+		spinnerDeclarationTypes = (Spinner) findViewById(R.id.spinnerDeclarationType);
+		spinnerDeclarationSubTypes = (Spinner)findViewById(R.id.spinnerDeclarationSubType);
 		if (savedInstanceState == null) {
-
-			dlFragment = (DeclareLineFragment) getFragmentManager()
-					.findFragmentById(R.id.declare_line_fragment);
-
-			date = Calendar.getInstance();
-			
-			 String[] values = new String[] { "Android List View", 
-                     "Adapter implementation",
-                     "Simple List View In Android",
-                     "Create List View Android", 
-                     "Android Example", 
-                     "List View Source Code", 
-                     "List View Array Adapter", 
-                     "Android Example List View" 
-                    };
-			
-			dlFragment.setDeclarationTypes(values);
-			dlFragment.setDeclarationSubTypes(values);
+			date = Calendar.getInstance();		
+			String[] values = new String[] {"Android List View"};			
+			setDeclarationTypes(values);
+			setDeclarationSubTypes(values);
 		}
 	}
 
-	// TODO Terug naar overzicht
-	public void onCancelButtonClick(View view) {
-		Toast.makeText(getBaseContext(), "ToDo: Terug naar overzicht",
-				Toast.LENGTH_LONG).show();
+	public void setDeclarationTypes(String[] values) {
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, values);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerDeclarationTypes.setAdapter(adapter);
+	}
+	
+	public void setDeclarationSubTypes(String[] values) {
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, values);
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerDeclarationSubTypes.setAdapter(adapter);
 	}
 
-	// TODO Opslaan en Terug naar overzicht
-	public void onAddButtonClick(View view) {
 
-		String bedrag = dlFragment.getCurrency();
-
-		Toast.makeText(getBaseContext(),
-				"ToDo: Opslaan en Terug naar overzicht", Toast.LENGTH_LONG)
-				.show();
+	public void onAddButtonClick() {
+		Bundle b = new Bundle();
+		b.putString("date", dateField.getText().toString());
+		b.putString("bedrag", currency.getText().toString());
+		b.putString("declaratieSoort", spinnerDeclarationTypes.getSelectedItem().toString());
+		b.putString("declaratieSubSoort", spinnerDeclarationSubTypes.getSelectedItem().toString());
+		Intent i = new Intent(this, DeclareActivity.class);
+		i.putExtras(b);
+		setResult(RESULT_OK, i);
+		finish();
 	}
 
 	// TODO Foto maken
@@ -77,7 +86,6 @@ public class DeclareLineActivity extends Activity implements
 
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
-
 		Bundle args = new Bundle();
 		args.putInt("year", date.get(Calendar.YEAR));
 		args.putInt("month", date.get(Calendar.MONTH));
@@ -88,23 +96,24 @@ public class DeclareLineActivity extends Activity implements
 
 	@Override
 	public void onDateSelected(int year, int month, int day) {
-
 		Calendar date = Calendar.getInstance();
 		date.set(Calendar.DAY_OF_MONTH, day);
 		date.set(Calendar.MONTH, month);
 		date.set(Calendar.YEAR, year);
-
 		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		String formattedDate = df.format(date.getTime());
-
-		dlFragment.setDate(formattedDate);
+		EditText editDate = (EditText) this.findViewById(
+				R.id.editTextDate);
+		editDate.setText(formattedDate);
 	}
 
 	@Override
-	public void onDeclareLineChanged(String value) {
-		// TODO Auto-generated method stub
-		Toast.makeText(getBaseContext(), "ToDo: Update sub list", Toast.LENGTH_LONG)
-		.show();
+	public void onClick(View v) {
+		switch(v.getId()){
+		case R.id.buttonAdd:
+			onAddButtonClick();
+			break;
+		}
+		
 	}
-
 }
