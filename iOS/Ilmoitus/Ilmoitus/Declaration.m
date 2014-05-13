@@ -10,4 +10,16 @@
 
 @implementation Declaration
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _amount = 0;
+        _status = @"";
+        _createdAt = @"";
+        _attachments = [[NSMutableArray alloc]init];
+    }
+    return self;
+}
+
 @end

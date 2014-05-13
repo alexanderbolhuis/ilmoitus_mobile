@@ -12,4 +12,5 @@
 @property (nonatomic) float amount;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *createdAt;
+@property (strong, nonatomic) NSMutableArray *attachments;
 @end
