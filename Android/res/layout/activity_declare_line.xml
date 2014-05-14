@@ -108,7 +108,6 @@
                 <Button
                     android:id="@+id/buttonCancel"
                     style="@style/ContainerButtonCommit"
-                    android:onClick="onCancelButtonClick"
                     android:text="@string/cancel" />
 
                 <Button

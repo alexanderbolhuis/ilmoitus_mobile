@@ -164,7 +164,6 @@ public class LoginActivity extends Activity {
 	 * the user.
 	 */
 	private class UserLoginTask extends AsyncTask<Void, Void, String> {
-
 		private Context context;
 		
 		public UserLoginTask(Context context){
