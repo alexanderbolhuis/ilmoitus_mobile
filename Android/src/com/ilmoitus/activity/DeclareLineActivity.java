@@ -38,6 +38,8 @@ public class DeclareLineActivity extends Activity implements DatePickerFragment.
 		title = (TextView) findViewById(R.id.person_title);
 		Button addButton = (Button) findViewById(R.id.buttonAdd);
 		addButton.setOnClickListener(this);
+		Button cancelButton = (Button) findViewById(R.id.buttonCancel);
+		cancelButton.setOnClickListener(this);
 		dateField = (EditText) findViewById(R.id.editTextDate);
 		currency = (EditText) findViewById(R.id.editCurrency);
 		currency.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
@@ -112,6 +114,9 @@ public class DeclareLineActivity extends Activity implements DatePickerFragment.
 		switch(v.getId()){
 		case R.id.buttonAdd:
 			onAddButtonClick();
+			break;
+		case R.id.buttonCancel:
+			super.onBackPressed();
 			break;
 		}
 		
