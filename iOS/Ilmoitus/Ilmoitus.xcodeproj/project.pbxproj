@@ -26,6 +26,7 @@
 		463019FE1917D1D1004D2613 /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 463019ED1917D1D0004D2613 /* UIWebView+AFNetworking.m */; };
 		46A9D7D11909228A00C5B468 /* DeclarationLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A9D7D01909228A00C5B468 /* DeclarationLine.m */; };
 		46AE9B6F190902C700AE3F70 /* Declaration.m in Sources */ = {isa = PBXBuildFile; fileRef = 46AE9B6E190902C700AE3F70 /* Declaration.m */; };
+		46B58F2519234BFB0072B8CB /* Supervisor.m in Sources */ = {isa = PBXBuildFile; fileRef = 46B58F2419234BFB0072B8CB /* Supervisor.m */; };
 		46D94E9B19063A08008E6C01 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D94E9A19063A08008E6C01 /* Foundation.framework */; };
 		46D94E9D19063A08008E6C01 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D94E9C19063A08008E6C01 /* CoreGraphics.framework */; };
 		46D94E9F19063A08008E6C01 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 46D94E9E19063A08008E6C01 /* UIKit.framework */; };
@@ -98,6 +99,8 @@
 		46A9D7D01909228A00C5B468 /* DeclarationLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeclarationLine.m; sourceTree = "<group>"; };
 		46AE9B6D190902C700AE3F70 /* Declaration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Declaration.h; sourceTree = "<group>"; };
 		46AE9B6E190902C700AE3F70 /* Declaration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Declaration.m; sourceTree = "<group>"; };
+		46B58F2319234BFB0072B8CB /* Supervisor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Supervisor.h; sourceTree = "<group>"; };
+		46B58F2419234BFB0072B8CB /* Supervisor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Supervisor.m; sourceTree = "<group>"; };
 		46D94E9719063A08008E6C01 /* Ilmoitus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ilmoitus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D94E9A19063A08008E6C01 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		46D94E9C19063A08008E6C01 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -208,6 +211,8 @@
 				46AE9B6E190902C700AE3F70 /* Declaration.m */,
 				46A9D7CF1909228A00C5B468 /* DeclarationLine.h */,
 				46A9D7D01909228A00C5B468 /* DeclarationLine.m */,
+				46B58F2319234BFB0072B8CB /* Supervisor.h */,
+				46B58F2419234BFB0072B8CB /* Supervisor.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -413,6 +418,7 @@
 				463019EF1917D1D0004D2613 /* AFHTTPRequestOperationManager.m in Sources */,
 				463019FC1917D1D1004D2613 /* UIProgressView+AFNetworking.m in Sources */,
 				46D94EB119063A08008E6C01 /* MyDeclarationViewController.m in Sources */,
+				46B58F2519234BFB0072B8CB /* Supervisor.m in Sources */,
 				463019FA1917D1D1004D2613 /* UIButton+AFNetworking.m in Sources */,
 				463019F51917D1D1004D2613 /* AFURLResponseSerialization.m in Sources */,
 				46A9D7D11909228A00C5B468 /* DeclarationLine.m in Sources */,
