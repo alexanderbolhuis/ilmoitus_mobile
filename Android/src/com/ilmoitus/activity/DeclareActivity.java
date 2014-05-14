@@ -102,7 +102,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(
-					"http://2.sns-ilmoitus.appspot.com/supervisors/");
+					getResources().getString(R.string.base_url)  + "/supervisors/");
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
