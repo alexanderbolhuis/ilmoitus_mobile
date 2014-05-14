@@ -7,10 +7,11 @@
 //
 
 #import "NewDeclarationViewController.h"
+#import "Declaration.h"
 
 @interface NewDeclarationViewController ()
 @property (weak, nonatomic) IBOutlet UIPickerView *supervisorList;
-
+@property (weak, nonatomic) IBOutlet UITextField *supervisor;
 @end
 
 @implementation NewDeclarationViewController
@@ -19,6 +20,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    // Create new blank Declaration
+    Declaration *newDeclaration = [[Declaration alloc] init];
 
 }
 
