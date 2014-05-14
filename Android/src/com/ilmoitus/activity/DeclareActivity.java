@@ -15,6 +15,7 @@ import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.DeclarationLine;
 import com.ilmoitus.model.Supervisor;
+import com.ilmoitus.adapter.DeclarationLineAdapter;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -25,8 +26,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class DeclareActivity extends Activity implements OnClickListener{
 
@@ -61,14 +63,18 @@ public class DeclareActivity extends Activity implements OnClickListener{
 				DeclarationLine line = new DeclarationLine(b.getString("date"), b.getString("bedrag"), b.getString("declaratieSoort"),
 						b.getString("declaratieSubSoort"), null);
 				declarationLines.add(line);
-				ArrayList<String> temp = new ArrayList<String>();
-				for(int i = 0; i < declarationLines.size(); i++){
-					temp.add(declarationLines.get(i).getDatum() + " - " + declarationLines.get(i).getDeclaratieSoort() + " - " 
-							+ declarationLines.get(i).getBedrag());
+				
+				DeclarationLineAdapter ad = new DeclarationLineAdapter(this, declarationLines);
+				
+				LinearLayout layout = (LinearLayout) findViewById(R.id.list);
+				layout.removeAllViews();
+
+				final int adapterCount = ad.getCount();
+
+				for (int i = 0; i < adapterCount; i++) {
+				  View item = ad.getView(i, null, null);
+				  layout.addView(item);
 				}
-				ListView list = (ListView) findViewById(R.id.list);
-				ArrayAdapter<String> ad = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, temp);
-				list.setAdapter(ad);
 			}
 		}
 	}

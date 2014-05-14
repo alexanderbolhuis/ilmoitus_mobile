@@ -3,16 +3,14 @@
 
     <!--
 Base application theme, dependent on API level. This theme is replaced
-by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-
--->
+by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
     <style name="AppBaseTheme" parent="android:Theme.Light">
         <!--
 Theme customizations available in newer API levels can go in
 res/values-vXX/styles.xml, while customizations related to
-backward-compatibility can go here.
-
--->
+backward-compatibility can go here.
+        -->
     </style>
 
     <!-- Application theme. -->
@@ -25,41 +23,139 @@ backward-compatibility can go here.
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
     </style>
-    
+
     <style name="Container">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">16dp</item>
+        <item name="android:background">@color/background</item>
     </style>
-    
+
     <style name="ContainerItem">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
     </style>
-    
+
     <style name="ContainerItemWithMarginTop">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">20dp</item>
     </style>
-    
+
+    <style name="TextViewTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/coloredText</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TextViewSubTitle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textColor">@color/coloredText</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="TextViewDeclarationLine">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+        <style name="Button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="ContainerButtonCommit">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:background">@drawable/button</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:textSize">14sp</item>
     </style>
-        
-    
-    <color name="coloredText">#0000FF</color>
+
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <style name="EditText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Spinner">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="FragmentMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">0</item>
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <style name="RelativeLayout">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <style name="LinearLayout">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <style name="LinearLayoutList">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ScrollView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">0dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <color name="coloredText">#00BFFF</color>
     <color name="background">#FFFFFF</color>
-    
-    <dimen name="TextSizeTitle">20sp</dimen>
-    <color name="ColorTitle">#00BFFF</color>
-    
-    <dimen name="TextSizeMain">14sp</dimen>
-    <color name="ColorMain">#00BFFF</color>
 
 </resources>
