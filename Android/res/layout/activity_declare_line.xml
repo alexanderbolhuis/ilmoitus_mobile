@@ -1,8 +1,7 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".DeclareLineFragment" >
+    style="@style/RelativeLayout" >
 
     <ScrollView
         android:id="@+id/login_form"
@@ -15,16 +14,12 @@
 
             <TextView
                 android:id="@+id/person_title"
-                style="@style/ContainerItem"
-                android:text="Regel Toevoegen"
-                android:textColor="@color/ColorTitle"
-                android:textSize="@dimen/TextSizeTitle" />
+                style="@style/TextViewTitle"
+                android:text="Regel Toevoegen" />
 
             <TextView
-                style="@style/ContainerItemWithMarginTop"
-                android:text="Datum:"
-                android:textColor="@color/ColorMain"
-                android:textSize="@dimen/TextSizeMain" />
+                style="@style/TextViewSubTitle"
+                android:text="Datum:"/>
 
             <LinearLayout style="@style/ContainerItem" >
 
@@ -46,7 +41,7 @@
                 </EditText>
 
                 <Button
-                    style="@style/ContainerItem"
+                    style="@style/Button"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:onClick="showDatePickerDialog"
@@ -54,50 +49,42 @@
             </LinearLayout>
 
             <TextView
-                style="@style/ContainerItemWithMarginTop"
-                android:text="Declaratiesoort:"
-                android:textColor="@color/ColorMain"
-                android:textSize="@dimen/TextSizeMain" />
+                style="@style/TextViewSubTitle"
+                android:text="Declaratiesoort:" />
 
             <Spinner
                 android:id="@+id/spinnerDeclarationType"
-                style="@style/ContainerItem"
+                style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
 
             <Spinner
                 android:id="@+id/spinnerDeclarationSubType"
-                style="@style/ContainerItem"
+                style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
 
             <TextView
-                style="@style/ContainerItemWithMarginTop"
-                android:text="Bedrag:"
-                android:textColor="@color/ColorMain"
-                android:textSize="@dimen/TextSizeMain" />
+                style="@style/TextViewSubTitle"
+                android:text="Bedrag:"/>
 
             <EditText
                 android:id="@+id/editCurrency"
-                style="@style/ContainerItem"
+                style="@style/EditText"
                 android:hint="Bedrag"
                 android:inputType="numberDecimal" />
 
             <TextView
-                style="@style/ContainerItemWithMarginTop"
-                android:text="Bijlage:"
-                android:textColor="@color/ColorMain"
-                android:textSize="@dimen/TextSizeMain" />
+                style="@style/TextViewSubTitle"
+                android:text="Bijlage:" />
 
             <Button
                 android:id="@+id/buttonAddImage"
-                style="@style/ContainerItem"
+                style="@style/Button"
                 android:onClick="onAddImageButtonClick"
                 android:text="@string/addImage" />
 
             <TextView
-                style="@style/ContainerItemWithMarginTop"
-                android:text="Opmerkingen:"
-                android:textColor="@color/ColorMain"
-                android:textSize="@dimen/TextSizeMain" />
+                style="@style/TextViewSubTitle"
+                android:text="Opmerkingen:" />
 
             <MultiAutoCompleteTextView
                 android:id="@+id/Opmerkingen"
@@ -106,6 +93,7 @@
             <LinearLayout style="@style/ContainerItemWithMarginTop" >
 
                 <Button
+                    
                     android:id="@+id/buttonCancel"
                     style="@style/ContainerButtonCommit"
                     android:onClick="onCancelButtonClick"
@@ -119,4 +107,4 @@
         </LinearLayout>
     </ScrollView>
 
-</FrameLayout>
+</RelativeLayout>
