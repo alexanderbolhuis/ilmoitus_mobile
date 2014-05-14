@@ -1,36 +1,57 @@
 package com.ilmoitus.activity;
 
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
-import com.example.ilmoitus.R;
-import com.ilmoitus.fragment.DatePickerFragment;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
+import com.example.ilmoitus.R;
+import com.ilmoitus.croscutting.InputStreamConverter;
+import com.ilmoitus.croscutting.LoggedInPerson;
+import com.ilmoitus.fragment.DatePickerFragment;
+import com.ilmoitus.model.DeclarationTypes;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputFilter;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Intent;
 
-public class DeclareLineActivity extends Activity implements DatePickerFragment.OnDateSelectedListener,
-	OnClickListener{
-	
+public class DeclareLineActivity extends Activity implements
+		DatePickerFragment.OnDateSelectedListener, OnClickListener {
+
 	private Spinner spinnerDeclarationTypes, spinnerDeclarationSubTypes;
 	private Calendar date;
 	private TextView title;
 	private EditText currency;
 	private EditText dateField;
-	
+
+	int spinnerDeclarationTypesPosition, spinnerDeclarationSubTypesPosition;
+
+	ArrayAdapter<DeclarationTypes> spinnerDeclarationTypesListAdapter;
+	ArrayAdapter<String> spinnerDeclarationSubTypesListAdapter;
+	ArrayList<DeclarationTypes> declarationTypesList;
+	ArrayList<String> declarationSubTypesList;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,37 +64,63 @@ public class DeclareLineActivity extends Activity implements DatePickerFragment.
 		dateField = (EditText) findViewById(R.id.editTextDate);
 		currency = (EditText) findViewById(R.id.editCurrency);
 		currency.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
+
 		spinnerDeclarationTypes = (Spinner) findViewById(R.id.spinnerDeclarationType);
-		spinnerDeclarationSubTypes = (Spinner)findViewById(R.id.spinnerDeclarationSubType);
+		spinnerDeclarationTypes
+				.setOnItemSelectedListener(new spinnerListener());
+		spinnerDeclarationTypesPosition = 0;
+
+		spinnerDeclarationSubTypes = (Spinner) findViewById(R.id.spinnerDeclarationSubType);
+		spinnerDeclarationSubTypesPosition = 0;
+
 		if (savedInstanceState == null) {
-			date = Calendar.getInstance();		
-			String[] values = new String[] {"Android List View"};			
-			setDeclarationTypes(values);
-			setDeclarationSubTypes(values);
+			date = Calendar.getInstance();
+
+			setDeclarationTypes();
+			setDeclarationSubTypes();
 		}
 	}
 
-	public void setDeclarationTypes(String[] values) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, values);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerDeclarationTypes.setAdapter(adapter);
-	}
-	
-	public void setDeclarationSubTypes(String[] values) {
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_spinner_item, values);
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spinnerDeclarationSubTypes.setAdapter(adapter);
+	public void setDeclarationTypes() {
+		declarationTypesList = new ArrayList<DeclarationTypes>();
+
+		spinnerDeclarationTypesListAdapter = new ArrayAdapter<DeclarationTypes>(
+				this, android.R.layout.simple_spinner_item,
+				declarationTypesList);
+		spinnerDeclarationTypesListAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerDeclarationTypesListAdapter.setNotifyOnChange(true);
+
+		new GetDeclerationTypesTask(this).execute();
 	}
 
+	public void setDeclarationSubTypes() {
+		declarationSubTypesList = new ArrayList<String>();
+
+		spinnerDeclarationSubTypesListAdapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_spinner_item, declarationSubTypesList);
+		spinnerDeclarationSubTypesListAdapter
+				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinnerDeclarationSubTypesListAdapter.setNotifyOnChange(true);
+		spinnerDeclarationSubTypes
+				.setAdapter(spinnerDeclarationSubTypesListAdapter);
+	}
 
 	public void onAddButtonClick() {
 		Bundle b = new Bundle();
 		b.putString("date", dateField.getText().toString());
 		b.putString("bedrag", currency.getText().toString());
-		b.putString("declaratieSoort", spinnerDeclarationTypes.getSelectedItem().toString());
-		b.putString("declaratieSubSoort", spinnerDeclarationSubTypes.getSelectedItem().toString());
+
+		Log.d("myapp",
+				"save: "
+						+ declarationTypesList.get(
+								spinnerDeclarationTypesPosition).toString());
+		b.putString("declaratieSoort",
+				declarationTypesList.get(spinnerDeclarationTypesPosition)
+						.toString());
+		b.putString("declaratieSubSoort", spinnerDeclarationSubTypes
+				.getSelectedItem().toString());
+
 		Intent i = new Intent(this, DeclareActivity.class);
 		i.putExtras(b);
 		setResult(RESULT_OK, i);
@@ -104,14 +151,13 @@ public class DeclareLineActivity extends Activity implements DatePickerFragment.
 		date.set(Calendar.YEAR, year);
 		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		String formattedDate = df.format(date.getTime());
-		EditText editDate = (EditText) this.findViewById(
-				R.id.editTextDate);
+		EditText editDate = (EditText) this.findViewById(R.id.editTextDate);
 		editDate.setText(formattedDate);
 	}
 
 	@Override
 	public void onClick(View v) {
-		switch(v.getId()){
+		switch (v.getId()) {
 		case R.id.buttonAdd:
 			onAddButtonClick();
 			break;
@@ -119,6 +165,137 @@ public class DeclareLineActivity extends Activity implements DatePickerFragment.
 			super.onBackPressed();
 			break;
 		}
-		
+	}
+
+	private class GetDeclerationTypesTask extends AsyncTask<Void, Void, String> {
+		private Activity activity;
+
+		public GetDeclerationTypesTask(Activity activity) {
+			this.activity = activity;
+		}
+
+		@Override
+		protected String doInBackground(Void... params) {
+			String result = null;
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpGet httpGet = new HttpGet(getResources().getString(
+					R.string.base_url)
+					+ "/declarationtypes");
+			httpGet.setHeader("Authorization", LoggedInPerson.token);
+			try {
+				HttpResponse response = httpClient.execute(httpGet);
+				InputStream inputStream = response.getEntity().getContent();
+				if (inputStream != null) {
+					// parse the inputStream to string
+					result = InputStreamConverter
+							.convertInputStreamToString(inputStream);
+				} else {
+					result = "Did not Work";
+				}
+			} catch (Exception e) {
+				Log.d("InputStream", e.getLocalizedMessage());
+			}
+			return result;
+		}
+
+		protected void onPostExecute(String result) {
+			try {
+				JSONArray declarationTypes = new JSONArray(result);
+
+				for (int i = 0; i < declarationTypes.length(); i++) {
+					JSONObject object = declarationTypes.getJSONObject(i);
+
+					String name = object.getString("name");
+					String id = object.getString("id");
+
+					declarationTypesList.add(new DeclarationTypes(name, id));
+				}
+				spinnerDeclarationTypes.setAdapter(spinnerDeclarationTypesListAdapter);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private class GetDeclerationSubTypesTask extends
+			AsyncTask<Void, Void, String> {
+
+		public GetDeclerationSubTypesTask() {
+			Log.d("myapp", "start: ");
+
+		}
+
+		@Override
+		protected String doInBackground(Void... params) {
+			String result = null;
+
+			String declarationType = declarationTypesList.get(
+					spinnerDeclarationTypesPosition).getId();
+
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpGet httpGet = new HttpGet(getResources().getString(
+					R.string.base_url)
+					+ "/declarationsubtypes/" + declarationType);
+			httpGet.setHeader("Authorization", LoggedInPerson.token);
+			try {
+				HttpResponse response = httpClient.execute(httpGet);
+
+				InputStream inputStream = response.getEntity().getContent();
+
+				if (inputStream != null) {
+
+					// parse the inputStream to string
+					result = InputStreamConverter
+							.convertInputStreamToString(inputStream);
+				} else {
+					result = "Did not Work";
+				}
+			} catch (Exception e) {
+				Log.d("InputStream", e.getLocalizedMessage());
+			}
+			return result;
+		}
+
+		protected void onPostExecute(String result) {
+
+			try {
+				JSONArray declarationSubTypes = new JSONArray(result);
+
+				declarationSubTypesList.clear();
+
+				for (int i = 0; i < declarationSubTypes.length(); i++) {
+					JSONObject object = declarationSubTypes.getJSONObject(i);
+
+					String name = object.getString("name");
+
+					declarationSubTypesList.add(name);
+				}
+				
+				spinnerDeclarationSubTypes
+				.setAdapter(spinnerDeclarationSubTypesListAdapter);
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public class spinnerListener implements OnItemSelectedListener {
+
+		@Override
+		public void onItemSelected(AdapterView<?> arg0, View view, int pos,
+				long arg3) {
+			spinnerDeclarationTypesPosition = pos;
+
+			new GetDeclerationSubTypesTask().execute();
+
+		}
+
+		@Override
+		public void onNothingSelected(AdapterView<?> arg0) {
+			Log.d("myapp", "niks: ");
+
+		}
 	}
 }
