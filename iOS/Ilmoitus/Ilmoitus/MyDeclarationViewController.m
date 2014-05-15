@@ -67,8 +67,8 @@
         for (NSDictionary *decl in json) {
                 Declaration *declaration = [[Declaration alloc] init];
                 declaration.status = decl[@"state"];
-                declaration.itemsTotalPrice = 10.00;
-                // declaration.amount = decl[@"items_total_price"];
+                declaration.itemsCount = [decl[@"items_count"] intValue];
+                declaration.itemsTotalPrice = [decl[@"items_total_price"] floatValue];
                 NSDateFormatter *formatter = [NSDateFormatter new];
                 formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
             
@@ -80,7 +80,9 @@
         
         [_declarationList removeAllObjects];
         _declarationList = declarationsFound;
-        
+        // Reload the data
+        [self.tableView reloadData];
+        [self.refreshControl endRefreshing];
         NSLog(@"%@", json);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);

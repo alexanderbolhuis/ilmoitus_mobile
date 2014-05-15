@@ -37,7 +37,7 @@
         _declaration = [[Declaration alloc] init];
         _declaration.lines = [[NSMutableArray alloc] init];
     }
-    
+    _comment.text = _declaration.comment;
 }
 
 - (IBAction)postDeclaration:(id)sender {
@@ -59,6 +59,11 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
+    return YES;
+}
+
+-(BOOL)textViewShouldEndEditing:(UITextView *)textView {
+    _declaration.comment = _comment.text;
     return YES;
 }
 
