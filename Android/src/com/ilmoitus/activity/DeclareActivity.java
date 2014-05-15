@@ -39,6 +39,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 public class DeclareActivity extends Activity implements OnClickListener{
 
@@ -79,6 +80,10 @@ public class DeclareActivity extends Activity implements OnClickListener{
 				declarationLines.add(line);
 				totalPrice += b.getInt("bedrag");
 				DeclarationLineAdapter ad = new DeclarationLineAdapter(this, declarationLines);
+				
+				TextView price = (TextView) findViewById(R.id.totalPrice);
+				price.setText("\u20AC" + totalPrice);
+				
 				LinearLayout layout = (LinearLayout) findViewById(R.id.list);
 				layout.removeAllViews();
 				final int adapterCount = ad.getCount();
@@ -225,8 +230,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 			}
 			spinner1 = (Spinner) activity.findViewById(R.id.spinner1);
 			ArrayAdapter<Supervisor> dataAdapter = new ArrayAdapter<Supervisor>(activity, android.R.layout.simple_spinner_item, supervisors);
-			dataAdapter
-					.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner1.setAdapter(dataAdapter);
 		}
 	}
