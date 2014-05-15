@@ -65,13 +65,17 @@
             sup.supervisor = [supervisor[@"supervisor"] longLongValue];
             sup.max_declaration_price = [supervisor[@"max_declaration_price"] floatValue];
             
+            
+            if ([supervisor[@"id"] longLongValue] == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) {
+                _supervisor.text = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
+            }
+
+            
             [supervisorsFound addObject:sup];
         }
         _supervisorList = supervisorsFound;
         
         // TODO werkende dropdown maken
-        Supervisor *sup = [_supervisorList firstObject];
-        _supervisor.text = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
