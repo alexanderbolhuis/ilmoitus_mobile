@@ -16,6 +16,7 @@ import com.example.ilmoitus.R;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.fragment.DatePickerFragment;
+import com.ilmoitus.model.DeclarationSubTypes;
 import com.ilmoitus.model.DeclarationTypes;
 
 import android.os.AsyncTask;
@@ -48,9 +49,9 @@ public class DeclareLineActivity extends Activity implements
 	int spinnerDeclarationTypesPosition, spinnerDeclarationSubTypesPosition;
 
 	ArrayAdapter<DeclarationTypes> spinnerDeclarationTypesListAdapter;
-	ArrayAdapter<String> spinnerDeclarationSubTypesListAdapter;
+	ArrayAdapter<DeclarationSubTypes> spinnerDeclarationSubTypesListAdapter;
 	ArrayList<DeclarationTypes> declarationTypesList;
-	ArrayList<String> declarationSubTypesList;
+	ArrayList<DeclarationSubTypes> declarationSubTypesList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -95,9 +96,9 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	public void setDeclarationSubTypes() {
-		declarationSubTypesList = new ArrayList<String>();
+		declarationSubTypesList = new ArrayList<DeclarationSubTypes>();
 
-		spinnerDeclarationSubTypesListAdapter = new ArrayAdapter<String>(this,
+		spinnerDeclarationSubTypesListAdapter = new ArrayAdapter<DeclarationSubTypes>(this,
 				android.R.layout.simple_spinner_item, declarationSubTypesList);
 		spinnerDeclarationSubTypesListAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -109,18 +110,9 @@ public class DeclareLineActivity extends Activity implements
 	public void onAddButtonClick() {
 		Bundle b = new Bundle();
 		b.putString("date", dateField.getText().toString());
-		b.putString("bedrag", currency.getText().toString());
-
-		Log.d("myapp",
-				"save: "
-						+ declarationTypesList.get(
-								spinnerDeclarationTypesPosition).toString());
-		b.putString("declaratieSoort",
-				declarationTypesList.get(spinnerDeclarationTypesPosition)
-						.toString());
-		b.putString("declaratieSubSoort", spinnerDeclarationSubTypes
-				.getSelectedItem().toString());
-
+		b.putInt("bedrag", Integer.parseInt(currency.getText().toString()));
+		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).toString());
+		b.putLong("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
 		Intent i = new Intent(this, DeclareActivity.class);
 		i.putExtras(b);
 		setResult(RESULT_OK, i);
@@ -221,33 +213,21 @@ public class DeclareLineActivity extends Activity implements
 	private class GetDeclerationSubTypesTask extends
 			AsyncTask<Void, Void, String> {
 
-		public GetDeclerationSubTypesTask() {
-			Log.d("myapp", "start: ");
-
-		}
-
 		@Override
 		protected String doInBackground(Void... params) {
 			String result = null;
 
-			String declarationType = declarationTypesList.get(
-					spinnerDeclarationTypesPosition).getId();
+			String declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
 
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(getResources().getString(
-					R.string.base_url)
-					+ "/declarationsubtypes/" + declarationType);
+			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationsubtypes/" + declarationType);
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
-
 				InputStream inputStream = response.getEntity().getContent();
-
 				if (inputStream != null) {
-
 					// parse the inputStream to string
-					result = InputStreamConverter
-							.convertInputStreamToString(inputStream);
+					result = InputStreamConverter.convertInputStreamToString(inputStream);
 				} else {
 					result = "Did not Work";
 				}
@@ -261,19 +241,15 @@ public class DeclareLineActivity extends Activity implements
 
 			try {
 				JSONArray declarationSubTypes = new JSONArray(result);
-
 				declarationSubTypesList.clear();
 
 				for (int i = 0; i < declarationSubTypes.length(); i++) {
 					JSONObject object = declarationSubTypes.getJSONObject(i);
-
 					String name = object.getString("name");
-
-					declarationSubTypesList.add(name);
+					Long id = object.getLong("id");
+					declarationSubTypesList.add(new DeclarationSubTypes(name, id));
 				}
-				
-				spinnerDeclarationSubTypes
-				.setAdapter(spinnerDeclarationSubTypesListAdapter);
+				spinnerDeclarationSubTypes.setAdapter(spinnerDeclarationSubTypesListAdapter);
 
 			} catch (Exception e) {
 				e.printStackTrace();
