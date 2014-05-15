@@ -80,7 +80,8 @@
                 [[NSUserDefaults standardUserDefaults] setObject:json[@"last_name"] forKey:@"person_last_name"];
                 [[NSUserDefaults standardUserDefaults] setObject:json[@"employee_number"] forKey:@"person_employee_number"];
                 [[NSUserDefaults standardUserDefaults] setObject:json[@"email"] forKey:@"person_email"];
-                // TODO Department, Supervisor
+                [[NSUserDefaults standardUserDefaults] setObject:json[@"supervisor"] forKey:@"supervisor"];
+                // TODO Department
                 
                 [[NSUserDefaults standardUserDefaults] synchronize];
                 
