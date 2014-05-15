@@ -6,9 +6,8 @@
     <LinearLayout
         style="@style/LinearLayout"
         android:orientation="vertical" >
-
+        
         <ScrollView style="@style/ScrollView" >
-
             <LinearLayout
                 style="@style/Container"
                 android:orientation="vertical" >
@@ -47,9 +46,15 @@
                     android:text="Opmerkingen:" />
 
                 <MultiAutoCompleteTextView
+                    android:id="@+id/comment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center" />
+                
+            	<Button
+                    android:id="@+id/onAddDeclaration"
+                    style="@style/Button"
+                    android:text="Indienen" />
             </LinearLayout>
         </ScrollView>
 

@@ -10,16 +10,14 @@ public class DeclarationLine implements Serializable
 {
 	private String datum;
 	private String declaratieSoort;
-	private String declaratieSubSoort;
-	private String bedrag;
-	private ArrayList<Bitmap> attachments;
+	private Long declaratieSubSoort;
+	private int bedrag;
 	
-	public DeclarationLine(String datum, String declaratieSoort, String declaratieSubSoort, String bedrag, ArrayList<Bitmap> attachments){
+	public DeclarationLine(String datum, String declaratieSoort, Long declaratieSubSoort, int bedrag){
 		this.datum = datum;
 		this.declaratieSoort = declaratieSoort;
 		this.declaratieSubSoort = declaratieSubSoort;
 		this.bedrag = bedrag;
-		this.attachments = attachments;
 	}
 	
 	public String getDatum() {
@@ -30,16 +28,11 @@ public class DeclarationLine implements Serializable
 		return declaratieSoort;
 	}
 
-	public String getDeclaratieSubSoort() {
+	public Long getDeclaratieSubSoort() {
 		return declaratieSubSoort;
 	}
 
-	public String getBedrag() {
+	public int getBedrag() {
 		return bedrag;
 	}
-
-	public ArrayList<Bitmap> getAttachments() {
-		return attachments;
-	}
-
 }
