@@ -51,7 +51,7 @@ public class DeclarationLineAdapter extends BaseAdapter {
 		View rowView = inflator.inflate(R.layout.row_declaration_line, null);
 		TextView top = (TextView) rowView.findViewById(R.id.text1);
 		top.setText(line.getDatum() + " - " + line.getDeclaratieSoort() + " - "
-				+ line.getBedrag());
+				+ "\u20AC" + line.getBedrag());
 
 		return rowView;
 	}

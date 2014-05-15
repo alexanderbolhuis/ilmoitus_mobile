@@ -18,6 +18,10 @@
                     android:text="Declaratie indienen" />
 
                 <TextView
+                    android:id="@+id/totalPrice"
+                    style="@style/TextViewSubTitle"/>
+                
+                <TextView
                     style="@style/TextViewSubTitle"
                     android:text="Leidinggevende:" />
 
