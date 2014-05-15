@@ -162,7 +162,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EDo-Mh-ZPQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="661"/>
+                                        <rect key="frame" x="0.0" y="-8" width="320" height="661"/>
                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Fro-2Q-p5l">
@@ -195,7 +195,7 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                         <textInputTraits key="textInputTraits"/>
                                                     </textField>
-                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Opmerkingen" translatesAutoresizingMaskIntoConstraints="NO" id="SEy-pF-ote">
+                                                    <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" keyboardDismissMode="onDrag" text="Opmerkingen" translatesAutoresizingMaskIntoConstraints="NO" id="SEy-pF-ote">
                                                         <rect key="frame" x="15" y="460" width="280" height="142"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -217,6 +217,9 @@
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <segue destination="xvw-qg-tGY" kind="modal" identifier="addline" id="j3m-0m-0G9"/>
+                                                        </connections>
                                                     </button>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" sectionIndexMinimumDisplayRowCount="3" rowHeight="57" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="r2e-Ic-h4T">
                                                         <rect key="frame" x="20" y="139" width="280" height="231"/>
@@ -240,6 +243,9 @@
                                                         <state key="normal" title="Indienen">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="postDeclaration:" destination="QUy-BD-bpt" eventType="touchUpInside" id="UaZ-mL-pdO"/>
+                                                        </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tRX-PM-77D">
                                                         <rect key="frame" x="205" y="610" width="90" height="30"/>
@@ -249,6 +255,9 @@
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                         </state>
+                                                        <connections>
+                                                            <action selector="cancelDeclaration:" destination="QUy-BD-bpt" eventType="touchUpInside" id="nIL-a2-gji"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -277,17 +286,19 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="320" height="568"/>
                     <connections>
+                        <outlet property="comment" destination="SEy-pF-ote" id="llW-Oo-dib"/>
                         <outlet property="supervisor" destination="9Gg-Je-QYX" id="T0q-c1-wj9"/>
+                        <outlet property="tableView" destination="r2e-Ic-h4T" id="YYw-GW-2PF"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3qq-4t-Ow8" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="653" y="498"/>
         </scene>
-        <!--View Controller-->
+        <!--New Declaration Line View Controller-->
         <scene sceneID="Vmo-p0-Yxn">
             <objects>
-                <viewController id="xvw-qg-tGY" sceneMemberID="viewController">
+                <viewController id="xvw-qg-tGY" customClass="NewDeclarationLineViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="CcY-cp-bHk"/>
                         <viewControllerLayoutGuide type="bottom" id="H8L-3Y-Hkq"/>
@@ -327,12 +338,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="Opmerking" borderStyle="roundedRect" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3GG-yi-XpK">
-                                <rect key="frame" x="20" y="230" width="280" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UB6-fV-eud">
                                 <rect key="frame" x="20" y="518" width="87" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -340,6 +345,9 @@
                                 <state key="normal" title="Toevoegen">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <segue destination="QUy-BD-bpt" kind="modal" identifier="lineadded" id="ALi-8l-TMc"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="21T-yN-64p">
                                 <rect key="frame" x="210" y="518" width="90" height="30"/>
@@ -361,6 +369,13 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="oqS-oN-OMx"/>
+                    <connections>
+                        <outlet property="costField" destination="AyY-DZ-cqt" id="Ixo-QE-im6"/>
+                        <outlet property="dateField" destination="Cwk-Mc-iuJ" id="oze-Zz-yBt"/>
+                        <outlet property="subtypeField" destination="0AQ-MZ-MCe" id="hcF-eW-JiS"/>
+                        <outlet property="typeField" destination="jbc-ns-sMQ" id="d6d-2v-SSt"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XXh-yv-wBR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -468,23 +483,6 @@
             </objects>
             <point key="canvasLocation" x="-346" y="504"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="Tzb-uy-1Uc">
-            <objects>
-                <viewController id="Lgt-PI-Ep0" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9mD-ns-EP2"/>
-                        <viewControllerLayoutGuide type="bottom" id="HIh-6H-gdW"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="SXA-zD-kY7">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fTB-VA-zLq" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-        </scene>
     </scenes>
     <resources>
         <image name="snsreaal" width="250" height="136"/>
@@ -494,4 +492,7 @@
         <simulatedOrientationMetrics key="orientation"/>
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="ALi-8l-TMc"/>
+    </inferredMetricsTieBreakers>
 </document>

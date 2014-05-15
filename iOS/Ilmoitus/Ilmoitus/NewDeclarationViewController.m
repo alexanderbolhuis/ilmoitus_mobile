@@ -7,13 +7,18 @@
 //
 
 #import "NewDeclarationViewController.h"
+#import "NewDeclarationLineViewController.h"
 #import "Declaration.h"
 #import "DeclarationLine.h"
+#import "Supervisor.h"
 #import "constants.h"
 
 @interface NewDeclarationViewController ()
-@property (weak, nonatomic) IBOutlet UIPickerView *supervisorList;
 @property (weak, nonatomic) IBOutlet UITextField *supervisor;
+@property (weak, nonatomic) NSMutableArray *supervisorList;
+@property (weak, nonatomic) IBOutlet UITextView *comment;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+
 @end
 
 @implementation NewDeclarationViewController
@@ -22,9 +27,52 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    _supervisor.delegate = self;
+    [_comment setReturnKeyType: UIReturnKeyDone];
+    _comment.delegate = self;
     
-    // Create new blank Declaration
-    Declaration *newDeclaration = [[Declaration alloc] init];
+    [self getSupervisorList];
+    
+    if (_declaration == nil) {
+        _declaration = [[Declaration alloc] init];
+        _declaration.lines = [[NSMutableArray alloc] init];
+    }
+    
+}
+
+- (IBAction)postDeclaration:(id)sender {
+    _declaration.className = @"open_declaration";
+    _declaration.status = @"Open";
+    _declaration.createdAt = @"2014-05-15 07:27:33.448849";
+    _declaration.createdBy = [[[NSUserDefaults standardUserDefaults] stringForKey:@"person_id"] longLongValue];
+    
+    // TODO Get supervisor from dropdown
+    NSMutableArray *at = [[NSMutableArray alloc]init];
+    [at addObject:[NSNumber numberWithLongLong:[[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]]];
+    _declaration.assignedTo = at;
+    _declaration.comment = _comment.text;
+    // TODO Calc price and items
+    _declaration.itemsTotalPrice = 30.00;
+    _declaration.itemsCount = 2;
+    [self saveDeclaration];
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    
+    if([text isEqualToString:@"\n"]) {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    return YES;
+}
+
+- (IBAction)cancelDeclaration:(id)sender {
 }
 
 - (void)didReceiveMemoryWarning
@@ -35,35 +83,7 @@
 
 - (void)saveDeclaration
 {
-    // ------ FAKE TEST DATA -------------------------------------------------------
-    Declaration *decl = [[Declaration alloc] init];
-    decl.className = @"open_declaration";
-    decl.status = @"Open";
-    decl.createdAt = @"2014-05-12 07:27:33.448849";
-    decl.createdBy = 4893944777277440;
-    NSMutableArray *at = [[NSMutableArray alloc]init];
-    [at addObject:[NSNumber numberWithLongLong:6255998092181504]];
-    decl.assignedTo = at;
-    decl.comment = @"Dit is een test";
-    decl.itemsTotalPrice = 30.00;
-    decl.itemsCount = 2;
-    
-    DeclarationLine *line1 = [[DeclarationLine alloc]init];
-    line1.cost = 14.00;
-    line1.date = @"2014-05-12 07:27:33.448849";
-    line1.subtype = 4897217273921536;
-    
-    DeclarationLine *line2 = [[DeclarationLine alloc]init];
-    line2.cost = 16.00;
-    line2.date = @"2014-05-05 07:27:33.448849";
-    line2.subtype = 4897217273921536;
-    
-    NSMutableArray *ln = [[NSMutableArray alloc]init];
-    [ln addObject:line1];
-    [ln addObject:line2];
-    decl.lines = ln;
-    // ------------------------------------------------------------------------------
-    
+    Declaration *decl = _declaration;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
@@ -100,10 +120,67 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
         // Handle error
-
+        
     }];
     
     [apiRequest start];
+}
+
+-(void)getSupervisorList
+{
+    // Do Request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+    NSString *url = [NSString stringWithFormat:@"%@/supervisors/", baseURL];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSError* error;
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseObject
+                              
+                              options:kNilOptions
+                              error:&error];
+        
+        NSLog(@"%@", json);
+        
+        NSMutableArray *supervisorsFound = [[NSMutableArray alloc] init];
+        for (NSDictionary *supervisor in json) {
+            Supervisor *sup = [[Supervisor alloc] init];
+            sup.class_name = supervisor[@"class_name"];
+            sup.first_name = supervisor[@"first_name"];
+            sup.last_name = supervisor[@"last_name"];
+            sup.email = supervisor[@"email"];
+            sup.employee_number = [supervisor[@"employee_number"] integerValue];
+            sup.department = [supervisor[@"department"] longLongValue];
+            sup.supervisor = [supervisor[@"supervisor"] longLongValue];
+            sup.max_declaration_price = [supervisor[@"max_declaration_price"] floatValue];
+            
+            
+            if ([supervisor[@"id"] longLongValue] == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) {
+                _supervisor.text = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
+            }
+            
+            
+            [supervisorsFound addObject:sup];
+        }
+        _supervisorList = supervisorsFound;
+        
+        // TODO werkende dropdown maken
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([[segue identifier] isEqualToString:@"addline"])
+    {
+        NewDeclarationLineViewController *declarationlineController =
+        [segue destinationViewController];
+        
+        declarationlineController.declaration = _declaration;
+    }
 }
 
 @end
