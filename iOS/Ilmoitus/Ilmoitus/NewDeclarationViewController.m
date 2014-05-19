@@ -9,11 +9,12 @@
 #import "NewDeclarationViewController.h"
 #import "Declaration.h"
 #import "DeclarationLine.h"
+#import "Supervisor.h"
 #import "constants.h"
 
 @interface NewDeclarationViewController ()
-@property (weak, nonatomic) IBOutlet UIPickerView *supervisorList;
 @property (weak, nonatomic) IBOutlet UITextField *supervisor;
+@property (weak, nonatomic) NSMutableArray *supervisorList;
 @end
 
 @implementation NewDeclarationViewController
@@ -26,6 +27,7 @@
     // Create new blank Declaration
     Declaration *newDeclaration = [[Declaration alloc] init];
     [self saveDeclaration];
+    [self getSupervisorList];
 }
 
 - (void)didReceiveMemoryWarning
@@ -94,6 +96,7 @@
                               
                               options:kNilOptions
                               error:&error];
+
         
         NSLog(@"POST request success response: %@",json);
         // Handle success
@@ -101,10 +104,56 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"POST request Error: %@", error);
         // Handle error
-
+        
     }];
     
     [apiRequest start];
 }
 
+-(void)getSupervisorList
+{
+    // Do Request
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+    NSString *url = [NSString stringWithFormat:@"%@/supervisors/", baseURL];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSError* error;
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseObject
+                              
+                              options:kNilOptions
+                              error:&error];
+
+        NSLog(@"%@", json);
+        
+        NSMutableArray *supervisorsFound = [[NSMutableArray alloc] init];
+        for (NSDictionary *supervisor in json) {
+            Supervisor *sup = [[Supervisor alloc] init];
+            sup.class_name = supervisor[@"class_name"];
+            sup.first_name = supervisor[@"first_name"];
+            sup.last_name = supervisor[@"last_name"];
+            sup.email = supervisor[@"email"];
+            sup.employee_number = [supervisor[@"employee_number"] integerValue];
+            sup.department = [supervisor[@"department"] longLongValue];
+            sup.supervisor = [supervisor[@"supervisor"] longLongValue];
+            sup.max_declaration_price = [supervisor[@"max_declaration_price"] floatValue];
+            
+            
+            if ([supervisor[@"id"] longLongValue] == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) {
+                _supervisor.text = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
+            }
+
+            
+            [supervisorsFound addObject:sup];
+        }
+        _supervisorList = supervisorsFound;
+        
+        // TODO data in dropdown/select
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
+
+}
 @end
