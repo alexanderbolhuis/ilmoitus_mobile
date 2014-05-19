@@ -150,7 +150,7 @@
         }
         _supervisorList = supervisorsFound;
         
-        // TODO werkende dropdown maken
+        // TODO data in dropdown/select
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
     }];
