@@ -1,19 +1,15 @@
 package com.ilmoitus.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-
-import android.graphics.Bitmap;
 
 public class DeclarationLine implements Serializable
 {
 	private String datum;
 	private String declaratieSoort;
 	private Long declaratieSubSoort;
-	private int bedrag;
+	private double bedrag;
 	
-	public DeclarationLine(String datum, String declaratieSoort, Long declaratieSubSoort, int bedrag){
+	public DeclarationLine(String datum, String declaratieSoort, Long declaratieSubSoort, double bedrag){
 		this.datum = datum;
 		this.declaratieSoort = declaratieSoort;
 		this.declaratieSubSoort = declaratieSubSoort;
@@ -32,7 +28,7 @@ public class DeclarationLine implements Serializable
 		return declaratieSubSoort;
 	}
 
-	public int getBedrag() {
+	public double getBedrag() {
 		return bedrag;
 	}
 }

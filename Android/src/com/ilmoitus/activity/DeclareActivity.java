@@ -1,6 +1,7 @@
 package com.ilmoitus.activity;
 
 import java.io.InputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -50,12 +51,16 @@ public class DeclareActivity extends Activity implements OnClickListener{
 	private Button addDeclaration;
 	private Spinner spinner1;
 	private ArrayList<Supervisor> supervisors;
-	private int totalPrice;
+	private double totalPrice;
+	private DecimalFormat currencyFormat; 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_declare);
+		
+		currencyFormat = new DecimalFormat("0.00");
+		
 		declareButton = (Button) findViewById(R.id.buttonDeclare);
 		declareButton.setEnabled(false);
 		mainButton = (Button) findViewById(R.id.buttonOvervieuw);
@@ -76,13 +81,13 @@ public class DeclareActivity extends Activity implements OnClickListener{
 				}
 				Bundle b = data.getExtras();
 				DeclarationLine line = new DeclarationLine(b.getString("date"), b.getString("declaratieSoort"), b.getLong("declaratieSubSoort"),
-						b.getInt("bedrag"));
+						b.getDouble("bedrag"));
 				declarationLines.add(line);
-				totalPrice += b.getInt("bedrag");
+				totalPrice += b.getDouble("bedrag");
 				DeclarationLineAdapter ad = new DeclarationLineAdapter(this, declarationLines);
 				
 				TextView price = (TextView) findViewById(R.id.totalPrice);
-				price.setText("\u20AC" + totalPrice);
+				price.setText("\u20AC" + currencyFormat.format(totalPrice));
 				
 				LinearLayout layout = (LinearLayout) findViewById(R.id.list);
 				layout.removeAllViews();
