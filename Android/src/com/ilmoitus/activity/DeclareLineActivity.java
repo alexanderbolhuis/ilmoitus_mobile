@@ -131,7 +131,10 @@ public class DeclareLineActivity extends Activity implements
 	public void onAddButtonClick() {
 		Bundle b = new Bundle();
 		b.putString("date", dateField.getText().toString());
-		b.putInt("bedrag", Integer.parseInt(currency.getText().toString()));
+		String bedrag = currency.getText().toString().replace(",", ".");
+		
+		b.putDouble("bedrag", Double.parseDouble(bedrag));
+		
 		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).toString());
 		b.putLong("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
 		Intent i = new Intent(this, DeclareActivity.class);
@@ -274,7 +277,7 @@ public class DeclareLineActivity extends Activity implements
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				e.printStackTrace();
 			}
 			return result;
 		}
@@ -322,7 +325,7 @@ public class DeclareLineActivity extends Activity implements
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				//Log.d("InputStream", e.getLocalizedMessage());
 			}
 			return result;
 		}
@@ -360,8 +363,6 @@ public class DeclareLineActivity extends Activity implements
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			Log.d("myapp", "niks: ");
-
 		}
 	}
 }
