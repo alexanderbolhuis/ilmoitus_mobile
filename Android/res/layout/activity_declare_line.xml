@@ -70,6 +70,7 @@
                 android:id="@+id/editCurrency"
                 style="@style/EditText"
                 android:hint="Bedrag"
+                android:digits="0123456789,"
                 android:inputType="numberDecimal" />
 
             <TextView
@@ -92,15 +93,16 @@
 
             <LinearLayout style="@style/ContainerItemWithMarginTop" >
 
-                <Button
-                    
+                <Button            
                     android:id="@+id/buttonCancel"
                     style="@style/ContainerButtonCommit"
+                    android:layout_marginRight="2dp"
                     android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/buttonAdd"
                     style="@style/ContainerButtonCommit"
+                    android:layout_marginLeft="2dp"
                     android:text="@string/add" />
             </LinearLayout>
         </LinearLayout>

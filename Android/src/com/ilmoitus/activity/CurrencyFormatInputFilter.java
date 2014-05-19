@@ -8,7 +8,7 @@ import android.text.Spanned;
 
 public class CurrencyFormatInputFilter implements InputFilter {
 
-	Pattern mPattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\.[0-9]{0,2})?");
+	Pattern mPattern = Pattern.compile("(0|[1-9]+[0-9]*)?(\\,[0-9]{0,2})?");
 
 	@Override
 	public CharSequence filter(CharSequence source, int start, int end,
