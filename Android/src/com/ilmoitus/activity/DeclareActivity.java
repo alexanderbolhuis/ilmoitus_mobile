@@ -51,6 +51,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 	private Button addDeclaration;
 	private Spinner spinner1;
 	private ArrayList<Supervisor> supervisors;
+	private ArrayList<String> attachments;
 	private double totalPrice;
 	private DecimalFormat currencyFormat; 
 	
@@ -79,13 +80,19 @@ public class DeclareActivity extends Activity implements OnClickListener{
 				if(declarationLines == null){
 					declarationLines = new ArrayList<DeclarationLine>();
 				}
+				if(attachments == null){
+					attachments = new ArrayList<String>();
+				}
 				Bundle b = data.getExtras();
 				DeclarationLine line = new DeclarationLine(b.getString("date"), b.getString("declaratieSoort"), b.getLong("declaratieSubSoort"),
 						b.getDouble("bedrag"));
 				declarationLines.add(line);
 				totalPrice += b.getDouble("bedrag");
 				DeclarationLineAdapter ad = new DeclarationLineAdapter(this, declarationLines);
-				
+				ArrayList<String> temp = b.getStringArrayList("attachments");
+				for(int i = 0; i <temp.size(); i++){
+					attachments.add(temp.get(i));
+				}
 				TextView price = (TextView) findViewById(R.id.totalPrice);
 				price.setText("\u20AC" + currencyFormat.format(totalPrice));
 				
@@ -174,7 +181,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 				JSONObject totalDeclaration = new JSONObject();
 				totalDeclaration.put("declaration", decl);
 				totalDeclaration.put("lines", lines);
-				totalDeclaration.put("attachments", "");
+				totalDeclaration.put("attachments", new JSONArray(attachments));
 				httpPost.setEntity(new StringEntity(totalDeclaration.toString()));
 				HttpResponse response = httpClient.execute(httpPost);
 			}catch(Exception e){
