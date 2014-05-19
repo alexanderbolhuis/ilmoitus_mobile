@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NewDeclarationViewController : UIViewController
+@interface NewDeclarationViewController : UIViewController<UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+{
+    UIImagePickerController *imagePicker;
+}
 
 @end

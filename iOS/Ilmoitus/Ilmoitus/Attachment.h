@@ -11,6 +11,7 @@
 @interface Attachment : NSObject
 
 @property (nonatomic, strong) NSString *data;
+@property (nonatomic, strong) NSString *name;
 
 -(void)setAttachmentData:(NSObject *)dataObject;
 

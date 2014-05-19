@@ -9,9 +9,12 @@
 #import "NewDeclarationViewController.h"
 #import "Declaration.h"
 #import "DeclarationLine.h"
+#import "Attachment.h"
 #import "constants.h"
 
 @interface NewDeclarationViewController ()
+
+@property (nonatomic, strong) Attachment *attachment;
 
 @end
 
@@ -19,8 +22,24 @@
 
 - (void)viewDidLoad
 {
+    imagePicker = [[UIImagePickerController alloc]init];
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    imagePicker.delegate = self;
+    
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    [self presentModalViewController:imagePicker animated:YES];
+}
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSURL *imageURL = (NSURL *)[info valueForKey:UIImagePickerControllerReferenceURL];
+    
+    UIImage *image = (UIImage *)[info valueForKey:UIImagePickerControllerOriginalImage];
+    
+    _attachment = [[Attachment alloc]init];
+    [_attachment setAttachmentData:[Attachment ImageToNSData:image]];
+    _attachment.name = [imageURL path];
     [self saveDeclaration];
 }
 
@@ -31,8 +50,7 @@
 }
 
 - (void)saveDeclaration
-{
-    // ------ FAKE TEST DATA -------------------------------------------------------
+{    // ------ FAKE TEST DATA -------------------------------------------------------
     Declaration *decl = [[Declaration alloc] init];
     decl.className = @"open_declaration";
     decl.status = @"Open";
@@ -76,9 +94,13 @@
     }
     
     // TODO Attachments
+    NSMutableArray *declarationAttachments = [[NSMutableArray alloc]init];
+    NSDictionary *attachment = @{@"name":_attachment.name, @"file":_attachment.data};
+    [declarationAttachments addObject:attachment];
+    
     
     // Total dict
-    NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":@""};
+    NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":declarationAttachments};
     
     NSLog(@"JSON: %@",params);
     
