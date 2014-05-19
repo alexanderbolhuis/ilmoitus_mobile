@@ -25,6 +25,7 @@
     
     // Create new blank Declaration
     Declaration *newDeclaration = [[Declaration alloc] init];
+    [self saveDeclaration];
 }
 
 - (void)didReceiveMemoryWarning
@@ -83,7 +84,7 @@
     // Total dict
     NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":@""};
     
-    NSLog(@"JSON: %@",params);
+    NSLog(@"POST request parameters: %@",params);
     
     NSString *url = [NSString stringWithFormat:@"%@/declaration", baseURL];
     AFHTTPRequestOperation *apiRequest = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -94,11 +95,11 @@
                               options:kNilOptions
                               error:&error];
         
-        NSLog(@"JSON: %@",json);
+        NSLog(@"POST request success response: %@",json);
         // Handle success
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"POST request Error: %@", error);
         // Handle error
 
     }];

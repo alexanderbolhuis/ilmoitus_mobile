@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Declaration : NSObject
-// id
+// Add id property if needed
 @property (strong, nonatomic) NSString *className;
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *createdAt;
