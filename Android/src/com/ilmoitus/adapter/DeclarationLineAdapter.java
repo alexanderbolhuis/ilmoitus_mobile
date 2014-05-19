@@ -1,5 +1,6 @@
 package com.ilmoitus.adapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.example.ilmoitus.R;
@@ -21,6 +22,7 @@ public class DeclarationLineAdapter extends BaseAdapter {
 	private LayoutInflater inflator;
 	private Activity activity;
 	private ArrayList<DeclarationLine> declarationLines;
+	private DecimalFormat currencyFormat;
 
 	public DeclarationLineAdapter(Activity activity,
 			ArrayList<DeclarationLine> declarationLines) {
@@ -28,6 +30,8 @@ public class DeclarationLineAdapter extends BaseAdapter {
 		this.declarationLines = declarationLines;
 		this.inflator = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		currencyFormat = new DecimalFormat("0.00");
 	}
 
 	public int getCount() {
@@ -51,7 +55,7 @@ public class DeclarationLineAdapter extends BaseAdapter {
 		View rowView = inflator.inflate(R.layout.row_declaration_line, null);
 		TextView top = (TextView) rowView.findViewById(R.id.text1);
 		top.setText(line.getDatum() + " - " + line.getDeclaratieSoort() + " - "
-				+ "\u20AC" + line.getBedrag());
+				+ "\u20AC" + currencyFormat.format(line.getBedrag()));
 
 		return rowView;
 	}
