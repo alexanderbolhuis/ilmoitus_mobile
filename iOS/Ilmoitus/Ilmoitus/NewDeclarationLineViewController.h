@@ -9,6 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "Declaration.h"
 
-@interface NewDeclarationLineViewController : UIViewController <UITextFieldDelegate>
+@interface NewDeclarationLineViewController : UIViewController <UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+{
+    UIImagePickerController *imagePicker;
+}
 @property Declaration *declaration;
 @end

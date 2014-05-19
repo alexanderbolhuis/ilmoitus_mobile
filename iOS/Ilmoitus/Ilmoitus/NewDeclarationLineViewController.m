@@ -30,6 +30,11 @@
     return self;
 }
 
+- (IBAction)addAttachment:(id)sender {
+    // TODO deprecated
+    [self presentModalViewController:imagePicker animated:YES];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
@@ -37,12 +42,15 @@
 
 - (void)viewDidLoad
 {
+    imagePicker = [[UIImagePickerController alloc]init];
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     _dateField.delegate = self;
     _costField.delegate = self;
     _typeField.delegate = self;
     _subtypeField.delegate = self;
+    imagePicker.delegate = self;
+    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     
     // create blank line
     _dateField.text = @"15-05-2014";

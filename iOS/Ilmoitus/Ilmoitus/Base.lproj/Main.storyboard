@@ -365,6 +365,9 @@
                                 <state key="normal" title="Bijlage toevoegen">
                                     <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="addAttachment:" destination="xvw-qg-tGY" eventType="touchUpInside" id="fiq-9R-vhZ"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -493,6 +496,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="M8t-EP-wfW"/>
+        <segue reference="ALi-8l-TMc"/>
     </inferredMetricsTieBreakers>
 </document>
