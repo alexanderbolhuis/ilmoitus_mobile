@@ -55,11 +55,11 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		TextView bottom = (TextView) rowView.findViewById(R.id.text2);
 		if(openDeclaration != null){
 			top.setText("Declaratie op " + openDeclaration.getCreatedAt().substring(0, 10));
-			bottom.setText("open " + openDeclaration.getItemsTotalPrice());
+			bottom.setText("open " + "\u20AC" + openDeclaration.getItemsTotalPrice());
 		}
 		if(closedDeclaration != null){
 			top.setText("Declaratie op " + closedDeclaration.getCreatedAt().substring(0, 10));
-			bottom.setText("in behandeling " + closedDeclaration.getItemsTotalPrice());
+			bottom.setText("in behandeling " + "\u20AC" + closedDeclaration.getItemsTotalPrice());
 		}
 		return rowView;
 	}
