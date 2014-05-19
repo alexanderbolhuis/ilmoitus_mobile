@@ -35,6 +35,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -164,7 +165,6 @@ public class LoginActivity extends Activity {
 	 * the user.
 	 */
 	private class UserLoginTask extends AsyncTask<Void, Void, String> {
-
 		private Context context;
 		
 		public UserLoginTask(Context context){
@@ -174,7 +174,7 @@ public class LoginActivity extends Activity {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-		    HttpPost httpPost = new HttpPost("http://2.sns-ilmoitus.appspot.com/auth/login");
+		    HttpPost httpPost = new HttpPost(getResources().getString(R.string.base_url) + "/auth/login");
 			try {
 				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
 		        nameValuePairs.add(new BasicNameValuePair("email", mEmail));

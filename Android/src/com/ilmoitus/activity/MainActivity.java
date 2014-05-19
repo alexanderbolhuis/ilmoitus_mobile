@@ -68,8 +68,8 @@ public class MainActivity extends Activity {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(
-					"http://2.sns-ilmoitus.appspot.com/declarations/employee");
+			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) +
+					"/declarations/employee");
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);

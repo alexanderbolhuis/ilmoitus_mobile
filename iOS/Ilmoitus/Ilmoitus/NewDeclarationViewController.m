@@ -15,7 +15,8 @@
 @interface NewDeclarationViewController ()
 
 @property (nonatomic, strong) Attachment *attachment;
-
+@property (weak, nonatomic) IBOutlet UIPickerView *supervisorList;
+@property (weak, nonatomic) IBOutlet UITextField *supervisor;
 @end
 
 @implementation NewDeclarationViewController
@@ -26,6 +27,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
+    // Create new blank Declaration
+    Declaration *newDeclaration = [[Declaration alloc] init];
+
     imagePicker.delegate = self;
     
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
@@ -40,7 +44,6 @@
     _attachment = [[Attachment alloc]init];
     [_attachment setAttachmentData:[Attachment ImageToNSData:image]];
     _attachment.name = [imageURL path];
-    [self saveDeclaration];
 }
 
 - (void)didReceiveMemoryWarning
