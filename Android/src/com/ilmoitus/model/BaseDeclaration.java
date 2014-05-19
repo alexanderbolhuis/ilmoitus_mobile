@@ -6,11 +6,11 @@ public class BaseDeclaration
 	private String createdBy;
 	private String assignedTo;
 	private String comment;
-	private String itemsTotalPrice;
-	private String itemsCount;
+	private double itemsTotalPrice;
+	private int itemsCount;
 	
 	public BaseDeclaration(String createdAt, String createdBy, String assignedTo, String comment
-			,String itemsTotalPrice){
+			,double itemsTotalPrice){
 		this.createdAt = createdAt;
 		this.createdBy = createdBy;
 		this.assignedTo = assignedTo;
@@ -34,11 +34,11 @@ public class BaseDeclaration
 		return comment;
 	}
 
-	public String getItemsTotalPrice() {
+	public double getItemsTotalPrice() {
 		return itemsTotalPrice;
 	}
 
-	public String getItemsCount() {
+	public int getItemsCount() {
 		return itemsCount;
 	}
 }
