@@ -75,7 +75,8 @@
     UILabel *costLabel = (UILabel *)[cell viewWithTag:3];
     
     dateLabel.text = line.date;
-    subTypeLabel.text = line.subtype;
+    // TODO Get subtype
+    subTypeLabel.text = @"Type";
     costLabel.text =[NSString stringWithFormat:@"€%.02f", line.cost];
     
     
