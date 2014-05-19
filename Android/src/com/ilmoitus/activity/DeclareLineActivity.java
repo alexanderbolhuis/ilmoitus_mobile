@@ -34,7 +34,6 @@ import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -63,7 +62,7 @@ public class DeclareLineActivity extends Activity implements
 	private TextView title;
 	private EditText currency, dateField;
 	private ImageView photo;
-	private List<String> base64Array = new ArrayList<String>();
+	private ArrayList<String> attachmentsData = new ArrayList<String>();
 
 	int spinnerDeclarationTypesPosition, spinnerDeclarationSubTypesPosition;
 
@@ -134,7 +133,7 @@ public class DeclareLineActivity extends Activity implements
 		String bedrag = currency.getText().toString().replace(",", ".");
 		
 		b.putDouble("bedrag", Double.parseDouble(bedrag));
-		
+		b.putStringArrayList("attachments", attachmentsData);
 		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).toString());
 		b.putLong("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
 		Intent i = new Intent(this, DeclareActivity.class);
@@ -187,7 +186,7 @@ public class DeclareLineActivity extends Activity implements
 				photo.setImageBitmap(imageBitmap);		
 				
 				//ArrayList base64 string		
-				base64Array.add(BitmapToBase64String(null));
+				attachmentsData.add(BitmapToBase64String(imageBitmap));
 				
 				
 			} else if (requestCode == 2) {
@@ -203,7 +202,7 @@ public class DeclareLineActivity extends Activity implements
 				photo.setImageBitmap(imageBitmap);
 				
 				//ArrayList base64 string
-				base64Array.add(BitmapToBase64String(null));
+				attachmentsData.add(BitmapToBase64String(imageBitmap));
 			}
 		}
 	}
