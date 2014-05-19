@@ -9,11 +9,13 @@ public class BaseDeclaration
 	private String itemsTotalPrice;
 	private String itemsCount;
 	
-	public BaseDeclaration(String createdAt, String createdBy, String assignedTo, String comment){
+	public BaseDeclaration(String createdAt, String createdBy, String assignedTo, String comment
+			,String itemsTotalPrice){
 		this.createdAt = createdAt;
 		this.createdBy = createdBy;
 		this.assignedTo = assignedTo;
 		this.comment = comment;
+		this.itemsTotalPrice = itemsTotalPrice;
 	}
 	
 	public String getCreatedAt() {
