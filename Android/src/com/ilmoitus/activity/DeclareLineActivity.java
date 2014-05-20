@@ -172,10 +172,12 @@ public class DeclareLineActivity extends Activity implements
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		sdf.setLenient(false);
+		
+		Date dateOfDeclarationLine;
  
 		try {
 			//if not valid, it will throw ParseException
-			Date date = sdf.parse(dateField.getText().toString());
+			dateOfDeclarationLine = sdf.parse(dateField.getText().toString());
  
 		} catch (ParseException e) {
  
@@ -183,6 +185,14 @@ public class DeclareLineActivity extends Activity implements
 			dateFieldError.setVisibility(View.VISIBLE);
 			return false;
 		}
+		
+		Date datNow = new Date();
+		
+		if(dateOfDeclarationLine.after(datNow)){
+			dateFieldError.setText("Datum ligt niet in het verleden!");
+			dateFieldError.setVisibility(View.VISIBLE);
+			return false;
+        }	
 		
 		return true;
 	}
