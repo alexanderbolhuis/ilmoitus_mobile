@@ -16,21 +16,18 @@
                     android:id="@+id/person_title"
                     style="@style/TextViewTitle"
                     android:text="Declaratie indienen" />
-
-                <TextView
-                    android:id="@+id/totalPrice"
-                    style="@style/TextViewSubTitle"/>
                 
                 <TextView
                     style="@style/TextViewSubTitle"
                     android:text="Leidinggevende:" />
 
                 <Spinner
-                    android:id="@+id/spinner1"
+                    android:id="@+id/spinnerSupervisors"
                     style="@style/Spinner"
                     android:prompt="@string/prompt_spinner" />
 
                 <TextView
+                    android:id="@+id/declartionItemsTitle"
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
