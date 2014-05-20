@@ -7,9 +7,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -34,6 +36,7 @@ import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -128,19 +131,76 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	public void onAddButtonClick() {
-		Bundle b = new Bundle();
-		b.putString("date", dateField.getText().toString());
-		String bedrag = currency.getText().toString().replace(",", ".");
 		
-		b.putDouble("bedrag", Double.parseDouble(bedrag));
-		b.putStringArrayList("attachments", attachmentsData);
-		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).toString());
-		b.putLong("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
-		Intent i = new Intent(this, DeclareActivity.class);
-		i.putExtras(b);
-		setResult(RESULT_OK, i);
-		finish();
+		boolean currencyCheck = checkValidCurrency();
+		boolean dateCheck = checkValidDate();
+
+		if (dateCheck && currencyCheck) {
+			Bundle b = new Bundle();
+			b.putString("date", dateField.getText().toString());
+			String bedrag = currency.getText().toString().replace(",", ".");
+
+			b.putDouble("bedrag", Double.parseDouble(bedrag));
+			b.putStringArrayList("attachments", attachmentsData);
+			b.putString("declaratieSoort",
+					declarationTypesList.get(spinnerDeclarationTypesPosition)
+							.toString());
+			b.putLong("declaratieSubSoort",
+					((DeclarationSubTypes) spinnerDeclarationSubTypes
+							.getSelectedItem()).getId());
+			Intent i = new Intent(this, DeclareActivity.class);
+			i.putExtras(b);
+			setResult(RESULT_OK, i);
+			finish();
+		}
+		else
+		{
+			Toast.makeText(getApplicationContext(), "Declaratie regel bevat fouten", Toast.LENGTH_LONG).show();
+		}
 	}
+
+	public boolean checkValidDate() {
+		
+		TextView dateFieldError = (TextView) findViewById(R.id.dateError);
+		
+		if(dateField.getText().toString().matches(""))
+		{
+			dateFieldError.setText("Geen datum opgegeven!");
+			dateFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		sdf.setLenient(false);
+ 
+		try {
+			//if not valid, it will throw ParseException
+			Date date = sdf.parse(dateField.getText().toString());
+ 
+		} catch (ParseException e) {
+ 
+			dateFieldError.setText("Geen Geldige datum!");
+			dateFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public boolean checkValidCurrency() {
+		
+		TextView currencyFieldError = (TextView) findViewById(R.id.currencyError);
+		
+		if(currency.getText().toString().matches(""))
+		{
+			currencyFieldError.setText("Geen bedrag opgegeven!");
+			currencyFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+		
+		return true;
+	}
+	
 
 	// TODO Make Photo / Select from library and post + display by Murat Aydin
 	public void onAddImageButtonClick(View view) {
