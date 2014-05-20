@@ -19,4 +19,5 @@
 @property (nonatomic) float itemsTotalPrice;
 @property (nonatomic) int itemsCount;
 @property (strong, nonatomic) NSMutableArray *lines;
+@property (strong, nonatomic) NSMutableArray *attachments;
 @end
