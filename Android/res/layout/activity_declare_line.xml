@@ -66,6 +66,10 @@
                 android:id="@+id/spinnerDeclarationSubType"
                 style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
+            
+            <TextView
+                android:id="@+id/typeError"
+                style="@style/TextViewError" />
 
             <TextView
                 style="@style/TextViewSubTitle"
@@ -80,8 +84,7 @@
 
             <TextView
                 android:id="@+id/currencyError"
-                style="@style/TextViewError"
-                android:visibility="gone" />
+                style="@style/TextViewError" />
 
             <TextView
                 style="@style/TextViewSubTitle"
