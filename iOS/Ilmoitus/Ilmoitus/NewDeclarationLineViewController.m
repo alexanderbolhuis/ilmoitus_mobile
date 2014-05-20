@@ -31,7 +31,7 @@
 }
 
 - (IBAction)addAttachment:(id)sender {
-    // TODO deprecated
+    // TODO replace deprecated presentModalViewController method
     [self presentModalViewController:imagePicker animated:YES];
 }
 
@@ -52,7 +52,9 @@
     imagePicker.delegate = self;
     imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     
-    // create blank line
+    // Create blank line
+    
+    // TODO get date from datepicker(datefField) in right format
     _dateField.text = @"15-05-2014";
     _line = [[DeclarationLine alloc] init];
 }
@@ -62,6 +64,7 @@
     if ([[segue identifier] isEqualToString:@"lineadded"])
     {
         _line.cost = [_costField.text floatValue];
+        // TODO get date from datepicker(datefField) in right format
         _line.date = @"2014-05-15 07:27:33.448849";
         // Todo get subtypes
         _line.subtype = 4957078112174080;
