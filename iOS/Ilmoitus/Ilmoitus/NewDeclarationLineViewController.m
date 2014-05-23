@@ -125,7 +125,7 @@
         _line.cost = [_costField.text floatValue];
         _line.date = @"2014-05-15 07:27:33.448849";
         // Todo get subtypes
-        _line.subtype = 4957078112174080;
+        _line.subtype = 4519529661071360;
         
         [_declaration.lines addObject:_line];
         

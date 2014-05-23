@@ -107,7 +107,7 @@
         [declarationlines addObject:currentline];
     }
     
-    // TODO Attachments
+    // Attachments
     NSMutableArray *attachments = [[NSMutableArray alloc] init];
     for (Attachment *attachment in _declaration.attachments)
     {
