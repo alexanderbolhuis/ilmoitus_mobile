@@ -10,4 +10,10 @@
 
 @interface DeclarationTypeController : NSObject
 
+- (void)DownLoadMainTypes;
+- (void)DownLoadSubTypes:(NSInteger*)mainTpyeId;
+
+- (NSMutableArray*)GetMainTypes;
+- (NSMutableArray*)GetSubType;
+
 @end
