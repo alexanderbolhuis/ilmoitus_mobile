@@ -19,7 +19,7 @@
 
             <TextView
                 style="@style/TextViewSubTitle"
-                android:text="Datum:"/>
+                android:text="Datum:" />
 
             <LinearLayout style="@style/ContainerItem" >
 
@@ -29,13 +29,13 @@
                     android:layout_width="0dp"
                     android:layout_weight="3"
                     android:clickable="true"
-                    android:onClick="showDatePickerDialog"
                     android:cursorVisible="false"
                     android:ems="10"
                     android:focusable="false"
                     android:focusableInTouchMode="false"
                     android:inputType="date"
                     android:maxLines="1"
+                    android:onClick="showDatePickerDialog"
                     android:singleLine="true" >
 
                     <requestFocus />
@@ -50,6 +50,10 @@
             </LinearLayout>
 
             <TextView
+                android:id="@+id/dateError"
+                style="@style/TextViewError" />
+
+            <TextView
                 style="@style/TextViewSubTitle"
                 android:text="Declaratiesoort:" />
 
@@ -62,17 +66,25 @@
                 android:id="@+id/spinnerDeclarationSubType"
                 style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
+            
+            <TextView
+                android:id="@+id/typeError"
+                style="@style/TextViewError" />
 
             <TextView
                 style="@style/TextViewSubTitle"
-                android:text="Bedrag:"/>
+                android:text="Bedrag:" />
 
             <EditText
                 android:id="@+id/editCurrency"
                 style="@style/EditText"
-                android:hint="Bedrag"
                 android:digits="0123456789,"
+                android:hint="Bedrag"
                 android:inputType="numberDecimal" />
+
+            <TextView
+                android:id="@+id/currencyError"
+                style="@style/TextViewError" />
 
             <TextView
                 style="@style/TextViewSubTitle"
@@ -83,12 +95,11 @@
                 style="@style/Button"
                 android:onClick="onAddImageButtonClick"
                 android:text="@string/addImage" />
-            
+
             <ImageView
                 android:id="@+id/mImageView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
 
             <TextView
                 style="@style/TextViewSubTitle"
@@ -100,7 +111,7 @@
 
             <LinearLayout style="@style/ContainerItemWithMarginTop" >
 
-                <Button            
+                <Button
                     android:id="@+id/buttonCancel"
                     style="@style/ContainerButtonCommit"
                     android:layout_marginRight="2dp"

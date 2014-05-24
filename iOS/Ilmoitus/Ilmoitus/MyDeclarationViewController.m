@@ -85,9 +85,9 @@
         [self.tableView reloadData];
     [self.refreshControl endRefreshing];
         
-        NSLog(@"GET request success response: %@", json);
+        NSLog(@"GET request success response for all declarations: %@", json);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"GET request Error: %@", error);
+        NSLog(@"GET request Error for all declarations: %@", error);
     }];
     
     // Reload the data

@@ -113,7 +113,9 @@
     _subtypeField.delegate = self;
     imagePicker.delegate = self;
     
-    // create blank line
+    // Create blank line
+    
+    // TODO get date from datepicker(datefField) in right format
     _dateField.text = @"15-05-2014";
     _line = [[DeclarationLine alloc] init];
 }
@@ -123,13 +125,16 @@
     if ([[segue identifier] isEqualToString:@"lineadded"])
     {
         _line.cost = [_costField.text floatValue];
+        // TODO get date from datepicker(datefField) in right format
         _line.date = @"2014-05-15 07:27:33.448849";
         // Todo get subtypes
         _line.subtype = 4519529661071360;
         
         [_declaration.lines addObject:_line];
-        
-        [_declaration.attachments addObject:_attachment];
+        if(_attachment != nil)
+        {
+            [_declaration.attachments addObject:_attachment];
+        }
         
         NewDeclarationViewController *declarationController =
         [segue destinationViewController];
