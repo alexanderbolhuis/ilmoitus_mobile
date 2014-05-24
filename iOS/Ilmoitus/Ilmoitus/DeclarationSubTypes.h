@@ -9,10 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface DeclarationSubTypes : NSObject
-// has error
-// property with 'retain (or strong) attribute must be of object type'
-@property (strong, nonatomic) NSInteger *SubTypeId;
-@property (strong, nonatomic) NSMutableString *SubTypeDescription;
+
+@property (nonatomic) int64_t *subTypeId;
+@property (strong, nonatomic) NSString *subTypeDescription;
+@property (nonatomic) NSDecimal * subTypeMaxCost;
 
 
 @end

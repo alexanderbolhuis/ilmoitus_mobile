@@ -20,45 +20,47 @@
 
 @implementation DeclarationTypeController
 
-- (void)DownLoadMainTypes
+- (NSMutableArray*)DownLoadMainTypes
 {
+    NSMutableArray *declarationsTypesFound = [[NSMutableArray alloc] init];
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
     NSString *url = [NSString stringWithFormat:@"%@/declarationtypes", baseURL];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
-     {
-         NSError* error;
-         NSDictionary* json = [NSJSONSerialization
-                               JSONObjectWithData:responseObject
+    {
+        NSError* error;
+        NSDictionary* json = [NSJSONSerialization
+                              JSONObjectWithData:responseObject
                                
-                               options:kNilOptions
-                               error:&error];
+                              options:kNilOptions
+                              error:&error];
          
-         NSMutableArray *declarationsTypesFound = [[NSMutableArray alloc] init];
-         for (NSDictionary *decl in json)
-         {
-             DeclarationMainTypes *declarationMainTypes = [[DeclarationMainTypes alloc] init];
-             *declarationMainTypes.MainTypeId = [decl[@"id"] intValue];
-             declarationMainTypes.MainTypeDescription = [decl[@"declarationType"] stringValue];
-             [declarationsTypesFound addObject:declarationMainTypes];
-         }
-         [_mainTypes removeAllObjects];
-         _mainTypes = declarationsTypesFound;
-         
-         NSLog(@"GET request success response for all declarations: %@", json);
-     }
+        
+        for (NSDictionary *decl in json)
+        {
+            DeclarationMainTypes *declarationMainTypes = [[DeclarationMainTypes alloc] init];
+            *declarationMainTypes.mainTypeId = [decl[@"id"] intValue];
+            declarationMainTypes.mainTypeDescription = [decl[@"declarationType"] stringValue];
+            [declarationsTypesFound addObject:declarationMainTypes];
+        }
+        
+        NSLog(@"GET request success response for all declarations: %@", json);
+    }
          failure:^(AFHTTPRequestOperation *operation, NSError *error)
-     {
-         NSLog(@"GET request Error for all declarations main types: %@", error);
-     }];
+    {
+        NSLog(@"GET request Error for all declarations main types: %@", error);
+    }];
+    return declarationsTypesFound;
 }
 
-// expect the id form the DeclarationMainType
-- (void)DownLoadSubTypes:(NSInteger*)mainTpyeId
+// expect the id from the DeclarationMainType
+- (NSMutableArray*)DownLoadSubTypes:(NSInteger*)mainTpyeId
 {
     NSString *combinedURL = [NSString stringWithFormat:@"%@%@", baseURL, @"/declarationsubtype/"];
+    NSMutableArray *declarationsSubTypesFound = [[NSMutableArray alloc] init];
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
@@ -73,16 +75,15 @@
                               options:kNilOptions
                               error:&error];
         
-        NSMutableArray *declarationsTypesFound = [[NSMutableArray alloc] init];
+        
         for (NSDictionary *decl in json)
         {
             DeclarationSubTypes *declarationSubTypes = [[DeclarationSubTypes alloc] init];
-            *declarationSubTypes.SubTypeId = [decl[@"id"] intValue];
-            declarationSubTypes.SubTypeDescription = [decl[@"declarationType"] stringValue];
-            [declarationsTypesFound addObject:declarationSubTypes];
+            *declarationSubTypes.subTypeId = [decl[@"id"] intValue];
+            declarationSubTypes.subTypeDescription = [decl[@"declarationType"] stringValue];
+            *declarationSubTypes.subTypeMaxCost = [decl[@"maxCost"] decimalValue];
+            [declarationsSubTypesFound addObject:declarationSubTypes];
         }
-        [_subTypes removeAllObjects];
-        _subTypes = declarationsTypesFound;
         
         NSLog(@"GET request success response for all declarations sub types: %@", json);
     }
@@ -90,15 +91,7 @@
     {
         NSLog(@"GET request Error for all declarations: %@", error);
     }];
-}
-
-- (NSMutableArray*)GetMainTypes
-{
-    return _mainTypes;
-}
-- (NSMutableArray*)GetSubType
-{
-    return _subTypes;
+    return declarationsSubTypesFound;
 }
 
 @end
