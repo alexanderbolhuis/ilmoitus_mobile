@@ -31,14 +31,13 @@
     _supervisor.delegate = self;
     [_comment setReturnKeyType: 	UIReturnKeyDone];
     _comment.delegate = self;
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
     
     [self getSupervisorList];
     
     if (_declaration == nil) {
         _declaration = [[Declaration alloc] init];
-        _declaration.lines = [[NSMutableArray alloc] init];
-        _declaration.attachments = [[NSMutableArray alloc] init];
-
     }
     _comment.text = _declaration.comment;
 }
@@ -58,6 +57,20 @@
     _declaration.itemsTotalPrice = 30.00;
     _declaration.itemsCount = 2;
     [self saveDeclaration];
+}
+
+-(IBAction)unwindToNewDeclaration:(UIStoryboardSegue *)segue
+{
+    NewDeclarationLineViewController * source = [segue sourceViewController];
+    if(source.declarationLine != nil)
+    {
+        [_declaration.lines addObject:source.declarationLine];
+        [self.tableView reloadData];
+    }
+    if(source.attachment != nil)
+    {
+        [_declaration.attachments addObject:source.attachment];
+    }
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -81,6 +94,8 @@
 }
 
 - (IBAction)cancelDeclaration:(id)sender {
+    _declaration = nil;
+    [_tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -187,14 +202,50 @@
     }];
 }
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if ([[segue identifier] isEqualToString:@"addline"])
+    return [_declaration.lines count];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil)
     {
-        NewDeclarationLineViewController *declarationlineController =
-        [segue destinationViewController];
-        
-        declarationlineController.declaration = _declaration;
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
+    
+    DeclarationLine *line = [_declaration.lines objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ - %f/2",@"DecalrationSubType", line.cost];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [_declaration.lines removeObjectAtIndex:indexPath.row];
+        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }
+}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return NO;
 }
 @end

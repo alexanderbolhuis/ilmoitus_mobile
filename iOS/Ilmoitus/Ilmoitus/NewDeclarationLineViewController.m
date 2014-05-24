@@ -13,11 +13,11 @@
 #import "NewDeclarationViewController.h"
 
 @interface NewDeclarationLineViewController ()
+@property (weak, nonatomic) IBOutlet UIButton *add;
+@property (weak, nonatomic) IBOutlet UIButton *cancel;
 @property (weak, nonatomic) IBOutlet UITextField *dateField;
 @property (weak, nonatomic) IBOutlet UITextField *typeField;
 @property (weak, nonatomic) IBOutlet UITextField *subtypeField;
-@property DeclarationLine *line;
-@property Attachment *attachment;
 @property (weak, nonatomic) IBOutlet UITextField *costField;
 @end
 
@@ -115,26 +115,22 @@
     
     // create blank line
     _dateField.text = @"15-05-2014";
-    _line = [[DeclarationLine alloc] init];
+    _declarationLine = [[DeclarationLine alloc] init];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"lineadded"])
+    if (sender == self.add)
     {
-        _line.cost = [_costField.text floatValue];
-        _line.date = @"2014-05-15 07:27:33.448849";
+        _declarationLine.cost = [_costField.text floatValue];
+        _declarationLine.date = @"2014-05-15 07:27:33.448849";
         // Todo get subtypes
-        _line.subtype = 4519529661071360;
-        
-        [_declaration.lines addObject:_line];
-        
-        [_declaration.attachments addObject:_attachment];
-        
-        NewDeclarationViewController *declarationController =
-        [segue destinationViewController];
-        
-        declarationController.declaration = _declaration;
+        _declarationLine.subtype = 4519529661071360;
+    }
+    else if (sender == self.cancel)
+    {
+        _declarationLine = nil;
+        _attachment = nil;
     }
 }
 

@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Declaration.h"
+#import "DeclarationLine.h"
+#import "Attachment.h"
 
 @interface NewDeclarationLineViewController : UIViewController <UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     UIImagePickerController *imagePicker;
 }
-@property Declaration *declaration;
+@property DeclarationLine *declarationLine;
+@property Attachment *attachment;
 @end
