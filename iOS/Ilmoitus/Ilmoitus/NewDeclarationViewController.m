@@ -45,6 +45,7 @@
 - (IBAction)postDeclaration:(id)sender {
     _declaration.className = @"open_declaration";
     _declaration.status = @"Open";
+        // TODO get current date in right format
     _declaration.createdAt = @"2014-05-15 07:27:33.448849";
     _declaration.createdBy = [[[NSUserDefaults standardUserDefaults] stringForKey:@"person_id"] longLongValue];
     
@@ -133,7 +134,7 @@
     // Total dict
     NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":attachments};
     
-    NSLog(@"JSON: %@",params);
+    NSLog(@"JSON data that is going to be saved/sent: %@",params);
     
     NSString *url = [NSString stringWithFormat:@"%@/declaration", baseURL];
     AFHTTPRequestOperation *apiRequest = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -144,11 +145,11 @@
                               options:kNilOptions
                               error:&error];
         
-        NSLog(@"JSON: %@",json);
+        NSLog(@"JSON response data for saving declaration: %@",json);
         // Handle success
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"Error while saving declaration: %@", error);
         // Handle error
         
     }];
@@ -172,7 +173,7 @@
                               options:kNilOptions
                               error:&error];
         
-        NSLog(@"%@", json);
+        NSLog(@"JSON response: %@", json);
         
         NSMutableArray *supervisorsFound = [[NSMutableArray alloc] init];
         for (NSDictionary *supervisor in json) {
@@ -196,9 +197,9 @@
         }
         _supervisorList = supervisorsFound;
         
-        // TODO werkende dropdown maken
+        // TODO create dropdown to select supervisor
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"Error while getting supervisor list: %@", error);
     }];
 }
 
