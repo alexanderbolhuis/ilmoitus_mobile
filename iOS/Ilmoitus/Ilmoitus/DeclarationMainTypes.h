@@ -11,6 +11,6 @@
 @interface DeclarationMainTypes : NSObject
 
 @property (nonatomic) int64_t *mainTypeId;
-@property (strong, nonatomic) NSString *mainTypeDescription;
+@property (strong, nonatomic) NSString *mainTypeName;
 
 @end

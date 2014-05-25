@@ -42,7 +42,7 @@
         {
             DeclarationMainTypes *declarationMainTypes = [[DeclarationMainTypes alloc] init];
             *declarationMainTypes.mainTypeId = [decl[@"id"] longLongValue];
-            declarationMainTypes.mainTypeDescription = [decl[@"declarationType"] stringValue];
+            declarationMainTypes.mainTypeName = [decl[@"name"] stringValue];
             [declarationsTypesFound addObject:declarationMainTypes];
         }
         
@@ -80,8 +80,9 @@
         {
             DeclarationSubTypes *declarationSubTypes = [[DeclarationSubTypes alloc] init];
             *declarationSubTypes.subTypeId = [decl[@"id"] longLongValue];
+            declarationSubTypes.subTypeName = [decl[@"name"] stringValue];
             declarationSubTypes.subTypeDescription = [decl[@"declarationType"] stringValue];
-            *declarationSubTypes.subTypeMaxCost = [decl[@"maxCost"] decimalValue];
+            *declarationSubTypes.subTypeMaxCost = [decl[@"max_cost"] decimalValue];
             [declarationsSubTypesFound addObject:declarationSubTypes];
         }
         

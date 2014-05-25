@@ -11,6 +11,7 @@
 @interface DeclarationSubTypes : NSObject
 
 @property (nonatomic) int64_t *subTypeId;
+@property (strong, nonatomic) NSString *subTypeName;
 @property (strong, nonatomic) NSString *subTypeDescription;
 @property (nonatomic) NSDecimal * subTypeMaxCost;
 
