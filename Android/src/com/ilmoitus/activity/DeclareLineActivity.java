@@ -134,8 +134,10 @@ public class DeclareLineActivity extends Activity implements
 		
 		b.putDouble("bedrag", Double.parseDouble(bedrag));
 		b.putStringArrayList("attachments", attachmentsData);
-		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).toString());
-		b.putLong("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
+		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).getName());
+		b.putLong("declaratieSoortId", declarationTypesList.get(spinnerDeclarationTypesPosition).getId());
+		b.putString("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getName());
+		b.putLong("declaratieSubSoortId", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
 		Intent i = new Intent(this, DeclareActivity.class);
 		i.putExtras(b);
 		setResult(RESULT_OK, i);
@@ -213,7 +215,7 @@ public class DeclareLineActivity extends Activity implements
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte [] b=baos.toByteArray();
         String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return "data:image/jpeg;base64," + temp;
+        return String.format("name:%s;data:%s;base64,%s", "niek", "image/jpeg", temp);
 	}
 
 	public void showDatePickerDialog(View v) {
@@ -289,7 +291,7 @@ public class DeclareLineActivity extends Activity implements
 					JSONObject object = declarationTypes.getJSONObject(i);
 
 					String name = object.getString("name");
-					String id = object.getString("id");
+					Long id = object.getLong("id");
 
 					declarationTypesList.add(new DeclarationTypes(name, id));
 				}
@@ -309,10 +311,10 @@ public class DeclareLineActivity extends Activity implements
 		protected String doInBackground(Void... params) {
 			String result = null;
 
-			String declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
+			Long declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
 
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationsubtypes/" + declarationType);
+			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationtype/" + declarationType);
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);

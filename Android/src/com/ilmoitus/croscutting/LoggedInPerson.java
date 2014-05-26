@@ -8,6 +8,8 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONObject;
 
+import com.example.ilmoitus.R;
+
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -33,7 +35,7 @@ public class LoggedInPerson {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-		    HttpGet httpGet = new HttpGet("http://2.sns-ilmoitus.appspot.com/employees/details/" + id);
+		    HttpGet httpGet = new HttpGet("http://10.0.2.2:8080/employee/" + id);
 		    httpGet.setHeader("Authorization",LoggedInPerson.token);
 		    try {
 		        HttpResponse response = httpClient.execute(httpGet);
