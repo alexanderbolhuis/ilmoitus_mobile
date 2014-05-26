@@ -79,8 +79,8 @@
                 [declarationsFound addObject:declaration];
         }
         
-        [_declarationList removeAllObjects];
-        _declarationList = declarationsFound;
+        [self.declarationList removeAllObjects];
+        self.declarationList = declarationsFound;
         
         [self.tableView reloadData];
     [self.refreshControl endRefreshing];
