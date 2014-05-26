@@ -45,6 +45,16 @@
             android:label="title_activity_declare"
             android:screenOrientation="portrait" >
         </activity>
+     	<activity
+            android:name="com.ilmoitus.activity.DeclarationDetailsActivity"
+            android:label="title_activity_declare_item"
+            android:screenOrientation="portrait" >
+        </activity>
+      	<activity
+            android:name="com.ilmoitus.activity.DeclarationLineDetailsActivity"
+            android:label="title_activity_declare_item"
+            android:screenOrientation="portrait" >
+        </activity>
         <activity
             android:name="com.ilmoitus.activity.DeclareItemActivity"
             android:label="title_activity_declare_item"
