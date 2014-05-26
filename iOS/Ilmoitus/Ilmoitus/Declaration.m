@@ -10,4 +10,14 @@
 
 @implementation Declaration
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.lines = [[NSMutableArray alloc]init];
+        self.attachments = [[NSMutableArray alloc] init];
+    }
+    return self;
+}
+
 @end
