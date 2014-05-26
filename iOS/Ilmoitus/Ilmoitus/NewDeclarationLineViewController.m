@@ -9,6 +9,7 @@
 #import "NewDeclarationLineViewController.h"
 #import "Declaration.h"
 #import "DeclarationLine.h"
+#import "Attachment.h"
 #import "NewDeclarationViewController.h"
 
 @interface NewDeclarationLineViewController ()
@@ -16,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *typeField;
 @property (weak, nonatomic) IBOutlet UITextField *subtypeField;
 @property DeclarationLine *line;
+@property Attachment *attachment;
 @property (weak, nonatomic) IBOutlet UITextField *costField;
 @end
 
@@ -30,14 +32,74 @@
     return self;
 }
 
+-(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            [self addAttachmentFromPhotoLibrary];
+            break;
+        case 1:
+            [self addAttachmentFromCamera];
+            break;
+        default:
+            break;
+    }
+}
+
 - (IBAction)addAttachment:(id)sender {
-    // TODO replace deprecated presentModalViewController method
-    [self presentModalViewController:imagePicker animated:YES];
+    [[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"Close" destructiveButtonTitle:nil otherButtonTitles:@"Choose existing", @"Create new",  nil]showInView:self.view];
+}
+
+-(void)addAttachmentFromPhotoLibrary
+{
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        [self presentImagePicker];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Photo Library is not available" delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+-(void)addAttachmentFromCamera
+{
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+        [self presentImagePicker];
+    }
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Error" message:@"Camera is not available" delegate:nil cancelButtonTitle:@"Close" otherButtonTitles:nil];
+        [alert show];
+    }
+}
+
+-(void)presentImagePicker
+{
+    // Depreciated method removed
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    NSURL *imageURL = (NSURL *)[info valueForKey:UIImagePickerControllerReferenceURL];
+    
+    UIImage *image = (UIImage *)[info valueForKey:UIImagePickerControllerOriginalImage];
+    
+    _attachment = [[Attachment alloc]init];
+    [_attachment SetAttachmentDataFromImage:image];
+    _attachment.name = [imageURL path];
+    
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)viewDidLoad
@@ -50,7 +112,6 @@
     _typeField.delegate = self;
     _subtypeField.delegate = self;
     imagePicker.delegate = self;
-    imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     
     // Create blank line
     
@@ -67,9 +128,13 @@
         // TODO get date from datepicker(datefField) in right format
         _line.date = @"2014-05-15 07:27:33.448849";
         // Todo get subtypes
-        _line.subtype = 4957078112174080;
+        _line.subtype = 4519529661071360;
         
         [_declaration.lines addObject:_line];
+        if(_attachment != nil)
+        {
+            [_declaration.attachments addObject:_attachment];
+        }
         
         NewDeclarationViewController *declarationController =
         [segue destinationViewController];

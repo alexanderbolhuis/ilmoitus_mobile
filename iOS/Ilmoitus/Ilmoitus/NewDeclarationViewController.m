@@ -12,6 +12,7 @@
 #import "DeclarationLine.h"
 #import "Supervisor.h"
 #import "constants.h"
+#import "Attachment.h"
 
 @interface NewDeclarationViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *supervisor;
@@ -28,7 +29,7 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     _supervisor.delegate = self;
-    [_comment setReturnKeyType: UIReturnKeyDone];
+    [_comment setReturnKeyType: 	UIReturnKeyDone];
     _comment.delegate = self;
     
     [self getSupervisorList];
@@ -36,6 +37,8 @@
     if (_declaration == nil) {
         _declaration = [[Declaration alloc] init];
         _declaration.lines = [[NSMutableArray alloc] init];
+        _declaration.attachments = [[NSMutableArray alloc] init];
+
     }
     _comment.text = _declaration.comment;
 }
@@ -99,15 +102,22 @@
     
     // Lines
     NSMutableArray *declarationlines = [[NSMutableArray alloc] init];
-    for (DeclarationLine *line in decl.lines){
+    for (DeclarationLine *line in decl.lines)
+    {
         NSDictionary *currentline = @{@"receipt_date": line.date, @"cost":[NSNumber numberWithFloat:line.cost], @"declaration_sub_type":[NSNumber numberWithLongLong:line.subtype]};
         [declarationlines addObject:currentline];
     }
     
-    // TODO Attachments
+    // Attachments
+    NSMutableArray *attachments = [[NSMutableArray alloc] init];
+    for (Attachment *attachment in _declaration.attachments)
+    {
+        NSDictionary *currentAttachment = @{@"name":attachment.name, @"file":attachment.data};
+        [attachments addObject:currentAttachment];
+    }
     
     // Total dict
-    NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":@""};
+    NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":attachments};
     
     NSLog(@"JSON data that is going to be saved/sent: %@",params);
     
