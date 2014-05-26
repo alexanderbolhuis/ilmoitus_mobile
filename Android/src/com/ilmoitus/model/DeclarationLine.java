@@ -6,11 +6,12 @@ public class DeclarationLine implements Serializable
 {
 	private long id;
 	private String datum;
-	private String declaratieSoort;
-	private Long declaratieSubSoort;
+	private DeclarationTypes declaratieSoort;
+	private DeclarationSubTypes declaratieSubSoort;
 	private double bedrag;
 	
-	public DeclarationLine(Long id, String datum, String declaratieSoort, Long declaratieSubSoort, double bedrag){
+	public DeclarationLine(Long id, String datum, DeclarationTypes declaratieSoort, 
+			DeclarationSubTypes declaratieSubSoort, double bedrag){
 		this.id = id;
 		this.datum = datum;
 		this.declaratieSoort = declaratieSoort;
@@ -26,11 +27,11 @@ public class DeclarationLine implements Serializable
 		return datum;
 	}
 
-	public String getDeclaratieSoort() {
+	public DeclarationTypes getDeclaratieSoort() {
 		return declaratieSoort;
 	}
 
-	public Long getDeclaratieSubSoort() {
+	public DeclarationSubTypes getDeclaratieSubSoort() {
 		return declaratieSubSoort;
 	}
 
@@ -42,11 +43,11 @@ public class DeclarationLine implements Serializable
 		this.datum = datum;
 	}
 
-	public void setDeclaratieSoort(String declaratieSoort) {
+	public void setDeclaratieSoort(DeclarationTypes declaratieSoort) {
 		this.declaratieSoort = declaratieSoort;
 	}
 
-	public void setDeclaratieSubSoort(Long declaratieSubSoort) {
+	public void setDeclaratieSubSoort(DeclarationSubTypes declaratieSubSoort) {
 		this.declaratieSubSoort = declaratieSubSoort;
 	}
 

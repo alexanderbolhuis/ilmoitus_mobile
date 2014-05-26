@@ -24,6 +24,8 @@ import com.example.ilmoitus.R;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.DeclarationLine;
+import com.ilmoitus.model.DeclarationSubTypes;
+import com.ilmoitus.model.DeclarationTypes;
 import com.ilmoitus.model.Supervisor;
 import com.ilmoitus.adapter.DeclarationLineAdapter;
 
@@ -86,8 +88,8 @@ public class DeclareActivity extends Activity implements OnClickListener{
 					attachments = new ArrayList<String>();
 				}
 				Bundle b = data.getExtras();
-				DeclarationLine line = new DeclarationLine(b.getLong("id"), b.getString("date"), b.getString("declaratieSoort"), 
-						b.getLong("declaratieSubSoort"), b.getDouble("bedrag"));
+				DeclarationLine line = new DeclarationLine(b.getLong("id"), b.getString("date"), new DeclarationTypes(b.getString("declaratieSoort"), b.getLong("declaratieSoortId")), 
+						new DeclarationSubTypes(b.getString("declaratieSubSoort"), b.getLong("declaratieSubSoortId")), b.getDouble("bedrag"));
 				declarationLines.add(line);
 				totalPrice += b.getDouble("bedrag");
 				DeclarationLineAdapter ad = new DeclarationLineAdapter(this, declarationLines);
@@ -124,10 +126,12 @@ public class DeclareActivity extends Activity implements OnClickListener{
 			decl.put("created_at", new Date());
 			decl.put("created_by", LoggedInPerson.id);
 			decl.put("assigned_to", temp.getId());
+			decl.put("supervisor", temp.getId());
 			decl.put("comment", comment.getText());
 			decl.put("items_total_price", totalPrice);
 			decl.put("items_count", declarationLines.size());
 			decl.put("lines", linesToJSONArray());
+			decl.put("attachments", attachments);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -142,7 +146,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 			try {
 				temp.put("receipt_date", declarationLines.get(i).getDatum());
 				temp.put("cost", declarationLines.get(i).getBedrag());
-				temp.put("declaration_sub_type", declarationLines.get(i).getDeclaratieSubSoort());
+				temp.put("declaration_sub_type", declarationLines.get(i).getDeclaratieSubSoort().getId());
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -179,18 +183,24 @@ public class DeclareActivity extends Activity implements OnClickListener{
 
 		@Override
 		protected Void doInBackground(Void... params) {
+			String result = "";
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(getResources().getString(R.string.base_url) + "/declaration");
 			httpPost.setHeader("Authorization", LoggedInPerson.token);
 			try{
-				JSONArray lines = linesToJSONArray();
 				JSONObject decl = createDeclaration();
 				JSONObject totalDeclaration = new JSONObject();
 				totalDeclaration.put("declaration", decl);
-				totalDeclaration.put("lines", lines);
-				totalDeclaration.put("attachments", new JSONArray(attachments));
 				httpPost.setEntity(new StringEntity(totalDeclaration.toString()));
 				HttpResponse response = httpClient.execute(httpPost);
+				InputStream inputStream = response.getEntity().getContent();
+				if (inputStream != null) {
+					// parse the inputStream to string
+					result = InputStreamConverter
+							.convertInputStreamToString(inputStream);
+				} else {
+					result = "Did not Work";
+				}
 			}catch(Exception e){
 				e.printStackTrace();
 			}
@@ -217,7 +227,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(
-					getResources().getString(R.string.base_url)  + "/supervisors/");
+					getResources().getString(R.string.base_url)  + "/current_user/supervisors");
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);

@@ -17,6 +17,8 @@ import com.ilmoitus.adapter.DeclarationLineAdapter;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.DeclarationLine;
+import com.ilmoitus.model.DeclarationSubTypes;
+import com.ilmoitus.model.DeclarationTypes;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -48,8 +50,14 @@ public class DeclarationDetailsActivity extends Activity{
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				DeclarationLine line = decLines.get(position);
+				DeclarationSubTypes t = line.getDeclaratieSubSoort();
 				Intent intent = new Intent(getApplicationContext(), DeclarationLineDetailsActivity.class);
-				intent.putExtra("lineId", line.getId());
+				Bundle b = new Bundle();
+				b.putString("datum", line.getDatum());
+				b.putString("declaratieSoort", line.getDeclaratieSoort().getName());
+				b.putString("declaratieSubSoort", line.getDeclaratieSubSoort().getName());
+				b.putDouble("cost", line.getBedrag());
+				intent.putExtra("data", b);
 				startActivity(intent);
 			}
 			
@@ -91,19 +99,25 @@ public class DeclarationDetailsActivity extends Activity{
 		protected void onPostExecute(String result) {
 			try {
 				JSONObject declarationDetails = new JSONObject(result);
-				
-				TextView totalPrice = (TextView) findViewById(R.id.totalPrice);
-				totalPrice.setText("\u20AC" + declarationDetails.getString("items_total_price"));
-				
+				JSONObject supervisor = (JSONObject) declarationDetails.get("last_assigned_to");				
 				JSONArray lines = (JSONArray) declarationDetails.get("lines");
 				for(int i = 0; i < lines.length(); i++){
 					JSONObject line = lines.getJSONObject(i);
-					DeclarationLine declLine = new DeclarationLine(line.getLong("id"), line.getString("receipt_date"), null,
-							line.getLong("declaration_sub_type"), line.getInt("cost"));
-					decLines.add(declLine);
+					JSONObject declarationType = (JSONObject) line.get("declaration_type");
+					JSONObject declarationSubType = (JSONObject) line.get("declaration_sub_type");
+					DeclarationLine decLine = new DeclarationLine(line.getLong("id"), line.getString("receipt_date"),
+							new DeclarationTypes(declarationType.getString("name"), declarationType.getLong("id")), 
+							new DeclarationSubTypes(declarationSubType.getString("name"), declarationSubType.getLong("id")), line.getInt("cost"));
+					decLines.add(decLine);
 				}
 				DeclarationLineAdapter decLineAdapter = new DeclarationLineAdapter(activity, decLines);
 				context.setAdapter(decLineAdapter);
+				TextView totalPrice = (TextView) findViewById(R.id.totalPrice);
+				totalPrice.setText("\u20AC" + declarationDetails.getString("items_total_price"));
+				
+				TextView supervisorTextView = (TextView) findViewById(R.id.leidinggevende);
+				supervisorTextView.setText(String.format("%s %s", supervisor.getString("first_name"), supervisor.getString("last_name")));
+				
 				MultiAutoCompleteTextView comment = (MultiAutoCompleteTextView) findViewById(R.id.comment);
 				comment.setText(declarationDetails.getString("comment"));
 				comment.setEnabled(false);
