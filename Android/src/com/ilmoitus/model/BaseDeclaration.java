@@ -2,6 +2,7 @@ package com.ilmoitus.model;
 
 public class BaseDeclaration 
 {
+	private long id;
 	private String createdAt;
 	private String createdBy;
 	private String assignedTo;
@@ -9,13 +10,18 @@ public class BaseDeclaration
 	private double itemsTotalPrice;
 	private int itemsCount;
 	
-	public BaseDeclaration(String createdAt, String createdBy, String assignedTo, String comment
+	public BaseDeclaration(long id, String createdAt, String createdBy, String assignedTo, String comment
 			,double itemsTotalPrice){
+		this.id = id;
 		this.createdAt = createdAt;
 		this.createdBy = createdBy;
 		this.assignedTo = assignedTo;
 		this.comment = comment;
 		this.itemsTotalPrice = itemsTotalPrice;
+	}
+	
+	public long getId(){
+		return id;
 	}
 	
 	public String getCreatedAt() {

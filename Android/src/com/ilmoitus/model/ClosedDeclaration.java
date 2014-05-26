@@ -9,7 +9,7 @@ public class ClosedDeclaration extends BaseDeclaration
 	private String supervisorComment;
 	
 	public ClosedDeclaration(JSONObject declaration) throws JSONException{
-		super(declaration.getString("created_at"), declaration.getString("created_by"), declaration.getString("assigned_to"), 
+		super(declaration.getLong("id"), declaration.getString("created_at"), declaration.getString("created_by"), declaration.getString("assigned_to"), 
 				declaration.getString("comment"), declaration.getDouble("items_total_price"));
 		this.lockedAt = declaration.getString("locked_at");
 		this.supervisorComment = declaration.getString("supervisor_comment");

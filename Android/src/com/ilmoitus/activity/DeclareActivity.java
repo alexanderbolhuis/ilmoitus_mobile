@@ -84,8 +84,8 @@ public class DeclareActivity extends Activity implements OnClickListener{
 					attachments = new ArrayList<String>();
 				}
 				Bundle b = data.getExtras();
-				DeclarationLine line = new DeclarationLine(b.getString("date"), b.getString("declaratieSoort"), b.getLong("declaratieSubSoort"),
-						b.getDouble("bedrag"));
+				DeclarationLine line = new DeclarationLine(b.getLong("id"), b.getString("date"), b.getString("declaratieSoort"), 
+						b.getLong("declaratieSubSoort"), b.getDouble("bedrag"));
 				declarationLines.add(line);
 				totalPrice += b.getDouble("bedrag");
 				DeclarationLineAdapter ad = new DeclarationLineAdapter(this, declarationLines);
