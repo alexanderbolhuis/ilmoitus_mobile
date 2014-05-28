@@ -25,8 +25,7 @@
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
    				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"/>
+   				android:textSize="12sp"/>
        	</LinearLayout>
        	
        	<LinearLayout 
@@ -45,8 +44,7 @@
                 android:id="@+id/declarationtype"
                 android:layout_width="wrap_content"
    				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"/>
+   				android:textSize="12sp"/>
        	</LinearLayout>
        	
       	<LinearLayout 
@@ -65,8 +63,7 @@
                 android:id="@+id/declarationsubtype"
                 android:layout_width="wrap_content"
    				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"/>
+   				android:textSize="12sp"/>
        	</LinearLayout>
        	
      	<LinearLayout 
@@ -85,8 +82,7 @@
                 android:id="@+id/cost"
                 android:layout_width="wrap_content"
    				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"/>
+   				android:textSize="12sp"/>
        	</LinearLayout>
 
     	<TextView

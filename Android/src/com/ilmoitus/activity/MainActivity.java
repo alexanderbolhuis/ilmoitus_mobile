@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) +
-					"/declarations/employee");
+					"/current_user/declarations");
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);

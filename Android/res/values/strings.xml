@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	
-    <string name="base_url">http://10.0.2.2:8080</string>
+    <string name="base_url">http://5.sns-ilmoitus.appspot.com</string>
     
     <string name="app_name">Ilmoitus</string>
     <string name="action_settings">Settings</string>
