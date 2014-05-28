@@ -53,7 +53,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 	private Button addDeclaration;
 	private Spinner spinner1;
 	private ArrayList<Supervisor> supervisors;
-	private ArrayList<String> attachments;
+	private ArrayList<JSONObject> attachments;
 	private double totalPrice;
 	private DecimalFormat currencyFormat; 
 	
@@ -83,7 +83,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 					declarationLines = new ArrayList<DeclarationLine>();
 				}
 				if(attachments == null){
-					attachments = new ArrayList<String>();
+					attachments = new ArrayList<JSONObject>();
 				}
 				Bundle b = data.getExtras();
 				DeclarationLine line = new DeclarationLine(b.getLong("id"), b.getString("date"), new DeclarationTypes(b.getString("declaratieSoort"), b.getLong("declaratieSoortId")), 
@@ -93,7 +93,11 @@ public class DeclareActivity extends Activity implements OnClickListener{
 				DeclarationLineAdapter ad = new DeclarationLineAdapter(this, declarationLines);
 				ArrayList<String> temp = b.getStringArrayList("attachments");
 				for(int i = 0; i <temp.size(); i++){
-					attachments.add(temp.get(i));
+					try {
+						attachments.add(new JSONObject(temp.get(i)));
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 				}
 				TextView price = (TextView) findViewById(R.id.totalPrice);
 				price.setText("\u20AC" + currencyFormat.format(totalPrice));
@@ -102,8 +106,8 @@ public class DeclareActivity extends Activity implements OnClickListener{
 				layout.removeAllViews();
 				final int adapterCount = ad.getCount();
 				for (int i = 0; i < adapterCount; i++) {
-				  View item = ad.getView(i, null, null);
-				  layout.addView(item);
+					View item = ad.getView(i, null, null);
+					layout.addView(item);
 				}
 			}
 		}
@@ -124,14 +128,22 @@ public class DeclareActivity extends Activity implements OnClickListener{
 			decl.put("items_total_price", totalPrice);
 			decl.put("items_count", declarationLines.size());
 			decl.put("lines", linesToJSONArray());
-			decl.put("attachments", attachments);
+			decl.put("attachments", new JSONArray(attachments));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 		return decl;
 	}
 	
-	public JSONArray linesToJSONArray()
+	private JSONArray attachmentsToJSONArray(){
+		JSONArray attach = new JSONArray();
+		for(int i = 0; i < declarationLines.size(); i++){
+			JSONObject temp = new JSONObject();
+		}
+		return attach;
+	}
+	
+	private JSONArray linesToJSONArray()
 	{
 		JSONArray lines = new JSONArray();
 		for(int i = 0; i < declarationLines.size(); i++){

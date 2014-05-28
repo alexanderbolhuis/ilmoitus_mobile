@@ -1,22 +1,17 @@
 package com.ilmoitus.activity;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
@@ -29,8 +24,6 @@ import com.ilmoitus.model.DeclarationTypes;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Base64;
@@ -44,7 +37,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -215,7 +207,14 @@ public class DeclareLineActivity extends Activity implements
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte [] b=baos.toByteArray();
         String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return String.format("name:%s;data:%s;base64,%s", "niek", "image/jpeg", temp);
+        JSONObject object = new JSONObject();
+        try{
+        	object.put("name", bitmap.toString());
+        	object.put("file", String.format("data:%s;base64,%s", "image/jpeg", temp));
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
+        return object.toString();
 	}
 
 	public void showDatePickerDialog(View v) {
@@ -332,11 +331,9 @@ public class DeclareLineActivity extends Activity implements
 		}
 
 		protected void onPostExecute(String result) {
-
 			try {
 				JSONArray declarationSubTypes = new JSONArray(result);
 				declarationSubTypesList.clear();
-
 				for (int i = 0; i < declarationSubTypes.length(); i++) {
 					JSONObject object = declarationSubTypes.getJSONObject(i);
 					String name = object.getString("name");
@@ -352,16 +349,13 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	public class spinnerListener implements OnItemSelectedListener {
-
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View view, int pos,
 				long arg3) {
 			spinnerDeclarationTypesPosition = pos;
-
 			new GetDeclerationSubTypesTask().execute();
-
 		}
-
+		
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}

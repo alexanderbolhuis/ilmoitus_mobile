@@ -31,5 +31,16 @@ public class DeclarationLineDetailsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_declarationline_details);
 		Bundle data = (Bundle) getIntent().getExtras().get("data");
+		TextView date = (TextView) findViewById(R.id.date);
+		date.setText(data.getString("datum"));
+		
+		TextView declarationType = (TextView) findViewById(R.id.declarationtype);
+		declarationType.setText(data.getString("declaratieSoort"));
+		
+		TextView declarationSubType = (TextView) findViewById(R.id.declarationsubtype);
+		declarationSubType.setText(data.getString("declaratieSubSoort"));
+		
+		TextView cost = (TextView) findViewById(R.id.cost);
+		cost.setText("\u20AC" + data.getDouble("cost"));
 	}	
 }
