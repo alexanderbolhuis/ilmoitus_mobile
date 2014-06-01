@@ -6,6 +6,7 @@ import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.BaseDeclaration;
 import com.ilmoitus.model.ClosedDeclaration;
+import com.ilmoitus.model.DeclarationLine;
 import com.ilmoitus.model.OpenDeclaration;
 
 import android.os.AsyncTask;
@@ -14,10 +15,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -43,6 +46,17 @@ public class MainActivity extends Activity {
 		overviewButton.setEnabled(false);
 		listView = (ListView) findViewById(R.id.list);
 		new GetDeclerationsTask(this, listView).execute();
+		listView.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				BaseDeclaration declaration = declarations.get(position);
+				Intent intent = new Intent(getApplicationContext(), DeclarationDetailsActivity.class);
+				intent.putExtra("decId", declaration.getId());
+				startActivity(intent);
+			}
+			
+		});
 	}
 
 	public void onButtonClick(View view) {
@@ -69,7 +83,7 @@ public class MainActivity extends Activity {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
 			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) +
-					"/declarations/employee");
+					"/current_user/declarations");
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);

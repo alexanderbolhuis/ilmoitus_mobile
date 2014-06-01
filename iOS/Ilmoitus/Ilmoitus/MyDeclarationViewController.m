@@ -67,8 +67,10 @@
         for (NSDictionary *decl in json) {
                 Declaration *declaration = [[Declaration alloc] init];
                 declaration.status = decl[@"state"];
-                declaration.amount = 10.00;
-                // declaration.amount = decl[@"items_total_price"];
+            
+                // TODO get totalprice from json data
+                declaration.itemsTotalPrice = 10.00;
+                // declaration.itemsTotalPrice = decl[@"items_total_price"];
                 NSDateFormatter *formatter = [NSDateFormatter new];
                 formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
             
@@ -81,9 +83,9 @@
         [_declarationList removeAllObjects];
         _declarationList = declarationsFound;
         
-        NSLog(@"%@", json);
+        NSLog(@"GET request success response: %@", json);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+        NSLog(@"GET request Error: %@", error);
     }];
     
     // Reload the data
@@ -132,7 +134,7 @@
     
     amountLabel = (UILabel *)[cell viewWithTag:3];
     [amountLabel adjustsFontSizeToFitWidth];
-    NSString* formattedAmount = [NSString stringWithFormat:@"%.02f", declaration.amount];
+    NSString* formattedAmount = [NSString stringWithFormat:@"%.02f", declaration.itemsTotalPrice];
     amountLabel.text = [NSString stringWithFormat:@"€%@", formattedAmount];
     
     return cell;

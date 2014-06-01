@@ -28,7 +28,8 @@
                     style="@style/ContainerItem"
                     android:layout_width="0dp"
                     android:layout_weight="3"
-                    android:clickable="false"
+                    android:clickable="true"
+                    android:onClick="showDatePickerDialog"
                     android:cursorVisible="false"
                     android:ems="10"
                     android:focusable="false"
@@ -70,6 +71,7 @@
                 android:id="@+id/editCurrency"
                 style="@style/EditText"
                 android:hint="Bedrag"
+                android:digits="0123456789,"
                 android:inputType="numberDecimal" />
 
             <TextView
@@ -81,6 +83,12 @@
                 style="@style/Button"
                 android:onClick="onAddImageButtonClick"
                 android:text="@string/addImage" />
+            
+            <ImageView
+                android:id="@+id/mImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
 
             <TextView
                 style="@style/TextViewSubTitle"
@@ -92,15 +100,16 @@
 
             <LinearLayout style="@style/ContainerItemWithMarginTop" >
 
-                <Button
-                    
+                <Button            
                     android:id="@+id/buttonCancel"
                     style="@style/ContainerButtonCommit"
+                    android:layout_marginRight="2dp"
                     android:text="@string/cancel" />
 
                 <Button
                     android:id="@+id/buttonAdd"
                     style="@style/ContainerButtonCommit"
+                    android:layout_marginLeft="2dp"
                     android:text="@string/add" />
             </LinearLayout>
         </LinearLayout>

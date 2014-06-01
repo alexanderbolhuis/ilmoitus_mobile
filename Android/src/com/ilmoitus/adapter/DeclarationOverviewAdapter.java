@@ -1,5 +1,6 @@
 package com.ilmoitus.adapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import com.example.ilmoitus.R;
@@ -20,12 +21,15 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 	private LayoutInflater inflator;
 	private Activity activity;
 	private ArrayList<BaseDeclaration> declarations;
+	private DecimalFormat currencyFormat;
 	
 	public DeclarationOverviewAdapter(Activity activity, ArrayList<BaseDeclaration> declarations)
 	{
 		this.activity = activity;
 		this.declarations = declarations;
 		this.inflator = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		
+		currencyFormat = new DecimalFormat("0.00");
 	}
 
 	public int getCount() {
@@ -55,11 +59,11 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		TextView bottom = (TextView) rowView.findViewById(R.id.text2);
 		if(openDeclaration != null){
 			top.setText("Declaratie op " + openDeclaration.getCreatedAt().substring(0, 10));
-			bottom.setText("open " + "\u20AC" + openDeclaration.getItemsTotalPrice());
+			bottom.setText("open " + "\u20AC" + currencyFormat.format(openDeclaration.getItemsTotalPrice()));
 		}
 		if(closedDeclaration != null){
 			top.setText("Declaratie op " + closedDeclaration.getCreatedAt().substring(0, 10));
-			bottom.setText("in behandeling " + "\u20AC" + closedDeclaration.getItemsTotalPrice());
+			bottom.setText("in behandeling " + "\u20AC" + currencyFormat.format(closedDeclaration.getItemsTotalPrice()));
 		}
 		return rowView;
 	}

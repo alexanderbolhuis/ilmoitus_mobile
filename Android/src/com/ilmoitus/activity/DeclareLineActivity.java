@@ -1,11 +1,7 @@
 package com.ilmoitus.activity;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,6 +11,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
@@ -27,10 +24,9 @@ import com.ilmoitus.model.DeclarationTypes;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.InputFilter;
-import android.util.Log;
+import android.util.Base64;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -38,9 +34,9 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -56,8 +52,9 @@ public class DeclareLineActivity extends Activity implements
 	private Spinner spinnerDeclarationTypes, spinnerDeclarationSubTypes;
 	private Calendar date;
 	private TextView title;
-	private EditText currency;
-	private EditText dateField;
+	private EditText currency, dateField;
+	private ImageView photo;
+	private ArrayList<String> attachmentsData = new ArrayList<String>();
 
 	int spinnerDeclarationTypesPosition, spinnerDeclarationSubTypesPosition;
 
@@ -86,6 +83,8 @@ public class DeclareLineActivity extends Activity implements
 
 		spinnerDeclarationSubTypes = (Spinner) findViewById(R.id.spinnerDeclarationSubType);
 		spinnerDeclarationSubTypesPosition = 0;
+		
+		photo = (ImageView) findViewById(R.id.mImageView);
 
 		if (savedInstanceState == null) {
 			date = Calendar.getInstance();
@@ -123,44 +122,46 @@ public class DeclareLineActivity extends Activity implements
 	public void onAddButtonClick() {
 		Bundle b = new Bundle();
 		b.putString("date", dateField.getText().toString());
-		b.putInt("bedrag", Integer.parseInt(currency.getText().toString()));
-		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).toString());
-		b.putLong("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
+		String bedrag = currency.getText().toString().replace(",", ".");
+		
+		b.putDouble("bedrag", Double.parseDouble(bedrag));
+		b.putStringArrayList("attachments", attachmentsData);
+		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).getName());
+		b.putLong("declaratieSoortId", declarationTypesList.get(spinnerDeclarationTypesPosition).getId());
+		b.putString("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getName());
+		b.putLong("declaratieSubSoortId", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
 		Intent i = new Intent(this, DeclareActivity.class);
 		i.putExtras(b);
 		setResult(RESULT_OK, i);
 		finish();
 	}
 
-	// TODO/UNDER CONSTRUCTION Foto maken
+	// TODO Make Photo / Select from library and post + display by Murat Aydin
 	public void onAddImageButtonClick(View view) {
 		selectImage();
 	}
 
 	private void selectImage() {
-		final CharSequence[] options = { "Maak Foto",
-				"Kies uit fotobibliotheek", "Cancel" };
+		final CharSequence[] options = { "Foto via Camera",
+				"Foto via bibliotheek", "Annuleer" };
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				DeclareLineActivity.this);
-		builder.setTitle("Voeg foto toe!");
+		builder.setTitle("Maak / Kies foto:");
 		builder.setItems(options, new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int item) {
 				// TODO Auto-generated method stub
-				if (options[item].equals("Maak Foto")) {
+				if (options[item].equals("Foto via Camera")) {
 					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					File f = new File(android.os.Environment
-							.getExternalStorageDirectory(), "temp.jpg");
-					intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
 					startActivityForResult(intent, 1);
-				} else if (options[item].equals("Kies uit fotobibliotheek")) {
+				} else if (options[item].equals("Foto via bibliotheek")) {
 					Intent intent = new Intent(
 							Intent.ACTION_PICK,
 							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
 					startActivityForResult(intent, 2);
-				} else if (options[item].equals("Cancel")) {
+				} else if (options[item].equals("Annuleer")) {
 					dialog.dismiss();
 				}
 			}
@@ -170,49 +171,18 @@ public class DeclareLineActivity extends Activity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data); 
 		if (resultCode == RESULT_OK) {
 			if (requestCode == 1) {
-				File f = new File(Environment.getExternalStorageDirectory()
-						.toString());
-				for (File temp : f.listFiles()) {
-					if (temp.getName().equals("temp.jpg")) {
-						f = temp;
-						break;
-					}
-				}
-				try {
-					Bitmap bitmap;
-					BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-					bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-							bitmapOptions);
-					// viewImage.setImageBitmap(bitmap);
-					String path = android.os.Environment
-							.getExternalStorageDirectory()
-							+ File.separator
-							+ "Phoenix" + File.separator + "default";
-					f.delete();
-					OutputStream outFile = null;
-
-					File file = new File(path, String.valueOf(System
-							.currentTimeMillis()) + ".jpg");
-
-					try {
-
-						outFile = new FileOutputStream(file);
-						bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
-						outFile.flush();
-						outFile.close();
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+				Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
+				
+				// test voor het ophalen om het te zien
+				photo.setImageBitmap(imageBitmap);		
+				
+				//ArrayList base64 string		
+				attachmentsData.add(BitmapToBase64String(imageBitmap));
+				
+				
 			} else if (requestCode == 2) {
 				Uri selectedImage = data.getData();
 				String[] filePath = { MediaStore.Images.Media.DATA };
@@ -222,12 +192,29 @@ public class DeclareLineActivity extends Activity implements
 				int columnIndex = c.getColumnIndex(filePath[0]);
 				String picturePath = c.getString(columnIndex);
 				c.close();
-				Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
-				Log.w("path of image from gallery......******************.........",
-						picturePath + "");
-				// viewImage.setImageBitmap(thumbnail);
+				Bitmap imageBitmap = (BitmapFactory.decodeFile(picturePath));
+				photo.setImageBitmap(imageBitmap);
+				
+				//ArrayList base64 string
+				attachmentsData.add(BitmapToBase64String(imageBitmap));
 			}
 		}
+	}
+	
+	private String BitmapToBase64String(Bitmap bitmap)
+	{
+		ByteArrayOutputStream baos = new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte [] b=baos.toByteArray();
+        String temp = Base64.encodeToString(b, Base64.DEFAULT);
+        JSONObject object = new JSONObject();
+        try{
+        	object.put("name", bitmap.toString());
+        	object.put("file", String.format("data:%s;base64,%s", "image/jpeg", temp));
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
+        return object.toString();
 	}
 
 	public void showDatePickerDialog(View v) {
@@ -290,7 +277,7 @@ public class DeclareLineActivity extends Activity implements
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				e.printStackTrace();
 			}
 			return result;
 		}
@@ -303,7 +290,7 @@ public class DeclareLineActivity extends Activity implements
 					JSONObject object = declarationTypes.getJSONObject(i);
 
 					String name = object.getString("name");
-					String id = object.getString("id");
+					Long id = object.getLong("id");
 
 					declarationTypesList.add(new DeclarationTypes(name, id));
 				}
@@ -323,10 +310,10 @@ public class DeclareLineActivity extends Activity implements
 		protected String doInBackground(Void... params) {
 			String result = null;
 
-			String declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
+			Long declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
 
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationsubtypes/" + declarationType);
+			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationtype/" + declarationType);
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
@@ -338,17 +325,15 @@ public class DeclareLineActivity extends Activity implements
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				//Log.d("InputStream", e.getLocalizedMessage());
 			}
 			return result;
 		}
 
 		protected void onPostExecute(String result) {
-
 			try {
 				JSONArray declarationSubTypes = new JSONArray(result);
 				declarationSubTypesList.clear();
-
 				for (int i = 0; i < declarationSubTypes.length(); i++) {
 					JSONObject object = declarationSubTypes.getJSONObject(i);
 					String name = object.getString("name");
@@ -364,20 +349,15 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	public class spinnerListener implements OnItemSelectedListener {
-
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View view, int pos,
 				long arg3) {
 			spinnerDeclarationTypesPosition = pos;
-
 			new GetDeclerationSubTypesTask().execute();
-
 		}
-
+		
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
-			Log.d("myapp", "niks: ");
-
 		}
 	}
 }

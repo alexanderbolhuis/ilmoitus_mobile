@@ -1,38 +1,59 @@
 package com.ilmoitus.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-
-import android.graphics.Bitmap;
 
 public class DeclarationLine implements Serializable
 {
+	private long id;
 	private String datum;
-	private String declaratieSoort;
-	private Long declaratieSubSoort;
-	private int bedrag;
+	private DeclarationTypes declaratieSoort;
+	private DeclarationSubTypes declaratieSubSoort;
+	private double bedrag;
 	
-	public DeclarationLine(String datum, String declaratieSoort, Long declaratieSubSoort, int bedrag){
+	public DeclarationLine(Long id, String datum, DeclarationTypes declaratieSoort, 
+			DeclarationSubTypes declaratieSubSoort, double bedrag){
+		this.id = id;
 		this.datum = datum;
 		this.declaratieSoort = declaratieSoort;
 		this.declaratieSubSoort = declaratieSubSoort;
 		this.bedrag = bedrag;
 	}
 	
+	public long getId(){
+		return id;
+	}
+	
 	public String getDatum() {
 		return datum;
 	}
 
-	public String getDeclaratieSoort() {
+	public DeclarationTypes getDeclaratieSoort() {
 		return declaratieSoort;
 	}
 
-	public Long getDeclaratieSubSoort() {
+	public DeclarationSubTypes getDeclaratieSubSoort() {
 		return declaratieSubSoort;
 	}
 
-	public int getBedrag() {
+	public double getBedrag() {
 		return bedrag;
 	}
+
+	public void setDatum(String datum) {
+		this.datum = datum;
+	}
+
+	public void setDeclaratieSoort(DeclarationTypes declaratieSoort) {
+		this.declaratieSoort = declaratieSoort;
+	}
+
+	public void setDeclaratieSubSoort(DeclarationSubTypes declaratieSubSoort) {
+		this.declaratieSubSoort = declaratieSubSoort;
+	}
+
+	public void setBedrag(double bedrag) {
+		this.bedrag = bedrag;
+	}
+	
+	
 }
