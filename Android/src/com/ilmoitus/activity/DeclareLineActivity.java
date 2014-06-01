@@ -1,10 +1,6 @@
 package com.ilmoitus.activity;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.ParseException;
@@ -19,6 +15,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
@@ -31,8 +28,6 @@ import com.ilmoitus.model.DeclarationTypes;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Base64;
@@ -143,12 +138,10 @@ public class DeclareLineActivity extends Activity implements
 
 			b.putDouble("bedrag", Double.parseDouble(bedrag));
 			b.putStringArrayList("attachments", attachmentsData);
-			b.putString("declaratieSoort",
-					declarationTypesList.get(spinnerDeclarationTypesPosition)
-							.toString());
-			b.putLong("declaratieSubSoort",
-					((DeclarationSubTypes) spinnerDeclarationSubTypes
-							.getSelectedItem()).getId());
+			b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).getName());
+			b.putLong("declaratieSoortId", declarationTypesList.get(spinnerDeclarationTypesPosition).getId());
+			b.putString("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getName());
+			b.putLong("declaratieSubSoortId", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
 			Intent i = new Intent(this, DeclareActivity.class);
 			i.putExtras(b);
 			setResult(RESULT_OK, i);
@@ -316,7 +309,14 @@ public class DeclareLineActivity extends Activity implements
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte [] b=baos.toByteArray();
         String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return "data:image/jpeg;base64," + temp;
+        JSONObject object = new JSONObject();
+        try{
+        	object.put("name", bitmap.toString());
+        	object.put("file", String.format("data:%s;base64,%s", "image/jpeg", temp));
+        }catch(Exception e){
+        	e.printStackTrace();
+        }
+        return object.toString();
 	}
 
 	public void showDatePickerDialog(View v) {
@@ -392,7 +392,7 @@ public class DeclareLineActivity extends Activity implements
 					JSONObject object = declarationTypes.getJSONObject(i);
 
 					String name = object.getString("name");
-					String id = object.getString("id");
+					Long id = object.getLong("id");
 
 					declarationTypesList.add(new DeclarationTypes(name, id));
 				}
@@ -412,10 +412,10 @@ public class DeclareLineActivity extends Activity implements
 		protected String doInBackground(Void... params) {
 			String result = null;
 
-			String declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
+			Long declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
 
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationsubtypes/" + declarationType);
+			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationtype/" + declarationType);
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
@@ -433,11 +433,9 @@ public class DeclareLineActivity extends Activity implements
 		}
 
 		protected void onPostExecute(String result) {
-
 			try {
 				JSONArray declarationSubTypes = new JSONArray(result);
 				declarationSubTypesList.clear();
-
 				for (int i = 0; i < declarationSubTypes.length(); i++) {
 					JSONObject object = declarationSubTypes.getJSONObject(i);
 					String name = object.getString("name");
@@ -453,16 +451,13 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	public class spinnerListener implements OnItemSelectedListener {
-
 		@Override
 		public void onItemSelected(AdapterView<?> arg0, View view, int pos,
 				long arg3) {
 			spinnerDeclarationTypesPosition = pos;
-
 			new GetDeclerationSubTypesTask().execute();
-
 		}
-
+		
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}

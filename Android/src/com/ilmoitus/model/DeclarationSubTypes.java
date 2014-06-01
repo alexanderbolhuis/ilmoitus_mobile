@@ -1,6 +1,9 @@
 package com.ilmoitus.model;
 
-public class DeclarationSubTypes {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class DeclarationSubTypes implements Parcelable {
 	private String Name;
 	private Long id;
 	
@@ -20,5 +23,17 @@ public class DeclarationSubTypes {
 	public String toString()
 	{
 		return Name;
+	}
+
+	@Override
+	public int describeContents() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		// TODO Auto-generated method stub
+		
 	}
 }
