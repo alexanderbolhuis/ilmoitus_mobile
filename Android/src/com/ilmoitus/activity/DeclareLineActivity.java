@@ -2,9 +2,13 @@ package com.ilmoitus.activity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -27,6 +31,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.InputFilter;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -37,6 +42,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
@@ -120,21 +126,117 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	public void onAddButtonClick() {
-		Bundle b = new Bundle();
-		b.putString("date", dateField.getText().toString());
-		String bedrag = currency.getText().toString().replace(",", ".");
-		
-		b.putDouble("bedrag", Double.parseDouble(bedrag));
-		b.putStringArrayList("attachments", attachmentsData);
-		b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).getName());
-		b.putLong("declaratieSoortId", declarationTypesList.get(spinnerDeclarationTypesPosition).getId());
-		b.putString("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getName());
-		b.putLong("declaratieSubSoortId", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
-		Intent i = new Intent(this, DeclareActivity.class);
-		i.putExtras(b);
-		setResult(RESULT_OK, i);
-		finish();
+
+		boolean currencyCheck = checkValidCurrency();
+		boolean dateCheck = checkValidDate();
+		boolean soortTypes = checkValidTypes();
+
+		if (dateCheck && currencyCheck) {
+			Bundle b = new Bundle();
+			b.putString("date", dateField.getText().toString());
+			String bedrag = currency.getText().toString().replace(",", ".");
+
+			b.putDouble("bedrag", Double.parseDouble(bedrag));
+			b.putStringArrayList("attachments", attachmentsData);
+			b.putString("declaratieSoort",declarationTypesList.get(spinnerDeclarationTypesPosition).getName());
+			b.putLong("declaratieSoortId", declarationTypesList.get(spinnerDeclarationTypesPosition).getId());
+			b.putString("declaratieSubSoort", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getName());
+			b.putLong("declaratieSubSoortId", ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getId());
+			Intent i = new Intent(this, DeclareActivity.class);
+			i.putExtras(b);
+			setResult(RESULT_OK, i);
+			finish();
+		} else {
+			Toast.makeText(getApplicationContext(),
+					"Declaratie regel bevat fouten", Toast.LENGTH_LONG).show();
+		}
 	}
+
+	public boolean checkValidDate() {
+
+		TextView dateFieldError = (TextView) findViewById(R.id.dateError);
+
+		if (dateField.getText().toString().matches("")) {
+			dateFieldError.setText("Geen datum opgegeven!");
+			dateFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		sdf.setLenient(false);
+
+		Date dateOfDeclarationLine;
+
+		try {
+			// if not valid, it will throw ParseException
+			dateOfDeclarationLine = sdf.parse(dateField.getText().toString());
+
+		} catch (ParseException e) {
+
+			dateFieldError.setText("Geen Geldige datum!");
+			dateFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+
+		Date datNow = new Date();
+
+		if (dateOfDeclarationLine.after(datNow)) {
+			dateFieldError.setText("Datum ligt niet in het verleden!");
+			dateFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+
+		dateFieldError.setText("");
+		dateFieldError.setVisibility(View.GONE);
+		return true;
+	}
+
+	public boolean checkValidCurrency() {
+
+		TextView currencyFieldError = (TextView) findViewById(R.id.currencyError);
+
+		if (currency.getText().toString().matches("")) {
+			currencyFieldError.setText("Geen bedrag opgegeven!");
+			currencyFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+
+		if (!currency.getText().toString()
+				.matches("(0|[1-9]+[0-9]*)?(\\,[0-9]{0,2})?")) {
+			currencyFieldError.setText("Geen gedig bedrag!");
+			currencyFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+		
+		currencyFieldError.setText("");
+		currencyFieldError.setVisibility(View.GONE);
+		return true;
+	}
+
+	public boolean checkValidTypes() {
+		
+		TextView typeFieldError = (TextView) findViewById(R.id.typeError);
+
+		
+		if(declarationTypesList.get(spinnerDeclarationTypesPosition)
+				.toString().matches("")){
+			typeFieldError.setText("Geen declaratie type geselecteerd!");
+			typeFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+		
+		if(((DeclarationSubTypes) spinnerDeclarationSubTypes
+				.getSelectedItem()).getId().toString().matches("")){
+			typeFieldError.setText("Geen declaratie subtype geselecteerd!");
+			typeFieldError.setVisibility(View.VISIBLE);
+			return false;
+		}
+		
+		typeFieldError.setText("");
+		typeFieldError.setVisibility(View.GONE);
+		return true;
+	}
+	
 
 	// TODO Make Photo / Select from library and post + display by Murat Aydin
 	public void onAddImageButtonClick(View view) {

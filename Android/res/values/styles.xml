@@ -60,6 +60,15 @@ backward-compatibility can go here.
         <item name="android:textColor">@color/coloredText</item>
         <item name="android:textSize">14sp</item>
     </style>
+    
+    <style name="TextViewError">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:visibility">gone</item>
+        <item name="android:textColor">@color/coloredTextError</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="TextViewDeclarationLine">
         <item name="android:layout_width">match_parent</item>
@@ -156,6 +165,7 @@ backward-compatibility can go here.
     </style>
 
     <color name="coloredText">#00BFFF</color>
+    <color name="coloredTextError">#FF0000</color>
     <color name="background">#FFFFFF</color>
 
 </resources>

@@ -33,6 +33,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.view.View;
@@ -51,7 +52,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 	private Button mainButton;
 	private Button addLineButton;
 	private Button addDeclaration;
-	private Spinner spinner1;
+	private Spinner spinnerSupervisors;
 	private ArrayList<Supervisor> supervisors;
 	private ArrayList<JSONObject> attachments;
 	private double totalPrice;
@@ -63,6 +64,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 		setContentView(R.layout.activity_declare);
 		
 		currencyFormat = new DecimalFormat("0.00");
+		spinnerSupervisors = (Spinner) findViewById(R.id.spinnerSupervisors);
 		
 		declareButton = (Button) findViewById(R.id.buttonDeclare);
 		declareButton.setEnabled(false);
@@ -99,8 +101,13 @@ public class DeclareActivity extends Activity implements OnClickListener{
 						e.printStackTrace();
 					}
 				}
-				TextView price = (TextView) findViewById(R.id.totalPrice);
-				price.setText("\u20AC" + currencyFormat.format(totalPrice));
+				
+				String itemsStart = "Declaratie items: (";
+				String itemsEnd = " totaal)";
+				TextView declartionItemsTitle = (TextView) findViewById(R.id.declartionItemsTitle);
+								
+				String itemsfinal = itemsStart + "<b>" + "\u20AC" + currencyFormat.format(totalPrice) + "</b>" + itemsEnd;
+				declartionItemsTitle.setText(Html.fromHtml(itemsfinal));
 				
 				LinearLayout layout = (LinearLayout) findViewById(R.id.list);
 				layout.removeAllViews();
@@ -116,7 +123,7 @@ public class DeclareActivity extends Activity implements OnClickListener{
 	public JSONObject createDeclaration()
 	{
 		MultiAutoCompleteTextView comment = (MultiAutoCompleteTextView) findViewById(R.id.comment);
-		Supervisor temp = (Supervisor) spinner1.getSelectedItem();
+		Supervisor temp = (Supervisor) spinnerSupervisors.getSelectedItem();
 		JSONObject decl = new JSONObject();
 		try {
 			decl.put("state", "open");
@@ -262,10 +269,9 @@ public class DeclareActivity extends Activity implements OnClickListener{
 			}catch(Exception e){
 				e.printStackTrace();
 			}
-			spinner1 = (Spinner) activity.findViewById(R.id.spinner1);
 			ArrayAdapter<Supervisor> dataAdapter = new ArrayAdapter<Supervisor>(activity, android.R.layout.simple_spinner_item, supervisors);
 			dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-			spinner1.setAdapter(dataAdapter);
+			spinnerSupervisors.setAdapter(dataAdapter);
 		}
 	}
 }
