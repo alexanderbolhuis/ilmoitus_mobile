@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class DeclarationSubTypes implements Parcelable {
 	private String Name;
 	private Long id;
+	private double maxCost;
 	
 	public DeclarationSubTypes(String Name, Long id) {
 		this.Name = Name;
@@ -16,6 +17,14 @@ public class DeclarationSubTypes implements Parcelable {
 		return Name;
 	}
 
+	public void setMaxCost(double maxCost){
+		this.maxCost = maxCost;
+	}
+	
+	public double getMaxCost(){
+		return maxCost;
+	}
+	
 	public Long getId() {
 		return id;
 	}
