@@ -75,7 +75,7 @@ public class DeclareLineActivity extends Activity implements
 	private ArrayList<HashMap<String, String>> attachmentItem = new ArrayList<HashMap<String, String>>();
 	private HashMap<String, String> map;
 	private String errorMsg;
-	private Boolean validation = false;
+	private Boolean validation = true;
 	private double maxCost;
 	private int spinnerDeclarationTypesPosition,
 			spinnerDeclarationSubTypesPosition;
@@ -115,46 +115,41 @@ public class DeclareLineActivity extends Activity implements
 
 			@Override
 			public void onClick(View arg0) {
-
+				final String date = dateEditText.getText().toString();
+				if (!isValidDate(date)) {
+					validation = false;
+					String message = getErrorMsg();
+					dateEditText.setError(spanString(message));
+				}
+				// Check Declaration Type & SubType
+				if(!isValidType()){
+					validation = false;
+				}
+				// Check Currency
+				final String currency = currencyEditText.getText().toString();
+				if (!isValidCurrency(currency)) {
+					validation = false;
+					String message = getErrorMsg();
+					currencyEditText.setError(spanString(message));
+				}
+				// Check Attachments
+				if(!isValidAttachment()){
+					validation = false;
+				}
+				// Check Comment
+				final String comment = commentTextView.getText().toString();
+				if (!isValidComment(comment)) {
+					validation = false;
+					String message = getErrorMsg();
+					commentTextView.setError(spanString(message));
+				}
 				if (validation == false) {
-					// Check Date
-					final String date = dateEditText.getText().toString();
-					if (!isValidDate(date)) {
-						String message = getErrorMsg();
-						dateEditText.setError(spanString(message));
-					}
-
-					// Check Declaration Type & SubType
-					isValidType();
-
-					// Check Currency
-					final String currency = currencyEditText.getText()
-							.toString();
-					if (!isValidCurrency(currency)) {
-						String message = getErrorMsg();
-						currencyEditText.setError(spanString(message));
-					}
-
-					// Check Attachments
-					isValidAttachment();
-
-					// Check Comment
-					final String comment = commentTextView.getText().toString();
-					if (!isValidComment(comment)) {
-						String message = getErrorMsg();
-						commentTextView.setError(spanString(message));
-					}
-
-					// General Error Message
 					Toast.makeText(getApplicationContext(),
 							"Declaratie regel bevat fouten", Toast.LENGTH_LONG)
 							.show();
+					validation = true;
 				} else {
-					final String currency = currencyEditText.getText()
-							.toString();
-					if (isValidCurrency(currency)) {
-						bundleDeclaration();
-					}
+					bundleDeclaration();
 				}
 			}
 		});
@@ -287,7 +282,8 @@ public class DeclareLineActivity extends Activity implements
 				map = new HashMap<String, String>();
 				map.put("title", "Excel");
 				map.put("description", "Tableur");
-				map.put("img", BitmapToBase64String(imageBitmap));
+				map.put("img", String.valueOf(new BitmapDrawable(
+						getResources(), imageBitmap)));
 				attachmentItem.add(map);
 
 				// ArrayList base64 string
@@ -308,7 +304,8 @@ public class DeclareLineActivity extends Activity implements
 				map = new HashMap<String, String>();
 				map.put("title", "Excel");
 				map.put("description", "test");
-				map.put("img", String.valueOf(null));
+				map.put("img", String.valueOf(new BitmapDrawable(
+						getResources(), imageBitmap)));
 				attachmentItem.add(map);
 
 				// ArrayList base64 string
@@ -518,7 +515,6 @@ public class DeclareLineActivity extends Activity implements
 			String strDateErrorFormat = getResources().getString(
 					R.string.label_date_hint);
 			setErrorMsg(String.format(strDateErrorFormat, error));
-			validation = false;
 			return false;
 		}
 
@@ -535,7 +531,6 @@ public class DeclareLineActivity extends Activity implements
 			String strDateErrorFormat = getResources().getString(
 					R.string.label_date_hint);
 			setErrorMsg(String.format(strDateErrorFormat, error));
-			validation = false;
 			return false;
 		}
 
@@ -545,13 +540,11 @@ public class DeclareLineActivity extends Activity implements
 			String strDateErrorFormat = getResources().getString(
 					R.string.label_date_hint);
 			setErrorMsg(String.format(strDateErrorFormat, error));
-			validation = false;
 			return false;
 		}
 
 		setErrorMsg(null);
 		dateEditText.setError(null);
-		validation = true;
 		return true;
 	}
 
@@ -561,7 +554,6 @@ public class DeclareLineActivity extends Activity implements
 				.toString().matches("")) {
 			Toast.makeText(this, "Geen declaratie type geselecteerd!",
 					Toast.LENGTH_LONG).show();
-			validation = false;
 			return false;
 		}
 
@@ -569,10 +561,8 @@ public class DeclareLineActivity extends Activity implements
 				.getId().toString().matches("")) {
 			Toast.makeText(this, "Geen declaratie subtype geselecteerd!",
 					Toast.LENGTH_LONG).show();
-			validation = false;
 			return false;
 		}
-		validation = true;
 		return true;
 	}
 
@@ -582,7 +572,6 @@ public class DeclareLineActivity extends Activity implements
 			String strDateErrorFormat = getResources().getString(
 					R.string.label_date_hint);
 			setErrorMsg(String.format(strDateErrorFormat, error));
-			validation = false;
 			return false;
 		}
 		if (!inputTotal.matches("(0|[1-9]+[0-9]*)?(\\,[0-9]{0,2})?")) {
@@ -590,24 +579,22 @@ public class DeclareLineActivity extends Activity implements
 			String strDateErrorFormat = getResources().getString(
 					R.string.label_date_hint);
 			setErrorMsg(String.format(strDateErrorFormat, error));
-			validation = false;
 			return false;
 		}
 
-		double maxCost = ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getMaxCost();
+		double maxCost = ((DeclarationSubTypes) spinnerDeclarationSubTypes
+				.getSelectedItem()).getMaxCost();
 		if (maxCost != 0) {
 			if (Double.parseDouble(inputTotal) > maxCost) {
 				String error = "Bedrag is hoger dan maximaal in te dienen";
 				String strDateErrorFormat = getResources().getString(
 						R.string.label_date_hint);
 				setErrorMsg(String.format(strDateErrorFormat, error));
-				validation = false;
 				return false;
 			}
 		}
 		setErrorMsg(null);
 		dateEditText.setError(null);
-		validation = true;
 		return true;
 	}
 
@@ -615,8 +602,6 @@ public class DeclareLineActivity extends Activity implements
 		if (attachmentItem.size() <= 0) {
 			Toast.makeText(this, "Minimaal ��n bijlage toevoegen!",
 					Toast.LENGTH_LONG).show();
-			validation = false;
-			validation = false;
 			return false;
 		}
 		return true;
@@ -628,12 +613,10 @@ public class DeclareLineActivity extends Activity implements
 			String strDateErrorFormat = getResources().getString(
 					R.string.label_date_hint);
 			setErrorMsg(String.format(strDateErrorFormat, error));
-			validation = false;
 			return false;
 		}
 		setErrorMsg(null);
 		commentTextView.setError(null);
-		validation = true;
 		return true;
 	}
 }
