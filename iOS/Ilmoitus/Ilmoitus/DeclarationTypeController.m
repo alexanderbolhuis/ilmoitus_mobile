@@ -1,4 +1,4 @@
-//
+    //
 //  DeclarationTypeController.m
 //  Ilmoitus
 //
@@ -36,13 +36,12 @@
                                
                               options:kNilOptions
                               error:&error];
-         
-        
+                NSLog(@"GET request success response for all declarations: %@", json); 
         for (NSDictionary *decl in json)
         {
             DeclarationMainTypes *declarationMainTypes = [[DeclarationMainTypes alloc] init];
-            *declarationMainTypes.mainTypeId = [decl[@"id"] longLongValue];
-            declarationMainTypes.mainTypeName = [decl[@"name"] stringValue];
+            declarationMainTypes.mainTypeId = [decl[@"id"] longLongValue];
+            declarationMainTypes.mainTypeName = decl[@"name"];
             [declarationsTypesFound addObject:declarationMainTypes];
         }
         
@@ -79,10 +78,10 @@
         for (NSDictionary *decl in json)
         {
             DeclarationSubTypes *declarationSubTypes = [[DeclarationSubTypes alloc] init];
-            *declarationSubTypes.subTypeId = [decl[@"id"] longLongValue];
+            declarationSubTypes.subTypeId = [decl[@"id"] longLongValue];
             declarationSubTypes.subTypeName = [decl[@"name"] stringValue];
             declarationSubTypes.subTypeDescription = [decl[@"declarationType"] stringValue];
-            *declarationSubTypes.subTypeMaxCost = [decl[@"max_cost"] decimalValue];
+            declarationSubTypes.subTypeMaxCost = [decl[@"max_cost"] floatValue];
             [declarationsSubTypesFound addObject:declarationSubTypes];
         }
         
