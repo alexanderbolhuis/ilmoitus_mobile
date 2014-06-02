@@ -3,30 +3,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" 
-    tools:ignore="all">
+    android:orientation="vertical"
+    tools:ignore="all" >
 
     <TextView
- 		android:id="@+id/person_title"
-   		android:layout_width="wrap_content"
-   		android:layout_height="wrap_content"
-   		android:textSize="20sp"
-   		android:textColor="#00BFFF"
-    	android:layout_gravity="center_horizontal"/>
-    
+        android:id="@+id/person_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:textColor="#00BFFF"
+        android:textSize="20sp" />
+
     <ListView
         android:id="@+id/list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
         android:layout_marginTop="20dp"
-        android:gravity="center"/>
+        android:layout_weight="1"
+        android:gravity="center" />
 
-    <fragment android:name="com.ilmoitus.fragment.MenuFragment"
-              android:id="@+id/menu_fragment"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              
-              android:layout_gravity="center" />
-    
+    <fragment
+        android:id="@+id/menu_fragment"
+        android:name="com.ilmoitus.fragment.MenuFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
 </LinearLayout>

@@ -46,16 +46,17 @@ public class MainActivity extends Activity {
 		overviewButton.setEnabled(false);
 		listView = (ListView) findViewById(R.id.list);
 		new GetDeclerationsTask(this, listView).execute();
-		listView.setOnItemClickListener(new OnItemClickListener(){
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				BaseDeclaration declaration = declarations.get(position);
-				Intent intent = new Intent(getApplicationContext(), DeclarationDetailsActivity.class);
+				Intent intent = new Intent(getApplicationContext(),
+						DeclarationDetailsActivity.class);
 				intent.putExtra("decId", declaration.getId());
 				startActivity(intent);
 			}
-			
+
 		});
 	}
 
@@ -63,10 +64,10 @@ public class MainActivity extends Activity {
 		Toast.makeText(getApplicationContext(), "On button Clicked",
 				Toast.LENGTH_SHORT).show();
 	}
-	
+
 	public void onDeclareButtonClick(View view) {
-	    Intent intent = new Intent(this, DeclareActivity.class);
-	    startActivity(intent);
+		Intent intent = new Intent(this, DeclareActivity.class);
+		startActivity(intent);
 	}
 
 	private class GetDeclerationsTask extends AsyncTask<Void, Void, String> {
@@ -82,8 +83,9 @@ public class MainActivity extends Activity {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) +
-					"/current_user/declarations");
+			HttpGet httpGet = new HttpGet(getResources().getString(
+					R.string.base_url)
+					+ "/current_user/declarations");
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
