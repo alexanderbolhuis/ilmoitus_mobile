@@ -1,4 +1,4 @@
-//
+    //
 //  DeclarationTypeController.m
 //  Ilmoitus
 //
@@ -36,8 +36,7 @@
                                
                               options:kNilOptions
                               error:&error];
-         
-        
+                NSLog(@"GET request success response for all declarations: %@", json); 
         for (NSDictionary *decl in json)
         {
             DeclarationType *declarationType = [[DeclarationType alloc] init];

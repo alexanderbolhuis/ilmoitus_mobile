@@ -9,6 +9,9 @@
 #import "NewDeclarationLineViewController.h"
 #import "Declaration.h"
 #import "DeclarationLine.h"
+#import "constants.h"
+#import "DeclarationType.h"
+#import "DeclarationSubType.h"
 #import "Attachment.h"
 #import "NewDeclarationViewController.h"
 
@@ -21,9 +24,15 @@
 @property (weak, nonatomic) IBOutlet UITextField *costField;
 @property (weak, nonatomic) IBOutlet UITextField *costDecimalField;
 @property (weak, nonatomic) IBOutlet UITextField *commentField;
-@property (nonatomic) UIDatePicker *pktStatePicker;
-@property (nonatomic) UIToolbar *mypickerToolbar;
+@property (nonatomic) UIDatePicker *datePicker;
+@property (nonatomic) UIPickerView *typePicker;
+@property (nonatomic) UIPickerView *subTypePicker;
+@property (nonatomic) UIToolbar *datePickerToolbar;
+@property (nonatomic) UIToolbar *typePickerToolbar;
+@property (nonatomic) UIToolbar *subTypePickerToolbar;
 @property (nonatomic) UIActionSheet *pickerViewPopup;
+@property (nonatomic) NSMutableArray *typeList;
+@property (nonatomic) NSMutableArray *subTypeList;
 @end
 
 @implementation NewDeclarationLineViewController
@@ -119,6 +128,12 @@
     self.commentField.delegate = self;
     [self.commentField setReturnKeyType: UIReturnKeyDone];
     imagePicker.delegate = self;
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc]init];
+    [dateFormat setDateFormat:@"dd-MM-yyyy"];
+    NSString *dateString = [dateFormat stringFromDate:date];
+    self.dateField.text = dateString;
+    self.declarationLine = [[DeclarationLine alloc] init];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
@@ -126,11 +141,82 @@
     
     [self.view addGestureRecognizer:tap];
     
-    // Create blank line
+    // Create date picker
+    self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+    self.datePicker.datePickerMode = UIDatePickerModeDate;
+    self.datePicker.hidden = NO;
+    self.datePicker.date = [NSDate date];
     
-    // TODO get date from datepicker(datefField) in right format
-    self.dateField.text = @"15-05-2014";
-    self.declarationLine = [[DeclarationLine alloc] init];
+    self.datePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.datePickerToolbar.tintColor = [UIColor whiteColor];
+    self.datePickerToolbar.barTintColor = [UIColor colorWithRed:(189/255.0) green:(26/255.0) blue:(47/255.0) alpha:1.0];
+    [self.datePickerToolbar sizeToFit];
+    
+    NSMutableArray *barItems = [[NSMutableArray alloc] init];
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    [barItems addObject:flexSpace];
+    
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneDateButtonPressed)];
+    [barItems addObject:doneBtn];
+    
+    UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelDateButtonPressed)];
+    [barItems addObject:cancelBtn];
+    
+    [self.datePickerToolbar setItems:barItems animated:YES];
+    
+    // Create type picker
+    self.typePicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+    self.typePicker.hidden = NO;
+    self.typePicker.delegate = self;
+    
+    self.typePicker.dataSource = self;
+    
+    self.typePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.typePickerToolbar.tintColor = [UIColor whiteColor];
+    self.typePickerToolbar.barTintColor = [UIColor colorWithRed:(189/255.0) green:(26/255.0) blue:(47/255.0) alpha:1.0];
+    [self.typePickerToolbar sizeToFit];
+    
+    NSMutableArray *typeBarItems = [[NSMutableArray alloc] init];
+    
+    [typeBarItems addObject:flexSpace];
+    
+    UIBarButtonItem *typeDoneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneTypeButtonPressed)];
+    [typeBarItems addObject:typeDoneBtn];
+    
+    UIBarButtonItem *cancelTypeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelTypeButtonPressed)];
+    [typeBarItems addObject:cancelTypeBtn];
+    
+    [self.typePickerToolbar setItems:typeBarItems animated:YES];
+    
+    // Create subtype picker
+    self.subTypePicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+    self.subTypePicker.hidden = NO;
+    self.subTypePicker.delegate = self;
+    
+    self.subTypePicker.dataSource = self;
+    
+    self.subTypePickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+    self.subTypePickerToolbar.tintColor = [UIColor whiteColor];
+    self.subTypePickerToolbar.barTintColor = [UIColor colorWithRed:(189/255.0) green:(26/255.0) blue:(47/255.0) alpha:1.0];
+    [self.subTypePickerToolbar sizeToFit];
+    
+    NSMutableArray *subTypeBarItems = [[NSMutableArray alloc] init];
+    
+    [subTypeBarItems addObject:flexSpace];
+    
+    UIBarButtonItem *subTypeDoneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneSubTypeButtonPressed)];
+    [subTypeBarItems addObject:subTypeDoneBtn];
+    
+    UIBarButtonItem *cancelSubTypeBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelSubTypeButtonPressed)];
+    [subTypeBarItems addObject:cancelSubTypeBtn];
+    
+    [self.subTypePickerToolbar setItems:subTypeBarItems animated:YES];
+}
+
+- (void) viewDidAppear:(BOOL)animated
+{
+    [self downLoadMainTypes];
 }
 
 -(void)dismissKeyboard {
@@ -159,38 +245,58 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+
+{
+    if (pickerView == self.typePicker) {
+        return [self.typeList count];
+    } else if (pickerView == self.subTypePicker) {
+        return [self.subTypeList count];
+    } else {
+        return 0;
+    }
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    if (pickerView == self.typePicker) {
+        DeclarationType *type = [self.typeList objectAtIndex:row];
+        return [NSString stringWithFormat:@"%@", type.mainTypeName];
+    } else if (pickerView == self.subTypePicker) {
+        DeclarationSubType *subtype = [self.subTypeList objectAtIndex:row];
+        return [NSString stringWithFormat:@"%@", subtype.subTypeName];
+    } else {
+        return nil;
+    }
+}   
+
 -(void)textFieldDidBeginEditing:(UITextField*)textField
 {
     if (textField == self.dateField) {
         [self.dateField resignFirstResponder];
-        
         self.pickerViewPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-        
-        self.pktStatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
-        self.pktStatePicker.datePickerMode = UIDatePickerModeDate;
-        self.pktStatePicker.hidden = NO;
-        self.pktStatePicker.date = [NSDate date];
-        
-        self.mypickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
-        self.mypickerToolbar.tintColor = [UIColor whiteColor];
-        self.mypickerToolbar.barTintColor = [UIColor colorWithRed:(189/255.0) green:(26/255.0) blue:(47/255.0) alpha:1.0];
-        [self.mypickerToolbar sizeToFit];
-        
-        NSMutableArray *barItems = [[NSMutableArray alloc] init];
-        
-        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
-        [barItems addObject:flexSpace];
-        
-        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
-        [barItems addObject:doneBtn];
-        
-        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
-        [barItems addObject:cancelBtn];
-        
-        [self.mypickerToolbar setItems:barItems animated:YES];
-        
-        [self.pickerViewPopup addSubview:self.mypickerToolbar];
-        [self.pickerViewPopup addSubview:self.pktStatePicker];
+        [self.pickerViewPopup addSubview:self.datePickerToolbar];
+        [self.pickerViewPopup addSubview:self.datePicker];
+        [self.pickerViewPopup showInView:self.view];
+        [self.pickerViewPopup setBounds:CGRectMake(0,0,320, 464)];
+    } else if (textField == self.typeField) {
+        [self.typeField resignFirstResponder];
+        self.pickerViewPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [self.pickerViewPopup addSubview:self.typePickerToolbar];
+        [self.pickerViewPopup addSubview:self.typePicker];
+        [self.pickerViewPopup showInView:self.view];
+        [self.pickerViewPopup setBounds:CGRectMake(0,0,320, 464)];
+    } else if (textField == self.subtypeField) {
+        [self.subtypeField resignFirstResponder];
+        self.pickerViewPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        [self.pickerViewPopup addSubview:self.subTypePickerToolbar];
+        [self.pickerViewPopup addSubview:self.subTypePicker];
         [self.pickerViewPopup showInView:self.view];
         [self.pickerViewPopup setBounds:CGRectMake(0,0,320, 464)];
     }
@@ -220,20 +326,122 @@
     }
 }
 
--(void)doneButtonPressed
+-(void)doneDateButtonPressed
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-MM-dd' 'HH:mm:ss.S"];
     
-    NSString *stringFromDate = [formatter stringFromDate:self.pktStatePicker.date];
+    NSString *stringFromDate = [formatter stringFromDate:self.datePicker.date];
     self.declarationLine.date = stringFromDate;
     
     [self.dateField setText: stringFromDate];
     [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
 }
 
--(void)cancelButtonPressed
+-(void)cancelDateButtonPressed
 {
     [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
 }
+
+-(void)doneTypeButtonPressed
+{
+    int selected = [self.typePicker selectedRowInComponent:0];
+    DeclarationType *type = [self.typeList objectAtIndex:selected];
+    self.typeField.text = type.mainTypeName;
+    [self downLoadSubTypes:type.ident];
+    [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+}
+
+-(void)cancelTypeButtonPressed
+{
+    [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+}
+
+-(void)doneSubTypeButtonPressed
+{
+    int selected = [self.subTypePicker selectedRowInComponent:0];
+    DeclarationSubType *subtype = [self.subTypeList objectAtIndex:selected];
+    self.subtypeField.text = subtype.subTypeName;
+    self.declarationLine.subtype = subtype;
+    [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+}
+
+-(void)cancelSubTypeButtonPressed
+{
+    [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+}
+
+- (void)downLoadMainTypes
+{
+    NSMutableArray *declarationsTypesFound = [[NSMutableArray alloc] init];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+    NSString *url = [NSString stringWithFormat:@"%@/declarationtypes", baseURL];
+    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError* error;
+         NSDictionary* json = [NSJSONSerialization
+                               JSONObjectWithData:responseObject
+                               
+                               options:kNilOptions
+                               error:&error];
+         for (NSDictionary *decl in json)
+         {
+             DeclarationType *declarationMainTypes = [[DeclarationType alloc] init];
+             declarationMainTypes.ident = [decl[@"id"] longLongValue];
+             declarationMainTypes.mainTypeName = decl[@"name"];
+             [declarationsTypesFound addObject:declarationMainTypes];
+         }
+         
+         NSLog(@"GET request success response for all declarations: %@", json);
+         self.typeList = declarationsTypesFound;
+         [self.typePicker reloadAllComponents];
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"GET request Error for all declarations main types: %@", error);
+     }];
+}
+
+- (void)downLoadSubTypes:(int64_t)mainTpyeId
+{
+    NSString *combinedURL = [NSString stringWithFormat:@"%@%@%lld", baseURL, @"/declarationtype/", mainTpyeId];
+    NSMutableArray *declarationsSubTypesFound = [[NSMutableArray alloc] init];
+    
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+    [manager GET:combinedURL parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject)
+     {
+         NSError* error;
+         NSDictionary* json = [NSJSONSerialization
+                               JSONObjectWithData:responseObject
+                               
+                               options:kNilOptions
+                               error:&error];
+         
+         
+         for (NSDictionary *decl in json)
+         {
+             DeclarationSubType *declarationSubTypes = [[DeclarationSubType alloc] init];
+             declarationSubTypes.ident = [decl[@"id"] longLongValue];
+             declarationSubTypes.subTypeName = decl[@"name"];
+             declarationSubTypes.subTypeDescription = decl[@"declarationType"];
+             declarationSubTypes.subTypeMaxCost = [decl[@"max_cost"] floatValue];
+             [declarationsSubTypesFound addObject:declarationSubTypes];
+         }
+         
+         NSLog(@"GET request success response for all declarations sub types: %@", json);
+         self.subTypeList = declarationsSubTypesFound;
+         [self.subTypePicker reloadAllComponents];
+     }
+         failure:^(AFHTTPRequestOperation *operation, NSError *error)
+     {
+         NSLog(@"GET request Error for all declarations: %@", error);
+     }];
+}
+
 @end

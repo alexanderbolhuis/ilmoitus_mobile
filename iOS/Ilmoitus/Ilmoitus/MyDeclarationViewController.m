@@ -83,7 +83,7 @@
         self.declarationList = declarationsFound;
         
         [self.tableView reloadData];
-    [self.refreshControl endRefreshing];
+        [self.refreshControl endRefreshing];
         
         NSLog(@"GET request success response for all declarations: %@", json);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

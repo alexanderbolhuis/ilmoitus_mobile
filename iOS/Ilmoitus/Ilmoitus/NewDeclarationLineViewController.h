@@ -10,7 +10,7 @@
 #import "DeclarationLine.h"
 #import "Attachment.h"
 
-@interface NewDeclarationLineViewController : UIViewController <UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface NewDeclarationLineViewController : UIViewController <UITextFieldDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 {
     UIImagePickerController *imagePicker;
 }
