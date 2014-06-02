@@ -76,6 +76,7 @@ public class DeclareLineActivity extends Activity implements
 	private HashMap<String, String> map;
 	private String errorMsg;
 	private Boolean validation = false;
+	private double maxCost;
 	private int spinnerDeclarationTypesPosition,
 			spinnerDeclarationSubTypesPosition;
 	private LinearLayout attachmentListView;
@@ -125,9 +126,6 @@ public class DeclareLineActivity extends Activity implements
 
 					// Check Declaration Type & SubType
 					isValidType();
-
-					// Check Declaration Type & SubType Combo
-					isValidTypeCombo();
 
 					// Check Currency
 					final String currency = currencyEditText.getText()
@@ -475,8 +473,11 @@ public class DeclareLineActivity extends Activity implements
 					JSONObject object = declarationSubTypes.getJSONObject(i);
 					String name = object.getString("name");
 					Long id = object.getLong("id");
-					declarationSubTypesList.add(new DeclarationSubTypes(name,
-							id));
+					DeclarationSubTypes temp = new DeclarationSubTypes(name, id);
+					if (object.has("max_cost")) {
+						temp.setMaxCost(object.getDouble("max_cost"));
+					}
+					declarationSubTypesList.add(temp);
 				}
 				spinnerDeclarationSubTypes
 						.setAdapter(spinnerDeclarationSubTypesListAdapter);
@@ -576,7 +577,6 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	private boolean isValidCurrency(String inputTotal) {
-
 		if (inputTotal.matches("")) {
 			String error = "Bedrag verplicht!";
 			String strDateErrorFormat = getResources().getString(
@@ -585,7 +585,6 @@ public class DeclareLineActivity extends Activity implements
 			validation = false;
 			return false;
 		}
-
 		if (!inputTotal.matches("(0|[1-9]+[0-9]*)?(\\,[0-9]{0,2})?")) {
 			String error = "Geen geldig bedrag!";
 			String strDateErrorFormat = getResources().getString(
@@ -595,6 +594,17 @@ public class DeclareLineActivity extends Activity implements
 			return false;
 		}
 
+		double maxCost = ((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem()).getMaxCost();
+		if (maxCost != 0) {
+			if (Double.parseDouble(inputTotal) > maxCost) {
+				String error = "Bedrag is hoger dan maximaal in te dienen";
+				String strDateErrorFormat = getResources().getString(
+						R.string.label_date_hint);
+				setErrorMsg(String.format(strDateErrorFormat, error));
+				validation = false;
+				return false;
+			}
+		}
 		setErrorMsg(null);
 		dateEditText.setError(null);
 		validation = true;
@@ -603,13 +613,12 @@ public class DeclareLineActivity extends Activity implements
 
 	private boolean isValidAttachment() {
 		if (attachmentItem.size() <= 0) {
-			Toast.makeText(this, "Minimaal één bijlage toevoegen!",
+			Toast.makeText(this, "Minimaal ï¿½ï¿½n bijlage toevoegen!",
 					Toast.LENGTH_LONG).show();
 			validation = false;
 			validation = false;
 			return false;
 		}
-
 		return true;
 	}
 
@@ -622,14 +631,9 @@ public class DeclareLineActivity extends Activity implements
 			validation = false;
 			return false;
 		}
-
 		setErrorMsg(null);
 		commentTextView.setError(null);
 		validation = true;
-		return true;
-	}
-
-	private boolean isValidTypeCombo() {
 		return true;
 	}
 }
