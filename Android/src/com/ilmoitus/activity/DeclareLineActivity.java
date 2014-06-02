@@ -289,7 +289,7 @@ public class DeclareLineActivity extends Activity implements
 				map = new HashMap<String, String>();
 				map.put("title", "Excel");
 				map.put("description", "Tableur");
-				map.put("img", BitmapToBase64String(imageBitmap));
+				map.put("img", String.valueOf(new BitmapDrawable(getResources(), imageBitmap)));
 				attachmentItem.add(map);
 
 				// ArrayList base64 string
@@ -310,7 +310,7 @@ public class DeclareLineActivity extends Activity implements
 				map = new HashMap<String, String>();
 				map.put("title", "Excel");
 				map.put("description", "test");
-				map.put("img", String.valueOf(null));
+				map.put("img", String.valueOf(new BitmapDrawable(getResources(), imageBitmap)));
 				attachmentItem.add(map);
 
 				// ArrayList base64 string
