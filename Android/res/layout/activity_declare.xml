@@ -6,8 +6,9 @@
     <LinearLayout
         style="@style/LinearLayout"
         android:orientation="vertical" >
-        
+
         <ScrollView style="@style/ScrollView" >
+
             <LinearLayout
                 style="@style/Container"
                 android:orientation="vertical" >
@@ -16,7 +17,7 @@
                     android:id="@+id/person_title"
                     style="@style/TextViewTitle"
                     android:text="Declaratie indienen" />
-                
+
                 <TextView
                     style="@style/TextViewSubTitle"
                     android:text="Leidinggevende:" />
@@ -31,11 +32,13 @@
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
-                <LinearLayout
+                <ListView
                     android:id="@+id/list"
-                    style="@style/LinearLayoutList"
-                    android:orientation="vertical" >
-                </LinearLayout>
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_weight="1"
+                    android:gravity="center" />
 
                 <Button
                     android:id="@+id/onAddLineButton"
@@ -51,8 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center" />
-                
-            	<Button
+
+                <Button
                     android:id="@+id/onAddDeclaration"
                     style="@style/Button"
                     android:text="Indienen" />
