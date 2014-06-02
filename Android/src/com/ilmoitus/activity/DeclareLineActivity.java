@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.http.HttpResponse;
@@ -35,6 +36,8 @@ import android.os.Environment;
 import android.provider.ContactsContract.CommonDataKinds.Photo;
 import android.provider.MediaStore;
 import android.text.InputFilter;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -45,6 +48,10 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -56,6 +63,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 public class DeclareLineActivity extends Activity implements
 		DatePickerFragment.OnDateSelectedListener, OnClickListener {
@@ -63,11 +73,17 @@ public class DeclareLineActivity extends Activity implements
 	private Spinner spinnerDeclarationTypes, spinnerDeclarationSubTypes;
 	private Calendar date;
 	private TextView title;
-	private EditText currency, dateField;
+	private MultiAutoCompleteTextView commentTextView;
+	private EditText currencyEditText, dateEditText;
 	private ImageView photo;
 	private ArrayList<String> attachmentsData = new ArrayList<String>();
-
-	int spinnerDeclarationTypesPosition, spinnerDeclarationSubTypesPosition;
+	private ArrayList<HashMap<String, String>> attachmentItem = new ArrayList<HashMap<String, String>>();
+	private HashMap<String, String> map;
+	private String errorMsg;
+	private Boolean validation = false;
+	private int spinnerDeclarationTypesPosition,
+			spinnerDeclarationSubTypesPosition;
+	private LinearLayout attachmentListView;
 
 	ArrayAdapter<DeclarationTypes> spinnerDeclarationTypesListAdapter;
 	ArrayAdapter<DeclarationSubTypes> spinnerDeclarationSubTypesListAdapter;
@@ -78,24 +94,92 @@ public class DeclareLineActivity extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_declare_line);
-		title = (TextView) findViewById(R.id.person_title);
-		Button addButton = (Button) findViewById(R.id.buttonAdd);
-		addButton.setOnClickListener(this);
-		Button cancelButton = (Button) findViewById(R.id.buttonCancel);
-		cancelButton.setOnClickListener(this);
-		dateField = (EditText) findViewById(R.id.editTextDate);
-		currency = (EditText) findViewById(R.id.editCurrency);
-		currency.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
 
+		title = (TextView) findViewById(R.id.person_title);
+		dateEditText = (EditText) findViewById(R.id.editTextDate);
 		spinnerDeclarationTypes = (Spinner) findViewById(R.id.spinnerDeclarationType);
 		spinnerDeclarationTypes
 				.setOnItemSelectedListener(new spinnerListener());
 		spinnerDeclarationTypesPosition = 0;
+		currencyEditText = (EditText) findViewById(R.id.editCurrency);
+		currencyEditText
+				.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
+		attachmentListView = (LinearLayout) findViewById(R.id.attachmentList);
+		attachmentListView.removeAllViews();
+		commentTextView = (MultiAutoCompleteTextView) findViewById(R.id.commentTextView);
+
+		// SimpleAdapter mSchedule = new SimpleAdapter (this.getBaseContext(),
+		// attachmentItem, R.layout.attachment_view_list,
+		// new String[] {"img", "title", "description"}, new int[]
+		// {R.id.attachmentImage, R.id.attachmentTitle,
+		// R.id.attachmentDescription});
+		// attachmentListView.setAdapter(mSchedule);
+
+		findViewById(R.id.buttonAdd).setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View arg0) {
+
+				if (validation == false) {
+					// Check Date
+					final String date = dateEditText.getText().toString();
+					if (!isValidDate(date)) {
+						String message = getErrorMsg();
+						dateEditText.setError(spanString(message));
+					}
+
+					// Check Declaration Type & SubType
+					isValidType();
+					
+					// Check Declaration Type & SubType Combo
+					isValidTypeCombo();
+
+					// Check Currency
+					final String currency = currencyEditText.getText()
+							.toString();
+					if (!isValidCurrency(currency)) {
+						String message = getErrorMsg();
+						currencyEditText.setError(spanString(message));
+					}
+
+					// Check Attachments
+					isValidAttachment();
+					
+					// Check Comment
+					final String comment = commentTextView.getText().toString();
+					if (!isValidComment(comment))
+					{
+						String message = getErrorMsg();
+						commentTextView.setError(spanString(message));
+					}
+					
+					// General Error Message
+					Toast.makeText(getApplicationContext(),
+							"Declaratie regel bevat fouten", Toast.LENGTH_LONG)
+							.show();
+				} else {
+					final String currency = currencyEditText.getText()
+							.toString();
+					if (isValidCurrency(currency)) {
+						bundleDeclaration();
+					}
+				}
+			}
+		});
+
+		findViewById(R.id.buttonCancel).setOnClickListener(
+				new OnClickListener() {
+
+					@Override
+					public void onClick(View arg0) {
+						onBackPressed();
+					}
+				});
 
 		spinnerDeclarationSubTypes = (Spinner) findViewById(R.id.spinnerDeclarationSubType);
 		spinnerDeclarationSubTypesPosition = 0;
-		
-		photo = (ImageView) findViewById(R.id.mImageView);
+
+		// photo = (ImageView) findViewById(R.id.mImageView);
 
 		if (savedInstanceState == null) {
 			date = Calendar.getInstance();
@@ -103,6 +187,15 @@ public class DeclareLineActivity extends Activity implements
 			setDeclarationTypes();
 			setDeclarationSubTypes();
 		}
+	}
+
+	// Setter & Getters
+	public void setErrorMsg(String err) {
+		this.errorMsg = err;
+	}
+
+	public String getErrorMsg() {
+		return this.errorMsg;
 	}
 
 	public void setDeclarationTypes() {
@@ -121,8 +214,9 @@ public class DeclareLineActivity extends Activity implements
 	public void setDeclarationSubTypes() {
 		declarationSubTypesList = new ArrayList<DeclarationSubTypes>();
 
-		spinnerDeclarationSubTypesListAdapter = new ArrayAdapter<DeclarationSubTypes>(this,
-				android.R.layout.simple_spinner_item, declarationSubTypesList);
+		spinnerDeclarationSubTypesListAdapter = new ArrayAdapter<DeclarationSubTypes>(
+				this, android.R.layout.simple_spinner_item,
+				declarationSubTypesList);
 		spinnerDeclarationSubTypesListAdapter
 				.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spinnerDeclarationSubTypesListAdapter.setNotifyOnChange(true);
@@ -130,120 +224,25 @@ public class DeclareLineActivity extends Activity implements
 				.setAdapter(spinnerDeclarationSubTypesListAdapter);
 	}
 
-	public void onAddButtonClick() {
+	public void bundleDeclaration() {
 
-		boolean currencyCheck = checkValidCurrency();
-		boolean dateCheck = checkValidDate();
-		boolean soortTypes = checkValidTypes();
+		Bundle b = new Bundle();
+		b.putString("date", dateEditText.getText().toString());
+		String bedrag = currencyEditText.getText().toString().replace(",", ".");
 
-		if (dateCheck && currencyCheck) {
-			Bundle b = new Bundle();
-			b.putString("date", dateField.getText().toString());
-			String bedrag = currency.getText().toString().replace(",", ".");
-
-			b.putDouble("bedrag", Double.parseDouble(bedrag));
-			b.putStringArrayList("attachments", attachmentsData);
-			b.putString("declaratieSoort",
-					declarationTypesList.get(spinnerDeclarationTypesPosition)
-							.toString());
-			b.putLong("declaratieSubSoort",
-					((DeclarationSubTypes) spinnerDeclarationSubTypes
-							.getSelectedItem()).getId());
-			Intent i = new Intent(this, DeclareActivity.class);
-			i.putExtras(b);
-			setResult(RESULT_OK, i);
-			finish();
-		} else {
-			Toast.makeText(getApplicationContext(),
-					"Declaratie regel bevat fouten", Toast.LENGTH_LONG).show();
-		}
+		b.putDouble("bedrag", Double.parseDouble(bedrag));
+		b.putStringArrayList("attachments", attachmentsData);
+		b.putString("declaratieSoort",
+				declarationTypesList.get(spinnerDeclarationTypesPosition)
+						.toString());
+		b.putLong("declaratieSubSoort",
+				((DeclarationSubTypes) spinnerDeclarationSubTypes
+						.getSelectedItem()).getId());
+		Intent i = new Intent(this, DeclareActivity.class);
+		i.putExtras(b);
+		setResult(RESULT_OK, i);
+		finish();
 	}
-
-	public boolean checkValidDate() {
-
-		TextView dateFieldError = (TextView) findViewById(R.id.dateError);
-
-		if (dateField.getText().toString().matches("")) {
-			dateFieldError.setText("Geen datum opgegeven!");
-			dateFieldError.setVisibility(View.VISIBLE);
-			return false;
-		}
-
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		sdf.setLenient(false);
-
-		Date dateOfDeclarationLine;
-
-		try {
-			// if not valid, it will throw ParseException
-			dateOfDeclarationLine = sdf.parse(dateField.getText().toString());
-
-		} catch (ParseException e) {
-
-			dateFieldError.setText("Geen Geldige datum!");
-			dateFieldError.setVisibility(View.VISIBLE);
-			return false;
-		}
-
-		Date datNow = new Date();
-
-		if (dateOfDeclarationLine.after(datNow)) {
-			dateFieldError.setText("Datum ligt niet in het verleden!");
-			dateFieldError.setVisibility(View.VISIBLE);
-			return false;
-		}
-
-		dateFieldError.setText("");
-		dateFieldError.setVisibility(View.GONE);
-		return true;
-	}
-
-	public boolean checkValidCurrency() {
-
-		TextView currencyFieldError = (TextView) findViewById(R.id.currencyError);
-
-		if (currency.getText().toString().matches("")) {
-			currencyFieldError.setText("Geen bedrag opgegeven!");
-			currencyFieldError.setVisibility(View.VISIBLE);
-			return false;
-		}
-
-		if (!currency.getText().toString()
-				.matches("(0|[1-9]+[0-9]*)?(\\,[0-9]{0,2})?")) {
-			currencyFieldError.setText("Geen gedig bedrag!");
-			currencyFieldError.setVisibility(View.VISIBLE);
-			return false;
-		}
-		
-		currencyFieldError.setText("");
-		currencyFieldError.setVisibility(View.GONE);
-		return true;
-	}
-
-	public boolean checkValidTypes() {
-		
-		TextView typeFieldError = (TextView) findViewById(R.id.typeError);
-
-		
-		if(declarationTypesList.get(spinnerDeclarationTypesPosition)
-				.toString().matches("")){
-			typeFieldError.setText("Geen declaratie type geselecteerd!");
-			typeFieldError.setVisibility(View.VISIBLE);
-			return false;
-		}
-		
-		if(((DeclarationSubTypes) spinnerDeclarationSubTypes
-				.getSelectedItem()).getId().toString().matches("")){
-			typeFieldError.setText("Geen declaratie subtype geselecteerd!");
-			typeFieldError.setVisibility(View.VISIBLE);
-			return false;
-		}
-		
-		typeFieldError.setText("");
-		typeFieldError.setVisibility(View.GONE);
-		return true;
-	}
-	
 
 	// TODO Make Photo / Select from library and post + display by Murat Aydin
 	public void onAddImageButtonClick(View view) {
@@ -280,18 +279,23 @@ public class DeclareLineActivity extends Activity implements
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data); 
+		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			if (requestCode == 1) {
 				Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-				
+
 				// test voor het ophalen om het te zien
-				photo.setImageBitmap(imageBitmap);		
-				
-				//ArrayList base64 string		
+				// photo.setImageBitmap(imageBitmap);
+
+				map = new HashMap<String, String>();
+				map.put("title", "Excel");
+				map.put("description", "Tableur");
+				map.put("img", BitmapToBase64String(imageBitmap));
+				attachmentItem.add(map);
+
+				// ArrayList base64 string
 				attachmentsData.add(BitmapToBase64String(imageBitmap));
-				
-				
+
 			} else if (requestCode == 2) {
 				Uri selectedImage = data.getData();
 				String[] filePath = { MediaStore.Images.Media.DATA };
@@ -302,21 +306,37 @@ public class DeclareLineActivity extends Activity implements
 				String picturePath = c.getString(columnIndex);
 				c.close();
 				Bitmap imageBitmap = (BitmapFactory.decodeFile(picturePath));
-				photo.setImageBitmap(imageBitmap);
-				
-				//ArrayList base64 string
+				// photo.setImageBitmap(imageBitmap);
+
+				map = new HashMap<String, String>();
+				map.put("title", "Excel");
+				map.put("description", "test");
+				map.put("img", String.valueOf(null));
+				attachmentItem.add(map);
+
+				// ArrayList base64 string
 				attachmentsData.add(BitmapToBase64String(imageBitmap));
 			}
+
+			SimpleAdapter sa = new SimpleAdapter(this.getBaseContext(),
+					attachmentItem, R.layout.attachment_view_list,
+					new String[] { "img", "title", "description" }, new int[] {
+							R.id.attachmentImage, R.id.attachmentTitle,
+							R.id.attachmentDescription });
+			final int adapterCount = sa.getCount();
+			// for (int i = 0; i < adapterCount; i++) {
+			View item = sa.getView(adapterCount - 1, null, null);
+			attachmentListView.addView(item);
+			// }
 		}
 	}
-	
-	private String BitmapToBase64String(Bitmap bitmap)
-	{
-		ByteArrayOutputStream baos = new  ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte [] b=baos.toByteArray();
-        String temp = Base64.encodeToString(b, Base64.DEFAULT);
-        return "data:image/jpeg;base64," + temp;
+
+	private String BitmapToBase64String(Bitmap bitmap) {
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+		byte[] b = baos.toByteArray();
+		String temp = Base64.encodeToString(b, Base64.DEFAULT);
+		return "data:image/jpeg;base64," + temp;
 	}
 
 	public void showDatePickerDialog(View v) {
@@ -337,20 +357,24 @@ public class DeclareLineActivity extends Activity implements
 		date.set(Calendar.YEAR, year);
 		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		String formattedDate = df.format(date.getTime());
-		EditText editDate = (EditText) this.findViewById(R.id.editTextDate);
-		editDate.setText(formattedDate);
+		isValidDate(formattedDate);
+		dateEditText.setText(formattedDate);
 	}
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.buttonAdd:
-			onAddButtonClick();
+			// onAddButtonClick();
 			break;
 		case R.id.buttonCancel:
 			super.onBackPressed();
 			break;
 		}
+	}
+
+	public void onBackPressed() {
+		super.onBackPressed();
 	}
 
 	private class GetDeclerationTypesTask extends AsyncTask<Void, Void, String> {
@@ -412,22 +436,26 @@ public class DeclareLineActivity extends Activity implements
 		protected String doInBackground(Void... params) {
 			String result = null;
 
-			String declarationType = declarationTypesList.get(spinnerDeclarationTypesPosition).getId();
+			String declarationType = declarationTypesList.get(
+					spinnerDeclarationTypesPosition).getId();
 
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declarationsubtypes/" + declarationType);
+			HttpGet httpGet = new HttpGet(getResources().getString(
+					R.string.base_url)
+					+ "/declarationsubtypes/" + declarationType);
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
 				InputStream inputStream = response.getEntity().getContent();
 				if (inputStream != null) {
 					// parse the inputStream to string
-					result = InputStreamConverter.convertInputStreamToString(inputStream);
+					result = InputStreamConverter
+							.convertInputStreamToString(inputStream);
 				} else {
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				//Log.d("InputStream", e.getLocalizedMessage());
+				// Log.d("InputStream", e.getLocalizedMessage());
 			}
 			return result;
 		}
@@ -442,9 +470,11 @@ public class DeclareLineActivity extends Activity implements
 					JSONObject object = declarationSubTypes.getJSONObject(i);
 					String name = object.getString("name");
 					Long id = object.getLong("id");
-					declarationSubTypesList.add(new DeclarationSubTypes(name, id));
+					declarationSubTypesList.add(new DeclarationSubTypes(name,
+							id));
 				}
-				spinnerDeclarationSubTypes.setAdapter(spinnerDeclarationSubTypesListAdapter);
+				spinnerDeclarationSubTypes
+						.setAdapter(spinnerDeclarationSubTypesListAdapter);
 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -458,13 +488,148 @@ public class DeclareLineActivity extends Activity implements
 		public void onItemSelected(AdapterView<?> arg0, View view, int pos,
 				long arg3) {
 			spinnerDeclarationTypesPosition = pos;
-
 			new GetDeclerationSubTypesTask().execute();
-
 		}
 
 		@Override
 		public void onNothingSelected(AdapterView<?> arg0) {
 		}
+	}
+
+	// Form validation & Error messaging
+	public SpannableStringBuilder spanString(String spanstring) {
+		int textColor = Color.BLACK;
+		ForegroundColorSpan fgcspan = new ForegroundColorSpan(textColor);
+		SpannableStringBuilder ssbuilder = new SpannableStringBuilder(
+				spanstring);
+		ssbuilder.setSpan(fgcspan, 0, spanstring.length(), 0);
+		return ssbuilder;
+	}
+
+	private boolean isValidDate(String inputDate) {
+
+		if (inputDate.matches("")) {
+			String error = "Datum verplicht!";
+			String strDateErrorFormat = getResources().getString(
+					R.string.label_date_hint);
+			setErrorMsg(String.format(strDateErrorFormat, error));
+			validation = false;
+			return false;
+		}
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		sdf.setLenient(false);
+		Date dateOfDeclarationLine;
+		try {
+			// if not valid, it will throw ParseException
+			dateOfDeclarationLine = sdf
+					.parse(dateEditText.getText().toString());
+
+		} catch (ParseException e) {
+			String error = "Geen geldige datum!";
+			String strDateErrorFormat = getResources().getString(
+					R.string.label_date_hint);
+			setErrorMsg(String.format(strDateErrorFormat, error));
+			validation = false;
+			return false;
+		}
+
+		Date datNow = new Date();
+		if (dateOfDeclarationLine.after(datNow)) {
+			String error = "Datum ligt niet in het verleden!";
+			String strDateErrorFormat = getResources().getString(
+					R.string.label_date_hint);
+			setErrorMsg(String.format(strDateErrorFormat, error));
+			validation = false;
+			return false;
+		}
+
+		setErrorMsg(null);
+		dateEditText.setError(null);
+		validation = true;
+		return true;
+	}
+
+	private boolean isValidType() {
+
+		if (declarationTypesList.get(spinnerDeclarationTypesPosition)
+				.toString().matches("")) {
+			Toast.makeText(this, "Geen declaratie type geselecteerd!",
+					Toast.LENGTH_LONG).show();
+			validation = false;
+			return false;
+		}
+
+		if (((DeclarationSubTypes) spinnerDeclarationSubTypes.getSelectedItem())
+				.getId().toString().matches("")) {
+			Toast.makeText(this, "Geen declaratie subtype geselecteerd!",
+					Toast.LENGTH_LONG).show();
+			validation = false;
+			return false;
+		}
+		validation = true;
+		return true;
+	}
+
+	private boolean isValidCurrency(String inputTotal) {
+
+		if (inputTotal.matches("")) {
+			String error = "Bedrag verplicht!";
+			String strDateErrorFormat = getResources().getString(
+					R.string.label_date_hint);
+			setErrorMsg(String.format(strDateErrorFormat, error));
+			validation = false;
+			return false;
+		}
+
+		if (!inputTotal.matches("(0|[1-9]+[0-9]*)?(\\,[0-9]{0,2})?")) {
+			String error = "Geen geldig bedrag!";
+			String strDateErrorFormat = getResources().getString(
+					R.string.label_date_hint);
+			setErrorMsg(String.format(strDateErrorFormat, error));
+			validation = false;
+			return false;
+		}
+
+		setErrorMsg(null);
+		dateEditText.setError(null);
+		validation = true;
+		return true;
+	}
+
+	private boolean isValidAttachment()
+	{
+		if (attachmentItem.size() <= 0)
+		{
+			Toast.makeText(this, "Minimaal één bijlage toevoegen!",
+					Toast.LENGTH_LONG).show();
+			validation = false;
+			validation = false;
+			return false;
+		}
+		
+		return true;
+	}
+	
+	private boolean isValidComment(String inputComment)
+	{
+		if (inputComment.matches("")) {
+			String error = "Opmerking verplicht!";
+			String strDateErrorFormat = getResources().getString(
+					R.string.label_date_hint);
+			setErrorMsg(String.format(strDateErrorFormat, error));
+			validation = false;
+			return false;
+		}
+		
+		setErrorMsg(null);
+		commentTextView.setError(null);
+		validation = true;
+		return true;
+	}
+	
+	private boolean isValidTypeCombo()
+	{
+		return true;
 	}
 }

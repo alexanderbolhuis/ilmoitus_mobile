@@ -28,15 +28,12 @@
                     style="@style/ContainerItem"
                     android:layout_width="0dp"
                     android:layout_weight="3"
-                    android:clickable="true"
-                    android:cursorVisible="false"
                     android:ems="10"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:inputType="date"
                     android:maxLines="1"
-                    android:onClick="showDatePickerDialog"
-                    android:singleLine="true" >
+                    android:padding="12dp"
+                    android:singleLine="true"
+                    android:textColor="#000000" >
 
                     <requestFocus />
                 </EditText>
@@ -48,10 +45,6 @@
                     android:onClick="showDatePickerDialog"
                     android:text="@string/pick_date" />
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/dateError"
-                style="@style/TextViewError" />
 
             <TextView
                 style="@style/TextViewSubTitle"
@@ -66,10 +59,6 @@
                 android:id="@+id/spinnerDeclarationSubType"
                 style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
-            
-            <TextView
-                android:id="@+id/typeError"
-                style="@style/TextViewError" />
 
             <TextView
                 style="@style/TextViewSubTitle"
@@ -83,10 +72,6 @@
                 android:inputType="numberDecimal" />
 
             <TextView
-                android:id="@+id/currencyError"
-                style="@style/TextViewError" />
-
-            <TextView
                 style="@style/TextViewSubTitle"
                 android:text="Bijlage:" />
 
@@ -96,17 +81,18 @@
                 android:onClick="onAddImageButtonClick"
                 android:text="@string/addImage" />
 
-            <ImageView
-                android:id="@+id/mImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:id="@+id/attachmentList"
+                style="@style/LinearLayoutList"
+                android:orientation="vertical" >
+            </LinearLayout>
 
             <TextView
                 style="@style/TextViewSubTitle"
                 android:text="Opmerkingen:" />
 
             <MultiAutoCompleteTextView
-                android:id="@+id/Opmerkingen"
+                android:id="@+id/commentTextView"
                 style="@style/ContainerItem" />
 
             <LinearLayout style="@style/ContainerItemWithMarginTop" >

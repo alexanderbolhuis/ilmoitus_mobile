@@ -2,15 +2,16 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--
-Base application theme, dependent on API level. This theme is replaced
-by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+	Base application theme, dependent on API level. This theme is replaced
+	by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
+    
     <style name="AppBaseTheme" parent="android:Theme.Light">
-        <!--
-Theme customizations available in newer API levels can go in
-res/values-vXX/styles.xml, while customizations related to
-backward-compatibility can go here.
-        -->
+    <!--
+	Theme customizations available in newer API levels can go in
+	res/values-vXX/styles.xml, while customizations related to
+	backward-compatibility can go here.
+    -->
     </style>
 
     <!-- Application theme. -->
@@ -163,6 +164,60 @@ backward-compatibility can go here.
         <item name="android:layout_weight">1</item>
         <item name="android:background">@color/background</item>
     </style>
+    
+    <style name="MyListBackContent">
+       <item name="android:layout_width">fill_parent</item>
+       <item name="android:layout_height">fill_parent</item>
+       <!-- <item name="android:background">@drawable/background_back</item> -->
+       <item name="android:gravity">right</item>
+   </style>
+ 
+   <style name="MyListFrontContent">
+       <item name="android:layout_width">fill_parent</item>
+       <item name="android:layout_height">fill_parent</item>
+       <!-- <item name="android:background">@drawable/background_front</item> -->
+       <item name="android:background">@color/background</item>
+       <item name="android:padding">8dp</item>
+       <item name="android:paddingLeft">16dp</item>
+       <item name="android:paddingRight">16dp</item>
+   </style>
+ 
+     <style name="MyListButtonAction">
+       <item name="android:layout_margin">5dp</item>
+         <item name="android:layout_width">80dp</item>
+       <item name="android:layout_height">30dp</item>
+ 
+   </style>
+ 
+     <style name="MyListImage">
+       <item name="android:layout_width">32dp</item>
+       <item name="android:layout_height">32dp</item>
+       <item name="android:scaleGravity">fill</item>
+       <item name="android:layout_marginRight">10dp</item>
+       <item name="android:paddingLeft">20dp</item>
+   </style>
+ 
+   <style name="MyListTitle">
+       <item name="android:paddingBottom">8dp</item>
+       <item name="android:textSize">17sp</item>
+       <item name="android:textStyle">bold</item>
+       <item name="android:maxLines">2</item>
+       <item name="android:ellipsize">end</item>
+   </style>
+   
+   <style name="MyListSubTitle">
+       <item name="android:paddingBottom">8dp</item>
+       <item name="android:paddingLeft">100dp</item>
+       <item name="android:textSize">12sp</item>
+       <item name="android:textStyle">bold</item>
+   </style>
+   
+   <style name="MyListStatusTitle">
+       <item name="android:paddingBottom">8dp</item>
+       <item name="android:paddingLeft">100dp</item>
+       <item name="android:textSize">12sp</item>
+       <item name="android:textStyle">bold</item>
+   </style>
 
     <color name="coloredText">#00BFFF</color>
     <color name="coloredTextError">#FF0000</color>
