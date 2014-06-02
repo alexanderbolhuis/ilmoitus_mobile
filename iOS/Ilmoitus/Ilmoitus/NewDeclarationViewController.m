@@ -105,18 +105,13 @@
 - (IBAction)postDeclaration:(id)sender {
     self.declaration.className = @"open_declaration";
     self.declaration.status = @"Open";
-        // TODO get current date in right format
+    // TODO get current date in right format
     self.declaration.createdAt = @"2014-05-15 07:27:33.448849";
     self.declaration.createdBy = [[[NSUserDefaults standardUserDefaults] stringForKey:@"person_id"] longLongValue];
-    
-    // TODO Get supervisor from dropdown
-    NSMutableArray *at = [[NSMutableArray alloc]init];
-    [at addObject:[NSNumber numberWithLongLong:[[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]]];
-    self.declaration.assignedTo = at;
+
     self.declaration.comment = self.comment.text;
-    // TODO Calc price and items
-    self.declaration.itemsTotalPrice = 30.00;
-    self.declaration.itemsCount = 2;
+    self.declaration.itemsTotalPrice = [self.totalPrice.text floatValue];
+    self.declaration.itemsCount = [self.declaration.lines count];
     [self saveDeclaration];
 }
 
@@ -278,7 +273,7 @@
                               error:&error];
         
         NSLog(@"JSON response: %@", json);
-        
+        NSString *spv = [[NSString alloc] init];
         NSMutableArray *supervisorsFound = [[NSMutableArray alloc] init];
         for (NSDictionary *supervisor in json) {
             Supervisor *sup = [[Supervisor alloc] init];
@@ -295,17 +290,18 @@
             [supervisorsFound addObject:sup];
             
             // Set default supervisor
-            if ((sup.ident == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) && ([self.declaration.assignedTo firstObject] == nil)) {
-                self.supervisor.text = @"";
-                NSString *spv = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
-                [self.supervisor insertText:spv];
+            if ((sup.ident == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue])) {
+                spv = [NSString stringWithFormat:@"%@ %@ (%d)", sup.first_name, sup.last_name, sup.employee_number];
+                [self.declaration.assignedTo addObject:[NSNumber numberWithLongLong:sup.ident]];
             }
         }
         self.supervisorList = supervisorsFound;
         
         [self.pktStatePicker reloadAllComponents];
-        
-        // TODO create dropdown to select supervisor
+        if ([self.declaration.assignedTo count] < 1) {
+            self.supervisor.text = @"";
+            self.supervisor.text = spv;
+        }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error while getting supervisor list: %@", error);
     }];
