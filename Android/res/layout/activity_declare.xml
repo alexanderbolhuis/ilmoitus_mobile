@@ -32,13 +32,11 @@
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
-                <ListView
+                <LinearLayout
                     android:id="@+id/list"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_weight="1"
-                    android:gravity="center" />
+                    style="@style/LinearLayoutList"
+                    android:orientation="vertical" >
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/onAddLineButton"
