@@ -14,10 +14,12 @@
 @property (strong, nonatomic) NSString *status;
 @property (strong, nonatomic) NSString *createdAt;
 @property (nonatomic) int64_t createdBy;
-@property (strong, nonatomic) NSArray *assignedTo;
+@property (strong, nonatomic) NSMutableArray *assignedTo;
 @property (strong, nonatomic) NSString *comment;
 @property (nonatomic) float itemsTotalPrice;
 @property (nonatomic) int itemsCount;
 @property (strong, nonatomic) NSMutableArray *lines;
 @property (strong, nonatomic) NSMutableArray *attachments;
+
+-(float)calculateTotalPrice;
 @end
