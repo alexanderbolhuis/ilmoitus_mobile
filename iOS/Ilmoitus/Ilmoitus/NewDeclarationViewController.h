@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Declaration.h"
 
-@interface NewDeclarationViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate>
+@interface NewDeclarationViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate>
 @property Declaration *declaration;
 
 @end

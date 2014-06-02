@@ -54,7 +54,7 @@ public class DeclarationLineAdapter extends BaseAdapter {
 
 		View rowView = inflator.inflate(R.layout.row_declaration_line, null);
 		TextView top = (TextView) rowView.findViewById(R.id.text1);
-		top.setText(line.getDatum() + " - " + line.getDeclaratieSoort() + " - "
+		top.setText(line.getDatum() + " - " + line.getDeclaratieSoort().getName() + " - "
 				+ "\u20AC" + currencyFormat.format(line.getBedrag()));
 
 		return rowView;
