@@ -43,7 +43,7 @@
 - (IBAction)loginAction:(id)sender {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    NSDictionary *params = @{@"email":_usernamefield.text, @"password":_passwordfield.text};
+    NSDictionary *params = @{@"email":self.usernamefield.text, @"password":self.passwordfield.text};
     NSString *url = [NSString stringWithFormat:@"%@/auth/login", baseURL];
     AFHTTPRequestOperation *apiRequest = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError* error;
@@ -94,22 +94,22 @@
             [self performSegueWithIdentifier:@"login_success" sender:self];
         } else {
             NSLog(@"JSON: %@",@"Failed");
-                _loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+                self.loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                                message:@"Login Failed"
                                                               delegate:nil
                                                      cancelButtonTitle:@"Cancel"
                                                      otherButtonTitles:nil];
-                [_loginFailedAlert show];
+                [self.loginFailedAlert show];
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error: %@", error);
-        _loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Error"
+        self.loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Error"
                                                        message:@"Login Failed"
                                                       delegate:nil
                                              cancelButtonTitle:@"Cancel"
                                              otherButtonTitles:nil];
-        [_loginFailedAlert show];
+        [self.loginFailedAlert show];
     }];
     
     [apiRequest start];
