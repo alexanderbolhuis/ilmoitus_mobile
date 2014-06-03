@@ -18,5 +18,6 @@
 @property (strong, nonatomic) NSString *comment;
 @property (nonatomic) float itemsTotalPrice;
 @property (nonatomic) int itemsCount;
-@property (strong, nonatomic) NSArray *lines;
+@property (strong, nonatomic) NSMutableArray *lines;
+@property (strong, nonatomic) NSMutableArray *attachments;
 @end

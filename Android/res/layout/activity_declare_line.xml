@@ -19,7 +19,7 @@
 
             <TextView
                 style="@style/TextViewSubTitle"
-                android:text="Datum:"/>
+                android:text="Datum:" />
 
             <LinearLayout style="@style/ContainerItem" >
 
@@ -28,15 +28,12 @@
                     style="@style/ContainerItem"
                     android:layout_width="0dp"
                     android:layout_weight="3"
-                    android:clickable="true"
-                    android:onClick="showDatePickerDialog"
-                    android:cursorVisible="false"
                     android:ems="10"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false"
                     android:inputType="date"
                     android:maxLines="1"
-                    android:singleLine="true" >
+                    android:padding="12dp"
+                    android:singleLine="true"
+                    android:textColor="#000000" >
 
                     <requestFocus />
                 </EditText>
@@ -65,13 +62,13 @@
 
             <TextView
                 style="@style/TextViewSubTitle"
-                android:text="Bedrag:"/>
+                android:text="Bedrag:" />
 
             <EditText
                 android:id="@+id/editCurrency"
                 style="@style/EditText"
-                android:hint="Bedrag"
                 android:digits="0123456789,"
+                android:hint="Bedrag"
                 android:inputType="numberDecimal" />
 
             <TextView
@@ -83,24 +80,24 @@
                 style="@style/Button"
                 android:onClick="onAddImageButtonClick"
                 android:text="@string/addImage" />
-            
-            <ImageView
-                android:id="@+id/mImageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+
+            <LinearLayout
+                android:id="@+id/attachmentList"
+                style="@style/LinearLayoutList"
+                android:orientation="vertical" >
+            </LinearLayout>
 
             <TextView
                 style="@style/TextViewSubTitle"
                 android:text="Opmerkingen:" />
 
             <MultiAutoCompleteTextView
-                android:id="@+id/Opmerkingen"
+                android:id="@+id/commentTextView"
                 style="@style/ContainerItem" />
 
             <LinearLayout style="@style/ContainerItemWithMarginTop" >
 
-                <Button            
+                <Button
                     android:id="@+id/buttonCancel"
                     style="@style/ContainerButtonCommit"
                     android:layout_marginRight="2dp"

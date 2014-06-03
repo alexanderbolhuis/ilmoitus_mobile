@@ -6,8 +6,9 @@
     <LinearLayout
         style="@style/LinearLayout"
         android:orientation="vertical" >
-        
+
         <ScrollView style="@style/ScrollView" >
+
             <LinearLayout
                 style="@style/Container"
                 android:orientation="vertical" >
@@ -18,19 +19,16 @@
                     android:text="Declaratie indienen" />
 
                 <TextView
-                    android:id="@+id/totalPrice"
-                    style="@style/TextViewSubTitle"/>
-                
-                <TextView
                     style="@style/TextViewSubTitle"
                     android:text="Leidinggevende:" />
 
                 <Spinner
-                    android:id="@+id/spinner1"
+                    android:id="@+id/spinnerSupervisors"
                     style="@style/Spinner"
                     android:prompt="@string/prompt_spinner" />
 
                 <TextView
+                    android:id="@+id/declartionItemsTitle"
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
@@ -50,12 +48,12 @@
                     android:text="Opmerkingen:" />
 
                 <MultiAutoCompleteTextView
-                    android:id="@+id/comment"
+                    android:id="@+id/commentTextView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center" />
-                
-            	<Button
+
+                <Button
                     android:id="@+id/onAddDeclaration"
                     style="@style/Button"
                     android:text="Indienen" />
