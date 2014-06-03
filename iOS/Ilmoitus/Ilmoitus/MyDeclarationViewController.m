@@ -87,7 +87,23 @@
         
         NSLog(@"GET request success response for all declarations: %@", json);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"GET request Error for all declarations: %@", error);
+        switch (operation.response.statusCode)
+        {
+            case 400:
+                NSLog(@"GET request Error 400 for all declarations: %@", error);
+                [self showErrorMessage:@"Verkeerde aanvraag" :operation.responseString];
+                break;
+                
+            case 404:
+                NSLog(@"GET request Error 404 for all declarations: %@", error);
+                [self showErrorMessage:@"Geen declaraties" :operation.responseString];
+                break;
+                
+            default:
+                NSLog(@"GET request Error for all declarations: %@", error);
+                [self showErrorMessage:@"Fout" :operation.responseString];
+                break;
+        }
     }];
     
     // Reload the data
@@ -145,6 +161,16 @@
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return @"Declaraties";
+}
+
+- (void) showErrorMessage: (NSString*)errorTitle:(NSString*)errorMessage
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:errorTitle
+                                              message:errorMessage
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 
 @end

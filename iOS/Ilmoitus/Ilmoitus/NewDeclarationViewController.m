@@ -124,9 +124,28 @@
         // Handle success
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error while saving declaration: %@", error);
-        // Handle error
-        
+        switch (operation.response.statusCode)
+        {
+            case 400:
+                NSLog(@"POST request Error 400 for post new declaration: %@", error);
+                [self showErrorMessage:@"Verkeerde aanvraag" :operation.responseString];
+                break;
+                
+            case 401:
+                NSLog(@"POST request Error 401 for post new declaration: %@", error);
+                [self showErrorMessage:@"Onvoldoende rechten" :operation.responseString];
+                break;
+                
+            case 404:
+                NSLog(@"POST request Error 404 for post new declaration: %@", error);
+                [self showErrorMessage:@"Niet gevonden" :operation.responseString];
+                break;
+                
+            default:
+                NSLog(@"POST request Error for post new declaration: %@", error);
+                [self showErrorMessage:@"Fout" :operation.responseString];
+                break;
+        }
     }];
     
     [apiRequest start];
@@ -174,7 +193,29 @@
         
         // TODO create dropdown to select supervisor
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error while getting supervisor list: %@", error);
+        //NSLog(@"Error while getting supervisor list: %@", error);
+        switch (operation.response.statusCode)
+        {
+            case 400:
+                NSLog(@"GET request Error 400 for get supervisors: %@", error);
+                [self showErrorMessage:@"Verkeerde aanvraag" :operation.responseString];
+                break;
+                
+            case 401:
+                NSLog(@"GET request Error 401 for get supervisors: %@", error);
+                [self showErrorMessage:@"Onvoldoende rechten" :operation.responseString];
+                break;
+                
+            case 404:
+                NSLog(@"GET request Error 404 for get supervisors: %@", error);
+                [self showErrorMessage:@"Niet gevonden" :operation.responseString];
+                break;
+                
+            default:
+                NSLog(@"GET request Error for get supervisors: %@", error);
+                [self showErrorMessage:@"Fout" :operation.responseString];
+                break;
+        }
     }];
 }
 
@@ -187,5 +228,15 @@
         
         declarationlineController.declaration = _declaration;
     }
+}
+
+- (void) showErrorMessage: (NSString*)errorTitle:(NSString*)errorMessage
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:errorTitle
+                                                    message:errorMessage
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
 }
 @end
