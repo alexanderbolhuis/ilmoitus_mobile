@@ -95,7 +95,7 @@
         } else {
             NSLog(@"JSON: %@",@"Failed");
                 _loginFailedAlert = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                               message:@"Login Failed"
+                                                              message:@"Login Failed"
                                                               delegate:nil
                                                      cancelButtonTitle:@"Cancel"
                                                      otherButtonTitles:nil];

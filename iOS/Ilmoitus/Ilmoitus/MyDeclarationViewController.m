@@ -60,7 +60,7 @@
         {
             case AFNetworkReachabilityStatusReachableViaWWAN:
             case AFNetworkReachabilityStatusReachableViaWiFi:
-                NSLog(@"Connected to netwerk");
+                NSLog(@"Connected to network");
                 [self downloadDeclarationsFromServer:manager];
                 break;
             case AFNetworkReachabilityStatusNotReachable:
@@ -68,7 +68,7 @@
                 [self showErrorMessage:@"Geen verbinding" : @"Kon geen verbinding maken met een netwerk"];
                 break;
             default:
-                NSLog(@"Unknow internet connection");
+                NSLog(@"Unknown internet connection");
                 [self showErrorMessage:@"Onbekende verbinding" : @"Verbonden met een onbekend soort netwerk"];
                 break;
         }

@@ -78,7 +78,8 @@
     return YES;
 }
 
-- (IBAction)cancelDeclaration:(id)sender {
+- (IBAction)cancelDeclaration:(id)sender
+{
 }
 
 - (void)didReceiveMemoryWarning
@@ -103,7 +104,7 @@
          {
              case AFNetworkReachabilityStatusReachableViaWWAN:
              case AFNetworkReachabilityStatusReachableViaWiFi:
-                 NSLog(@"Connected to netwerk");
+                 NSLog(@"Connected to network");
                  [self uploadDeclaration:manager];
                  break;
              case AFNetworkReachabilityStatusNotReachable:
@@ -111,7 +112,7 @@
                  [self showErrorMessage:@"Geen verbinding" : @"Kon geen verbinding maken met een netwerk"];
                  break;
              default:
-                 NSLog(@"Unknow internet connection");
+                 NSLog(@"Unknown internet connection");
                  [self showErrorMessage:@"Onbekende verbinding" : @"Verbonden met een onbekend soort netwerk"];
                  break;
          }
@@ -197,7 +198,7 @@
          {
              case AFNetworkReachabilityStatusReachableViaWWAN:
              case AFNetworkReachabilityStatusReachableViaWiFi:
-                 NSLog(@"Connected to netwerk");
+                 NSLog(@"Connected to network");
                  [self downloadSupervisorFromServer:manager];
                  break;
              case AFNetworkReachabilityStatusNotReachable:
@@ -205,7 +206,7 @@
                  [self showErrorMessage:@"Geen verbinding" : @"Kon geen verbinding maken met een netwerk"];
                  break;
              default:
-                 NSLog(@"Unknow internet connection");
+                 NSLog(@"Unknown internet connection");
                  [self showErrorMessage:@"Onbekende verbinding" : @"Verbonden met een onbekend soort netwerk"];
                  break;
          }
@@ -238,11 +239,9 @@
             sup.supervisor = [supervisor[@"supervisor"] longLongValue];
             sup.max_declaration_price = [supervisor[@"max_declaration_price"] floatValue];
             
-            
             if ([supervisor[@"id"] longLongValue] == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) {
                 _supervisor.text = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
             }
-            
             
             [supervisorsFound addObject:sup];
         }
