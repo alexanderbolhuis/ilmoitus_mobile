@@ -44,22 +44,31 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">20dp</item>
     </style>
+    
+    <style name="TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+    </style>
 
     <style name="TextViewTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/coloredText</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">left</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/blauw</item>
+        <item name="android:textSize">24sp</item>
     </style>
 
     <style name="TextViewSubTitle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:gravity">center</item>
+        <item name="android:gravity">left</item>
         <item name="android:layout_marginTop">20dp</item>
-        <item name="android:textColor">@color/coloredText</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/blauw</item>
+        <item name="android:textSize">16sp</item>
     </style>
     
     <style name="TextViewError">
@@ -183,7 +192,7 @@
    </style>
  
      <style name="MyListButtonAction">
-       <item name="android:layout_margin">5dp</item>
+       <item name="android:layout_margin">5dp</item>"C:/Users/willemhustinx/Documents/GitHub/ilmoitus_mobile - kopie/Android/res/values/styles.xml"
          <item name="android:layout_width">80dp</item>
        <item name="android:layout_height">30dp</item>
  
@@ -223,4 +232,8 @@
     <color name="coloredTextError">#FF0000</color>
     <color name="background">#FFFFFF</color>
 
+    <color name="blauw">#242E7D</color>
+    <color name="geel">#FFDD00</color>
+    <color name="magneta">#E6007E</color>
+    
 </resources>

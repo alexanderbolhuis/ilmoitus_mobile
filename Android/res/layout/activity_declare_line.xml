@@ -12,12 +12,16 @@
             style="@style/Container"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/person_title"
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewTitle"
-                android:text="Regel Toevoegen" />
+                android:text="Declaratie indienen" />
 
-            <TextView
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dottedline" />
+
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Datum:" />
 
@@ -27,13 +31,18 @@
                     android:id="@+id/editTextDate"
                     style="@style/ContainerItem"
                     android:layout_width="0dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="3dp"
                     android:layout_weight="3"
+                    android:clickable="true"
+                    android:cursorVisible="false"
                     android:ems="10"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
                     android:inputType="date"
                     android:maxLines="1"
-                    android:padding="12dp"
-                    android:singleLine="true"
-                    android:textColor="#000000" >
+                    android:onClick="showDatePickerDialog"
+                    android:singleLine="true" >
 
                     <requestFocus />
                 </EditText>
@@ -41,12 +50,13 @@
                 <Button
                     style="@style/Button"
                     android:layout_width="0dp"
+                    android:layout_marginTop="0dp"
                     android:layout_weight="1"
                     android:onClick="showDatePickerDialog"
                     android:text="@string/pick_date" />
             </LinearLayout>
 
-            <TextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Declaratiesoort:" />
 
@@ -60,7 +70,7 @@
                 style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
 
-            <TextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Bedrag:" />
 
@@ -71,7 +81,7 @@
                 android:hint="Bedrag"
                 android:inputType="numberDecimal" />
 
-            <TextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Bijlage:" />
 
@@ -87,7 +97,7 @@
                 android:orientation="vertical" >
             </LinearLayout>
 
-            <TextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Opmerkingen:" />
 
