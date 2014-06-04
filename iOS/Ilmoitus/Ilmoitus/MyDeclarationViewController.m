@@ -51,57 +51,74 @@
 {
     // Do Request
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
-    NSString *url = [NSString stringWithFormat:@"%@/declarations/employee", baseURL];
-    [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSError* error;
-        NSDictionary* json = [NSJSONSerialization
-                              JSONObjectWithData:responseObject
-                              
-                              options:kNilOptions
-                              error:&error];
-        
-        NSMutableArray *declarationsFound = [[NSMutableArray alloc] init];
-        for (NSDictionary *decl in json) {
-                Declaration *declaration = [[Declaration alloc] init];
-                declaration.status = decl[@"state"];
-            
-                declaration.itemsCount = [decl[@"items_count"] intValue];
-                declaration.itemsTotalPrice = [decl[@"items_total_price"] floatValue];
-                NSDateFormatter *formatter = [NSDateFormatter new];
-                formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
-            
-                NSDate *date = [formatter dateFromString:decl[@"created_at"]];
-                [formatter setDateFormat:@"dd-MM-yyyy"];
-                declaration.createdAt = [formatter stringFromDate:date];
-                [declarationsFound addObject:declaration];
-        }
-        
-        [_declarationList removeAllObjects];
-        _declarationList = declarationsFound;
-        
-        [self.tableView reloadData];
-    [self.refreshControl endRefreshing];
-        
-        NSLog(@"GET request success response for all declarations: %@", json);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        switch (operation.response.statusCode)
-        {
-            case 400:
-                NSLog(@"GET request Error 400 for all declarations: %@", error);
-                [self showErrorMessage:@"Verkeerde aanvraag" :operation.responseString];
-                break;
+    [manager.reachabilityManager startMonitoring];
+    
+    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        switch (status) {
+            case AFNetworkReachabilityStatusReachableViaWWAN:
+            case AFNetworkReachabilityStatusReachableViaWiFi:
+                NSLog(@"WIFI");
                 
-            case 404:
-                NSLog(@"GET request Error 404 for all declarations: %@", error);
-                [self showErrorMessage:@"Geen declaraties" :operation.responseString];
+                manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+                manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+                [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+                NSString *url = [NSString stringWithFormat:@"%@/declarations/employee", baseURL];
+                [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSError* error;
+                     NSDictionary* json = [NSJSONSerialization
+                                           JSONObjectWithData:responseObject
+                                           options:kNilOptions
+                                           error:&error];
+                     
+                     NSMutableArray *declarationsFound = [[NSMutableArray alloc] init];
+                     for (NSDictionary *decl in json) {
+                         Declaration *declaration = [[Declaration alloc] init];
+                         declaration.status = decl[@"state"];
+                         
+                         declaration.itemsCount = [decl[@"items_count"] intValue];
+                         declaration.itemsTotalPrice = [decl[@"items_total_price"] floatValue];
+                         NSDateFormatter *formatter = [NSDateFormatter new];
+                         formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
+                         
+                         NSDate *date = [formatter dateFromString:decl[@"created_at"]];
+                         [formatter setDateFormat:@"dd-MM-yyyy"];
+                         declaration.createdAt = [formatter stringFromDate:date];
+                         [declarationsFound addObject:declaration];
+                     }
+                     
+                     [_declarationList removeAllObjects];
+                     _declarationList = declarationsFound;
+                     
+                     [self.tableView reloadData];
+                     [self.refreshControl endRefreshing];
+                     
+                     NSLog(@"GET request success response for all declarations: %@", json);
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     switch (operation.response.statusCode) {
+                         case 400:
+                             NSLog(@"GET request Error 400 for all declarations: %@", error);
+                             [self showErrorMessage:@"Verkeerde aanvraag" :operation.responseString];
+                             break;
+                             
+                         case 404:
+                             NSLog(@"GET request Error 404 for all declarations: %@", error);
+                             [self showErrorMessage:@"Geen declaraties" :operation.responseString];
+                             break;
+                             
+                         default:
+                             NSLog(@"GET request Error for all declarations: %@", error);
+                             [self showErrorMessage:@"Fout" :operation.responseString];
+                             break;
+                     }
+                 }];
                 break;
-                
+            case AFNetworkReachabilityStatusNotReachable:
+                NSLog(@"No internet connection");
+                [self showErrorMessage:@"Geen verbinding" : @"Kon geen verbinding maken met een netwerk"];
+                break;
             default:
-                NSLog(@"GET request Error for all declarations: %@", error);
-                [self showErrorMessage:@"Fout" :operation.responseString];
+                NSLog(@"Unknow internet connection");
+                [self showErrorMessage:@"Onbekende verbinding" : @"Verbonden met een onbekend soort netwerk"];
                 break;
         }
     }];
@@ -167,9 +184,9 @@
 {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:errorTitle
                                               message:errorMessage
-                                                   delegate:nil
-                                          cancelButtonTitle:@"OK"
-                                          otherButtonTitles:nil];
+                                              delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
     [alert show];
 }
 
