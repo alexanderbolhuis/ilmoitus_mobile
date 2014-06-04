@@ -89,17 +89,45 @@
 
 - (void)saveDeclaration
 {
-    Declaration *decl = _declaration;
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+    
+    [manager.reachabilityManager startMonitoring];
+    
+    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status)
+     {
+         switch (status)
+         {
+             case AFNetworkReachabilityStatusReachableViaWWAN:
+             case AFNetworkReachabilityStatusReachableViaWiFi:
+                 NSLog(@"Connected to netwerk");
+                 [self uploadDeclaration:manager];
+                 break;
+             case AFNetworkReachabilityStatusNotReachable:
+                 NSLog(@"No internet connection");
+                 [self showErrorMessage:@"Geen verbinding" : @"Kon geen verbinding maken met een netwerk"];
+                 break;
+             default:
+                 NSLog(@"Unknow internet connection");
+                 [self showErrorMessage:@"Onbekende verbinding" : @"Verbonden met een onbekend soort netwerk"];
+                 break;
+         }
+     }];
+}
+
+-(void)uploadDeclaration:(AFHTTPRequestOperationManager*) manager
+{
+    Declaration *decl = _declaration;
     // Declaration
     NSDictionary *declaration = @{@"state":decl.status, @"created_at":decl.createdAt, @"created_by":[NSNumber numberWithLongLong:decl.createdBy], @"assigned_to":decl.assignedTo, @"comment":decl.comment, @"items_total_price":[NSNumber numberWithFloat:decl.itemsTotalPrice], @"items_count":[NSNumber numberWithInt:decl.itemsCount]};
     
     // Lines
     NSMutableArray *declarationlines = [[NSMutableArray alloc] init];
-    for (DeclarationLine *line in decl.lines){
+    for (DeclarationLine *line in decl.lines)
+    {
         NSDictionary *currentline = @{@"receipt_date": line.date, @"cost":[NSNumber numberWithFloat:line.cost], @"declaration_sub_type":[NSNumber numberWithLongLong:line.subtype]};
         [declarationlines addObject:currentline];
     }
@@ -112,7 +140,8 @@
     NSLog(@"JSON data that is going to be saved/sent: %@",params);
     
     NSString *url = [NSString stringWithFormat:@"%@/declaration", baseURL];
-    AFHTTPRequestOperation *apiRequest = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *apiRequest = [manager POST:url parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
                               JSONObjectWithData:responseObject
@@ -123,7 +152,9 @@
         NSLog(@"JSON response data for saving declaration: %@",json);
         // Handle success
         
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    }
+    failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    {
         switch (operation.response.statusCode)
         {
             case 400:
@@ -158,6 +189,32 @@
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
+    [manager.reachabilityManager startMonitoring];
+    
+    [manager.reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status)
+     {
+         switch (status)
+         {
+             case AFNetworkReachabilityStatusReachableViaWWAN:
+             case AFNetworkReachabilityStatusReachableViaWiFi:
+                 NSLog(@"Connected to netwerk");
+                 [self downloadSupervisorFromServer:manager];
+                 break;
+             case AFNetworkReachabilityStatusNotReachable:
+                 NSLog(@"No internet connection");
+                 [self showErrorMessage:@"Geen verbinding" : @"Kon geen verbinding maken met een netwerk"];
+                 break;
+             default:
+                 NSLog(@"Unknow internet connection");
+                 [self showErrorMessage:@"Onbekende verbinding" : @"Verbonden met een onbekend soort netwerk"];
+                 break;
+         }
+     }];
+
+    }
+
+- (void) downloadSupervisorFromServer:(AFHTTPRequestOperationManager*) manager
+{
     NSString *url = [NSString stringWithFormat:@"%@/supervisors/", baseURL];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError* error;
@@ -193,7 +250,6 @@
         
         // TODO create dropdown to select supervisor
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //NSLog(@"Error while getting supervisor list: %@", error);
         switch (operation.response.statusCode)
         {
             case 400:
