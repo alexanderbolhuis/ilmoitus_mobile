@@ -231,7 +231,8 @@
     if (sender == self.add)
     {
         self.declarationLine.cost = [self.costField.text floatValue] + ([self.costDecimalField.text floatValue] / 100);
-        self.declarationLine.date = self.dateField.text;    }
+        self.declarationLine.date = self.dateField.text;
+    }
     else if (sender == self.cancel)
     {
         self.declarationLine = nil;
@@ -389,10 +390,10 @@
                                error:&error];
          for (NSDictionary *decl in json)
          {
-             DeclarationType *declarationMainTypes = [[DeclarationType alloc] init];
-             declarationMainTypes.ident = [decl[@"id"] longLongValue];
-             declarationMainTypes.mainTypeName = decl[@"name"];
-             [declarationsTypesFound addObject:declarationMainTypes];
+             DeclarationType *declarationType = [[DeclarationType alloc] init];
+             declarationType.ident = [decl[@"id"] longLongValue];
+             declarationType.mainTypeName = decl[@"name"];
+             [declarationsTypesFound addObject:declarationType];
          }
          
          NSLog(@"GET request success response for all declarations: %@", json);
@@ -426,12 +427,12 @@
          
          for (NSDictionary *decl in json)
          {
-             DeclarationSubType *declarationSubTypes = [[DeclarationSubType alloc] init];
-             declarationSubTypes.ident = [decl[@"id"] longLongValue];
-             declarationSubTypes.subTypeName = decl[@"name"];
-             declarationSubTypes.subTypeDescription = decl[@"declarationType"];
-             declarationSubTypes.subTypeMaxCost = [decl[@"max_cost"] floatValue];
-             [declarationsSubTypesFound addObject:declarationSubTypes];
+             DeclarationSubType *declarationSubType = [[DeclarationSubType alloc] init];
+             declarationSubType.ident = [decl[@"id"] longLongValue];
+             declarationSubType.subTypeName = decl[@"name"];
+             declarationSubType.subTypeDescription = decl[@"declarationType"];
+             declarationSubType.subTypeMaxCost = [decl[@"max_cost"] floatValue];
+             [declarationsSubTypesFound addObject:declarationSubType];
          }
          
          NSLog(@"GET request success response for all declarations sub types: %@", json);
