@@ -19,6 +19,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *typeField;
 @property (weak, nonatomic) IBOutlet UITextField *subtypeField;
 @property (weak, nonatomic) IBOutlet UITextField *costField;
+@property (weak, nonatomic) IBOutlet UITextField *costDecimalField;
+@property (weak, nonatomic) IBOutlet UITextField *commentField;
 @property (nonatomic) UIDatePicker *pktStatePicker;
 @property (nonatomic) UIToolbar *mypickerToolbar;
 @property (nonatomic) UIActionSheet *pickerViewPopup;
@@ -111,9 +113,18 @@
     // Do any additional setup after loading the view.
     self.dateField.delegate = self;
     self.costField.delegate = self;
-    self.typeField.delegate = self;
-    self.subtypeField.delegate = self;
+    self.costField.keyboardType = UIKeyboardTypeNumberPad;
+    self.costDecimalField.delegate = self;
+    self.costDecimalField.keyboardType = UIKeyboardTypeNumberPad;
+    self.commentField.delegate = self;
+    [self.commentField setReturnKeyType: UIReturnKeyDone];
     imagePicker.delegate = self;
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
     
     // Create blank line
     
@@ -122,11 +133,18 @@
     self.declarationLine = [[DeclarationLine alloc] init];
 }
 
+-(void)dismissKeyboard {
+    [self.costField resignFirstResponder];
+    [self.costDecimalField resignFirstResponder];
+    [self.commentField resignFirstResponder];
+}
+
+
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if (sender == self.add)
     {
-        self.declarationLine.cost = [self.costField.text floatValue];
+        self.declarationLine.cost = [self.costField.text floatValue] + ([self.costDecimalField.text floatValue] / 100);
         self.declarationLine.date = self.dateField.text;
         // Todo get subtypes
         self.declarationLine.subtype = 4519529661071360;
@@ -178,6 +196,30 @@
         [self.pickerViewPopup addSubview:self.pktStatePicker];
         [self.pickerViewPopup showInView:self.view];
         [self.pickerViewPopup setBounds:CGRectMake(0,0,320, 464)];
+    }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == self.costField) {
+        if (textField.text.length >= 10 && range.length == 0)
+        {
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    } else if (textField == self.costDecimalField) {
+        if (textField.text.length >= 2 && range.length == 0)
+        {
+            return NO;
+        }
+        else
+        {
+            return YES;
+        }
+    } else {
+        return YES;
     }
 }
 

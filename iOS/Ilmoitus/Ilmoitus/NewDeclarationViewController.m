@@ -334,7 +334,7 @@
     DeclarationLine *line = [self.declaration.lines objectAtIndex:indexPath.row];
     
     UILabel *label = (UILabel *)[cell viewWithTag:1];
-    label.text = [NSString stringWithFormat:@"%@ - %@ - €%.2f", line.date, @"Decalration(Sub)Type", line.cost];
+    label.text = [NSString stringWithFormat:@"%@ - %@ - €%.02f", line.date, @"Decalration(Sub)Type", line.cost];
     
     return cell;
 }
