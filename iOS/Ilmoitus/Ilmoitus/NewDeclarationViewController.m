@@ -264,7 +264,7 @@
         // Handle success
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error while saving declaration: %@", error);
+        NSLog(@"Error while saving declaration: %@, %@", error, operation.responseString);
         // Handle error
         
     }];
