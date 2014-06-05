@@ -1,23 +1,40 @@
 package com.ilmoitus.adapter;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.example.ilmoitus.R;
-import com.ilmoitus.model.BaseDeclaration;
+import com.ilmoitus.activity.DeclarationDetailsActivity;
+import com.ilmoitus.croscutting.InputStreamConverter;
+import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.ClosedDeclaration;
 import com.ilmoitus.model.DeclarationLine;
 import com.ilmoitus.model.OpenDeclaration;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class DeclarationLineAdapter extends BaseAdapter {
+public class DeclarationLineAdapter extends BaseAdapter{
 
 	private LayoutInflater inflator;
 	private Activity activity;
@@ -28,9 +45,7 @@ public class DeclarationLineAdapter extends BaseAdapter {
 			ArrayList<DeclarationLine> declarationLines) {
 		this.activity = activity;
 		this.declarationLines = declarationLines;
-		this.inflator = (LayoutInflater) activity
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		
+		this.inflator = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		currencyFormat = new DecimalFormat("0.00");
 	}
 
@@ -56,8 +71,22 @@ public class DeclarationLineAdapter extends BaseAdapter {
 		TextView top = (TextView) rowView.findViewById(R.id.text1);
 		top.setText(line.getDatum() + " - " + line.getDeclaratieSoort().getName() + " - "
 				+ "\u20AC" + currencyFormat.format(line.getBedrag()));
-
+		LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.declarationLineLayout);
+		Button btnDelete = (Button) rowView.findViewById(R.id.delete);
+		if(activity.getClass() == DeclarationDetailsActivity.class){
+			layout.removeView(btnDelete);
+		}
+		else{
+			btnDelete.setTag(position);
+			btnDelete.setOnClickListener(new OnClickListener(){
+				public void onClick(View v){
+					String pos = v.getTag().toString();
+					int position = Integer.parseInt(pos);
+					declarationLines.remove(position);
+					notifyDataSetChanged();
+				}
+			});
+		}
 		return rowView;
 	}
-
 }
