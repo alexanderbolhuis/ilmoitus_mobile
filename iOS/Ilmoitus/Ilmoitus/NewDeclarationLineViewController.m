@@ -279,7 +279,7 @@
     } else {
         return nil;
     }
-}   
+}
 
 -(void)textFieldDidBeginEditing:(UITextField*)textField
 {
@@ -450,6 +450,38 @@
      {
          NSLog(@"GET request Error for all declarations: %@", error);
      }];
+}
+
+
+- (void) showErrorMessage: (NSString*)errorTitle :(NSString*)errorMessage
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:errorTitle
+                                                    message:errorMessage
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+}
+
+- (BOOL)shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if (sender == self.add)
+    {
+        if (([self.costField.text isEqualToString:@""] || [self.costDecimalField.text isEqualToString:@""]) && self.declarationLine.subtype.ident == nil) {
+            [self showErrorMessage:@"Niets ingevoerd" :@"Er is niets ingevoerd."];
+            return NO;
+        } else if ([self.costField.text isEqualToString:@"" ] || [self.costDecimalField.text isEqualToString:@""]) {
+            // TODO Make errormessages for each inputfield
+            [self showErrorMessage:@"Ongeldig bedrag" :@"Er is een ongeldig bedrag ingevoerd."];
+            return NO;
+        } else if (self.declarationLine.subtype.ident == nil) {
+            [self showErrorMessage:@"Geen Type/Subtype geselecteerd" :@"Er geen Type en/of Subtype geselecteerd."];
+            return NO;
+        } else {
+            return YES;
+        }
+    }
+    return YES;
 }
 
 @end

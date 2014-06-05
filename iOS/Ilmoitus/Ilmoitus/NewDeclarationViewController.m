@@ -308,8 +308,9 @@
             // Set default supervisor
             if ((sup.ident == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) && ([self.declaration.assignedTo firstObject] == nil)) {
                 self.supervisor.text = @"";
-                NSString *spv = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
-                [self.supervisor insertText:spv];
+                NSString *spv = [NSString stringWithFormat:@"%@ %@ (%d)", sup.first_name, sup.last_name, sup.employee_number];
+                self.supervisor.text = spv;
+                [self.declaration.assignedTo addObject:[NSNumber numberWithLongLong:sup.ident]];
             }
         }
         self.supervisorList = supervisorsFound;
