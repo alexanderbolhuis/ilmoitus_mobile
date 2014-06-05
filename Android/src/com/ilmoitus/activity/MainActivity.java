@@ -51,10 +51,16 @@ public class MainActivity extends Activity {
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				BaseDeclaration declaration = declarations.get(position);
-				Intent intent = new Intent(getApplicationContext(),
-						DeclarationDetailsActivity.class);
-				intent.putExtra("decId", declaration.getId());
-				startActivity(intent);
+				if(declaration.getClass() == OpenDeclaration.class){
+					Intent intent = new Intent(getApplicationContext(), DeclareActivity.class);
+					intent.putExtra("decId", declaration.getId());
+					startActivity(intent);
+				}
+				else{
+					Intent intent = new Intent(getApplicationContext(),DeclarationDetailsActivity.class);
+					intent.putExtra("decId", declaration.getId());
+					startActivity(intent);
+				}
 			}
 
 		});

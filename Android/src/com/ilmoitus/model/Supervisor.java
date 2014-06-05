@@ -19,7 +19,6 @@ public class Supervisor {
 		this.lastName = object.getString("last_name");
 		this.email = object.getString("email");
 		this.employeeNumber = object.getInt("employee_number");
-		this.department = object.getLong("department");
 	}
 
 	@Override
