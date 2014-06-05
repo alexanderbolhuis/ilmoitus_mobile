@@ -143,7 +143,7 @@
     
     for (int i = 0; i < [self.supervisorList count]; i++){
         Supervisor *supervisor = [self.supervisorList objectAtIndex:i];
-        if ([NSString stringWithFormat:@"%@ %@", supervisor.first_name, supervisor.last_name] == self.supervisor.text) {
+        if ([[NSString stringWithFormat:@"%@ %@ (%d)", supervisor.first_name, supervisor.last_name, supervisor.employee_number] isEqualToString:self.supervisor.text]) {
             [self.declaration.assignedTo addObject:[NSNumber numberWithLongLong:supervisor.ident]];
             [self.pktStatePicker selectRow:i inComponent:0 animated:YES];
         }
@@ -345,8 +345,16 @@
     DeclarationLine *line = [self.declaration.lines objectAtIndex:indexPath.row];
     
     UILabel *label = (UILabel *)[cell viewWithTag:1];
-    label.text = [NSString stringWithFormat:@"%@ - %@ - €%.02f", line.date, @"Decalration(Sub)Type", line.cost];
+    UILabel *subTypelabel = (UILabel *)[cell viewWithTag:2];
+    NSDateFormatter *formatter = [[NSDateFormatter alloc]init];
+    formatter.dateFormat = @"yyyy-MM-dd' 'HH:mm:ss.S";
+    NSDate *date = [formatter dateFromString:line.date];
     
+    [formatter setDateFormat:@"dd-MM-yyyy"];
+    NSString *dateString = [formatter stringFromDate:date];
+    
+    label.text = [NSString stringWithFormat:@"%@ - €%.02f", dateString, line.cost];
+    subTypelabel.text = [NSString stringWithFormat:@"%@", line.subtype.subTypeName];
     return cell;
 }
 

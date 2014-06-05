@@ -122,6 +122,8 @@
     // Do any additional setup after loading the view.
     self.dateField.delegate = self;
     self.costField.delegate = self;
+    self.typeField.delegate = self;
+    self.subtypeField.delegate = self;
     self.costField.keyboardType = UIKeyboardTypeNumberPad;
     self.costDecimalField.delegate = self;
     self.costDecimalField.keyboardType = UIKeyboardTypeNumberPad;
@@ -133,7 +135,9 @@
     [dateFormat setDateFormat:@"dd-MM-yyyy"];
     NSString *dateString = [dateFormat stringFromDate:date];
     self.dateField.text = dateString;
+    [dateFormat setDateFormat:@"yyyy-MM-dd' 'HH:mm:ss.S"];
     self.declarationLine = [[DeclarationLine alloc] init];
+    self.declarationLine.date = [dateFormat stringFromDate:date];
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
@@ -335,7 +339,10 @@
     NSString *stringFromDate = [formatter stringFromDate:self.datePicker.date];
     self.declarationLine.date = stringFromDate;
     
-    [self.dateField setText: stringFromDate];
+    [formatter setDateFormat:@"dd-MM-yyyy"];
+    NSString *dateString = [formatter stringFromDate:self.datePicker.date];
+    
+    [self.dateField setText: dateString];
     [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
 }
 
