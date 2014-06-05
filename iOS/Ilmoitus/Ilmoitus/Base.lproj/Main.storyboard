@@ -252,7 +252,7 @@
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
                                                         <connections>
-                                                            <action selector="postDeclaration:" destination="QUy-BD-bpt" eventType="touchUpInside" id="WNP-sY-2Nr"/>
+                                                            <action selector="saveDeclaration:" destination="QUy-BD-bpt" eventType="touchUpInside" id="7hm-N9-CYI"/>
                                                         </connections>
                                                     </button>
                                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tRX-PM-77D">

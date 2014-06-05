@@ -22,10 +22,28 @@
 @property (nonatomic) UIPickerView * pktStatePicker;
 @property (nonatomic) UIToolbar *mypickerToolbar;
 @property (weak, nonatomic) IBOutlet UILabel *totalPrice;
+@property (nonatomic) StateType state;
 
 @end
 
 @implementation NewDeclarationViewController
+
+@synthesize declaration = _declaration;
+
+-(Declaration *)declaration
+{
+    if(_declaration == nil)
+    {
+        self.declaration = [[Declaration alloc]init];
+        self.state = NEW;
+    }
+    return _declaration;
+}
+
+-(void)setDeclaration:(Declaration *)declaration
+{
+    _declaration = declaration;
+}
 
 - (void)viewDidLoad
 {
@@ -33,17 +51,14 @@
 	// Do any additional setup after loading the view, typically from a nib.
     
     self.supervisor.delegate = self;
-    [self.comment setReturnKeyType: 	UIReturnKeyDone];
+    [self.comment setReturnKeyType: UIReturnKeyDone];
     self.comment.delegate = self;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
     [self getSupervisorList];
-    
-    if (self.declaration == nil) {
-        self.declaration = [[Declaration alloc] init];
-    }
-    [self decalrationLinesChanged];
+
+    [self declarationLinesChanged];
     self.comment.text = self.declaration.comment;
     
     // Textfield delegates
@@ -60,7 +75,12 @@
     [self.supervisor addTarget:self
                     action:@selector(textFieldDidChange)
           forControlEvents:UIControlEventEditingChanged];
-    
+
+    [self createSupervisorPicker];
+}
+
+-(void)createSupervisorPicker
+{
     // Create SupervisorPicker
     self.supervisorList = [[NSMutableArray alloc] init];
     
@@ -102,26 +122,6 @@
     self.supervisor.inputAccessoryView = self.mypickerToolbar;
 }
 
-- (IBAction)postDeclaration:(id)sender {
-    self.declaration.className = @"open_declaration";
-    self.declaration.status = @"Open";
-        // TODO get current date in right format
-    self.declaration.createdAt = @"2014-05-15 07:27:33.448849";
-    self.declaration.createdBy = [[[NSUserDefaults standardUserDefaults] stringForKey:@"person_id"] longLongValue];
-    
-    // TODO Get supervisor from dropdown
-    NSMutableArray *at = [[NSMutableArray alloc]init];
-    [at addObject:[NSNumber numberWithLongLong:[[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]]];
-    self.declaration.assignedTo = at;
-    self.declaration.comment = self.comment.text;
-    // TODO Calc price and items
-    self.declaration.itemsTotalPrice = 30.00;
-    self.declaration.itemsCount = 2;
-    [self saveDeclaration];
-}
-
--(void)viewDidAppear:(BOOL)animated
-{}
 
 -(IBAction)unwindToNewDeclaration:(UIStoryboardSegue *)segue
 {
@@ -129,7 +129,7 @@
     if(source.declarationLine != nil)
     {
         [self.declaration.lines addObject:source.declarationLine];
-        [self decalrationLinesChanged];
+        [self declarationLinesChanged];
     }
     if(source.attachment != nil)
     {
@@ -151,21 +151,16 @@
 }
 
 -(void)pickerDoneClicked
-
 {
-  	NSLog(@"Supervisor Picker Done Clicked");
-    
     [self.supervisor resignFirstResponder];
 }
 
 - (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
-
 {
     return 1;
 }
 
 - (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-
 {
     return [self.supervisorList count];
 }
@@ -209,8 +204,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)saveDeclaration
+- (IBAction)saveDeclaration:(id)sender
 {
+    if(self.state == VIEW)
+    {
+        //TODO error?
+        return;
+    }
+    
+    self.declaration.createdBy = [[[NSUserDefaults standardUserDefaults] stringForKey:@"person_id"] longLong
+    self.declaration.className = @"open_declaration";
+    self.declaration.status = @"Open";
+    
     Declaration *decl = self.declaration;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
@@ -366,7 +371,7 @@
     return NO;
 }
 
--(void)decalrationLinesChanged
+-(void)declarationLinesChanged
 {
     [self.tableView reloadData];
     [self setTotalPrice];

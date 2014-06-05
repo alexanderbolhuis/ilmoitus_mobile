@@ -12,4 +12,10 @@
 @interface NewDeclarationViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 @property Declaration *declaration;
 
+
+typedef enum {
+    EDIT,
+    VIEW,
+    NEW
+} StateType;
 @end
