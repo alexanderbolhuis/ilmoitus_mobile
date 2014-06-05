@@ -235,7 +235,6 @@
     if (sender == self.add)
     {
         self.declarationLine.cost = [self.costField.text floatValue] + ([self.costDecimalField.text floatValue] / 100);
-        self.declarationLine.date = self.dateField.text;
     }
     else if (sender == self.cancel)
     {
