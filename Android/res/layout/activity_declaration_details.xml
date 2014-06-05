@@ -2,45 +2,48 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/RelativeLayout" >
+
     <LinearLayout
         style="@style/LinearLayout"
         android:orientation="vertical" >
-        
+
         <ScrollView style="@style/ScrollView" >
+
             <LinearLayout
                 style="@style/Container"
                 android:orientation="vertical" >
 
-                <TextView
-                    android:id="@+id/person_title"
+                <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewTitle"
                     android:text="Declaratie Details" />
-                
-                <TextView
-                    android:id="@+id/totalPrice"
-                    style="@style/TextViewSubTitle"/>
-                <TextView
-                    style="@style/TextViewSubTitle"
-                    android:text="Leidinggevende:" />
-                
-                <TextView
-                    android:id="@+id/leidinggevende"
+
+                <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:layout_marginTop="20dp"
-                    />
+                    android:src="@drawable/dottedline" />
 
                 <TextView
+                    android:id="@+id/totalPrice"
+                    style="@style/TextView" />
+
+                <com.ilmoitus.activity.CustomTextView
+                    style="@style/TextViewSubTitle"
+                    android:text="Leidinggevende:" />
+
+                <TextView
+                    android:id="@+id/leidinggevende"
+                    style="@style/TextView" />
+
+                <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
-    			<ListView
-        			android:id="@+id/list"
-        			android:layout_width="fill_parent"
-        			android:layout_height="200dp"/>
+                <ListView
+                    android:id="@+id/list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="200dp" />
 
-                <TextView
+                <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Opmerkingen:" />
 
@@ -48,8 +51,9 @@
                     android:id="@+id/comment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center" />              
+                    android:gravity="center" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
+
 </RelativeLayout>
