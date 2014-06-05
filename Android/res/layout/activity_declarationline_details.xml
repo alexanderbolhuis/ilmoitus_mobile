@@ -1,92 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    style="@style/Container"
     android:orientation="vertical" >
-    
-    	<TextView
-        	android:id="@+id/person_title"
-        	style="@style/TextViewTitle"
-    		android:text="Details" />
-        
-        <LinearLayout 
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-            
-            <TextView
-   				android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"
-   				android:text="Datum: "/>
-            
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"/>
-       	</LinearLayout>
-       	
-       	<LinearLayout 
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-            
-            <TextView
-   				android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"
-   				android:text="Declaratie soort: "/>
-            
-            <TextView
-                android:id="@+id/declarationtype"
-                android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"/>
-       	</LinearLayout>
-       	
-      	<LinearLayout 
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-            
-            <TextView
-   				android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"
-   				android:text="Declaratie sub soort: "/>
-            
-            <TextView
-                android:id="@+id/declarationsubtype"
-                android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"/>
-       	</LinearLayout>
-       	
-     	<LinearLayout 
-            android:orientation="horizontal"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content">
-            
-            <TextView
-   				android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"
-   				android:textColor="#00BFFF"
-   				android:text="Bedrag: "/>
-            
-            <TextView
-                android:id="@+id/cost"
-                android:layout_width="wrap_content"
-   				android:layout_height="wrap_content"
-   				android:textSize="12sp"/>
-       	</LinearLayout>
 
-    	<TextView
-        	android:id="@+id/person_title"
-        	style="@style/TextViewTitle"
-    		android:text="Bijlage" />
+    <com.ilmoitus.activity.CustomTextView
+        style="@style/TextViewTitle"
+        android:text="Details" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/dottedline" />
+
+    <com.ilmoitus.activity.CustomTextView
+        style="@style/TextViewSubTitle"
+        android:text="Datum:" />
+
+    <TextView
+        android:id="@+id/date"
+        style="@style/TextView" />
+
+    <com.ilmoitus.activity.CustomTextView
+        style="@style/TextViewSubTitle"
+        android:text="Declaratie soort:" />
+
+    <TextView
+        android:id="@+id/declarationtype"
+        style="@style/TextView" />
+
+    <com.ilmoitus.activity.CustomTextView
+        style="@style/TextViewSubTitle"
+        android:text="Declaratie sub soort:" />
+
+    <TextView
+        android:id="@+id/declarationsubtype"
+        style="@style/TextView" />
+
+    <com.ilmoitus.activity.CustomTextView
+        style="@style/TextViewSubTitle"
+        android:text="Bedrag:" />
+
+    <TextView
+        android:id="@+id/cost"
+        style="@style/TextView" />
+
+    <com.ilmoitus.activity.CustomTextView
+        style="@style/TextViewTitle"
+        android:text="Bijlage" />
+
 </LinearLayout>

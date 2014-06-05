@@ -13,12 +13,17 @@
                 style="@style/Container"
                 android:orientation="vertical" >
 
-                <TextView
+                <com.ilmoitus.activity.CustomTextView
                     android:id="@+id/person_title"
                     style="@style/TextViewTitle"
                     android:text="Declaratie indienen" />
 
-                <TextView
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/dottedline" />
+
+                <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Leidinggevende:" />
 
@@ -27,7 +32,7 @@
                     style="@style/Spinner"
                     android:prompt="@string/prompt_spinner" />
 
-                <TextView
+                <com.ilmoitus.activity.CustomTextView
                     android:id="@+id/declartionItemsTitle"
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
@@ -42,7 +47,7 @@
                     style="@style/Button"
                     android:text="Voeg toe" />
 
-                <TextView
+                <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Opmerkingen:" />
 
