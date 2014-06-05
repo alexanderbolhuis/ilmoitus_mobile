@@ -158,25 +158,140 @@
     {
         switch (operation.response.statusCode)
         {
-            case 400:
-                NSLog(@"POST request Error 400 for post new declaration: %@", error);
+            case 400: // Bad Request
+                NSLog(@"POST Request Error 400 for post new declaration: %@", error);
                 [self showErrorMessage:@"Verkeerde aanvraag" :operation.responseString];
                 break;
                 
-            case 401:
-                NSLog(@"POST request Error 401 for post new declaration: %@", error);
+                
+            case 401: // Unauthorized
+				NSLog(@"POST Request Error 401 for post new declaration: %@", error);
                 [self showErrorMessage:@"Onvoldoende rechten" :operation.responseString];
                 break;
                 
-            case 404:
-                NSLog(@"POST request Error 404 for post new declaration: %@", error);
-                [self showErrorMessage:@"Niet gevonden" :operation.responseString];
+                
+            case 403: // Forbidden
+                NSLog(@"POST Request Error 403 for post new declaration: %@", error);
+                [self showErrorMessage:@"Aanvraag niet toegestaan" :operation.responseString];
                 break;
                 
+                
+                
+            case 404: // Not Found
+                NSLog(@"POST Request Error 404 for post new declaration: %@", error);
+                [self showErrorMessage:@"Niet gevonden" :operation.responseString];
+                break;
+                break;
+                
+                
+            case 405: // Method Not Allowed
+                NSLog(@"POST Request Error 405 for post new declaration: %@", error);
+                [self showErrorMessage:@"Aanvraag niet toegestaan" :operation.responseString];
+                break;
+                
+                
+            case 406: // Not Acceptable
+                NSLog(@"POST Request Error 406 for post new declaration: %@", error);
+                [self showErrorMessage:@"Aanvraag niet toegestaan" :operation.responseString];
+                break;
+                
+                
+            case 407: // Proxy Authentication Required
+                NSLog(@"POST Request Error 407 for post new declaration: %@", error);
+                [self showErrorMessage:@"Onvoldoende rechten op proxy" :operation.responseString];
+                break;
+                
+                
+            case 408: // Request Timeout
+                NSLog(@"POST Request Error 408 for post new declaration: %@", error);
+                [self showErrorMessage:@"Aanvraag tijd voorbij" :operation.responseString];
+                break;
+                
+                
+            case 409: // Conflict
+                NSLog(@"POST Request Error 409 for post new declaration: %@", error);
+                [self showErrorMessage:@"Conflict op verzonden data" :operation.responseString];
+                break;
+                
+                
+            case 410: // Gone
+                NSLog(@"POST Request Error 410 for post new declaration: %@", error);
+                [self showErrorMessage:@"Actie verdwenen" :operation.responseString];
+                break;
+                
+                
+            case 411: // Length Required
+                NSLog(@"POST Request Error 411 for post new declaration: %@", error);
+                [self showErrorMessage:@"Onjuiste waardes" :operation.responseString];
+                break;
+                
+                
+            case 412: // Precondition Failed
+                NSLog(@"POST Request Error 412 for post new declaration: %@", error);
+                [self showErrorMessage:@"Randvoorwaarde onjuist" :operation.responseString];
+                break;
+                
+                
+            case 413: // Request Entity Too Large
+                NSLog(@"POST Request Error 413 for post new declaration: %@", error);
+                [self showErrorMessage:@"Aanvraag entiteit onjuist" :operation.responseString];
+                break;
+                
+            case 414: // Request-URI Too Long
+                NSLog(@"POST Request Error 414 for post new declaration: %@", error);
+                [self showErrorMessage:@"Aanvraag url te lang" :operation.responseString];
+                break;
+                
+                
+            case 415: // Unsupported Media Type
+                NSLog(@"POST Request Error 415 for post new declaration: %@", error);
+                [self showErrorMessage:@"media type niet ondersteund" :operation.responseString];
+                break;
+                
+                
+            case 416: // Requested Range Not Satisfiable
+                NSLog(@"POST Request Error 416 for post new declaration: %@", error);
+                [self showErrorMessage:@"Aanvraag lengte voldoet niet" :operation.responseString];
+                break;
+                
+                
+            case 417: // Expectation Failed
+                NSLog(@"POST Request Error 417 for post new declaration: %@", error);
+                [self showErrorMessage:@"Onbekende verwachting" :operation.responseString];
+                break;
+                
+            case 500: // Internal Server Error
+                NSLog(@"POST Request Error 500 for post new declaration: %@", error);
+                [self showErrorMessage:@"Interne server error" :operation.responseString];
+                break;
+                
+            case 501: // Not Implemented
+                NSLog(@"POST Request Error 501 for post new declaration: %@", error);
+                [self showErrorMessage:@"Niet geïmplementeerd" :operation.responseString];
+                break;
+                
+            case 502: // Bad Gateway
+                NSLog(@"POST Request Error 502 for post new declaration: %@", error);
+                break;
+                
+            case 503: // Service Unavailable
+                NSLog(@"POST Request Error 503 for post new declaration: %@", error);
+                [self showErrorMessage:@"Server niet bereikbaar" :operation.responseString];
+                break;
+                
+            case 504: // Gateway Timeout
+                NSLog(@"POST Request Error 504 for post new declaration: %@", error);
+                break;
+                
+            case 505: // HTTP Version Not Supported
+                NSLog(@"POST Request Error 505 for post new declaration: %@", error);
+                [self showErrorMessage:@"HTML versie niet ondersteund" :operation.responseString];
+                break;
             default:
-                NSLog(@"POST request Error for post new declaration: %@", error);
+                NSLog(@"POST Request Error for get supervisors: %@", error);
                 [self showErrorMessage:@"Fout" :operation.responseString];
                 break;
+
         }
     }];
     
@@ -251,21 +366,135 @@
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         switch (operation.response.statusCode)
         {
-            case 400:
-                NSLog(@"GET request Error 400 for get supervisors: %@", error);
+            case 400: // Bad Request
+                NSLog(@"GET request Error 400 for supervisor: %@", error);
                 [self showErrorMessage:@"Verkeerde aanvraag" :operation.responseString];
                 break;
                 
-            case 401:
-                NSLog(@"GET request Error 401 for get supervisors: %@", error);
+                
+            case 401: // Unauthorized
+				NSLog(@"GET request Error 401 for supervisor: %@", error);
                 [self showErrorMessage:@"Onvoldoende rechten" :operation.responseString];
                 break;
                 
-            case 404:
-                NSLog(@"GET request Error 404 for get supervisors: %@", error);
-                [self showErrorMessage:@"Niet gevonden" :operation.responseString];
+                
+            case 403: // Forbidden
+                NSLog(@"GET request Error 403 for supervisor: %@", error);
+                [self showErrorMessage:@"Aanvraag niet toegestaan" :operation.responseString];
                 break;
                 
+                
+                
+            case 404: // Not Found
+                NSLog(@"GET request Error 404 for supervisor: %@", error);
+                [self showErrorMessage:@"Niet gevonden" :operation.responseString];
+                break;
+                break;
+                
+                
+            case 405: // Method Not Allowed
+                NSLog(@"GET request Error 405 for supervisor: %@", error);
+                [self showErrorMessage:@"Aanvraag niet toegestaan" :operation.responseString];
+                break;
+                
+                
+            case 406: // Not Acceptable
+                NSLog(@"GET request Error 406 for supervisor: %@", error);
+                [self showErrorMessage:@"Aanvraag niet toegestaan" :operation.responseString];
+                break;
+                
+                
+            case 407: // Proxy Authentication Required
+                NSLog(@"GET request Error 407 for supervisor: %@", error);
+                [self showErrorMessage:@"Onvoldoende rechten op proxy" :operation.responseString];
+                break;
+                
+                
+            case 408: // Request Timeout
+                NSLog(@"GET request Error 408 for supervisor: %@", error);
+                [self showErrorMessage:@"Aanvraag tijd voorbij" :operation.responseString];
+                break;
+                
+                
+            case 409: // Conflict
+                NSLog(@"GET request Error 409 for supervisor: %@", error);
+                [self showErrorMessage:@"Conflict op verzonden data" :operation.responseString];
+                break;
+                
+                
+            case 410: // Gone
+                NSLog(@"GET request Error 410 for supervisor: %@", error);
+                [self showErrorMessage:@"Actie verdwenen" :operation.responseString];
+                break;
+                
+                
+            case 411: // Length Required
+                NSLog(@"GET request Error 411 for supervisor: %@", error);
+                [self showErrorMessage:@"Onjuiste waardes" :operation.responseString];
+                break;
+                
+                
+            case 412: // Precondition Failed
+                NSLog(@"GET request Error 412 for supervisor: %@", error);
+                [self showErrorMessage:@"Randvoorwaarde onjuist" :operation.responseString];
+                break;
+                
+                
+            case 413: // Request Entity Too Large
+                NSLog(@"GET request Error 413 for supervisor: %@", error);
+                [self showErrorMessage:@"Aanvraag entiteit onjuist" :operation.responseString];
+                break;
+                
+            case 414: // Request-URI Too Long
+                NSLog(@"GET request Error 414 for supervisor: %@", error);
+                [self showErrorMessage:@"Aanvraag url te lang" :operation.responseString];
+                break;
+                
+                
+            case 415: // Unsupported Media Type
+                NSLog(@"GET request Error 415 for supervisor: %@", error);
+                [self showErrorMessage:@"media type niet ondersteund" :operation.responseString];
+                break;
+                
+                
+            case 416: // Requested Range Not Satisfiable
+                NSLog(@"GET request Error 416 for supervisor: %@", error);
+                [self showErrorMessage:@"Aanvraag lengte voldoet niet" :operation.responseString];
+                break;
+                
+                
+            case 417: // Expectation Failed
+                NSLog(@"GET request Error 417 for supervisor: %@", error);
+                [self showErrorMessage:@"Onbekende verwachting" :operation.responseString];
+                break;
+                
+            case 500: // Internal Server Error
+                NSLog(@"GET request Error 500 for supervisor: %@", error);
+                [self showErrorMessage:@"Interne server error" :operation.responseString];
+                break;
+                
+            case 501: // Not Implemented
+                NSLog(@"GET request Error 501 for supervisor: %@", error);
+                [self showErrorMessage:@"Niet geïmplementeerd" :operation.responseString];
+                break;
+                
+            case 502: // Bad Gateway
+                NSLog(@"GET request Error 502 for supervisor: %@", error);
+                break;
+                
+            case 503: // Service Unavailable
+                NSLog(@"GET request Error 503 for supervisor: %@", error);
+                [self showErrorMessage:@"Server niet bereikbaar" :operation.responseString];
+                break;
+                
+            case 504: // Gateway Timeout
+                NSLog(@"GET request Error 504 for supervisor: %@", error);
+                break;
+                
+            case 505: // HTTP Version Not Supported
+                NSLog(@"GET request Error 505 for supervisor: %@", error);
+                [self showErrorMessage:@"HTML versie niet ondersteund" :operation.responseString];
+                break;
             default:
                 NSLog(@"GET request Error for get supervisors: %@", error);
                 [self showErrorMessage:@"Fout" :operation.responseString];
