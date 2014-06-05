@@ -193,7 +193,12 @@
     return YES;
 }
 
-- (IBAction)cancelDeclaration:(id)sender {
+- (IBAction)cancelDeclaration:(id)sender
+{
+    [self clearView];
+}
+
+- (void)clearView {
     self.declaration = nil;
     [self viewDidLoad];
 }
@@ -226,10 +231,6 @@
     NSMutableArray *declarationlines = [[NSMutableArray alloc] init];
     for (DeclarationLine *line in decl.lines)
     {
-        
-        //todo remove{
-        line.subtype.ident = 4656664208736256;
-        //}
         NSDictionary *currentline = @{@"receipt_date": line.date, @"cost":[NSNumber numberWithFloat:line.cost], @"declaration_sub_type":[NSNumber numberWithLongLong:line.subtype.ident]};
         [declarationlines addObject:currentline];
     }
@@ -243,7 +244,7 @@
     }
     
     // Declaration
-    NSDictionary *declaration = @{@"state":decl.status, @"created_at":decl.createdAt, @"created_by":[NSNumber numberWithLongLong:decl.createdBy], @"supervisor":[decl.assignedTo firstObject], @"comment":decl.comment, @"items_total_price":[NSNumber numberWithFloat:decl.itemsTotalPrice], @"items_count":[NSNumber numberWithInt:decl.itemsCount], @"lines":declarationlines, @"attachments":attachments};
+    NSDictionary *declaration = @{@"state":decl.status, @"created_by":[NSNumber numberWithLongLong:decl.createdBy], @"supervisor":[decl.assignedTo firstObject], @"comment":decl.comment, @"items_total_price":[NSNumber numberWithFloat:decl.itemsTotalPrice], @"items_count":[NSNumber numberWithInt:decl.itemsCount], @"lines":declarationlines, @"attachments":attachments};
     
     
     // Total dict
@@ -259,10 +260,9 @@
                               
                               options:kNilOptions
                               error:&error];
-        
+        //[self clearView];
         NSLog(@"JSON response data for saving declaration: %@",json);
         // Handle success
-        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSLog(@"Error while saving declaration: %@, %@", error, operation.responseString);
         // Handle error
