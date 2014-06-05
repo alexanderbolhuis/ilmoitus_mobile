@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -44,6 +46,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -53,10 +56,9 @@ public class DeclareActivity extends Activity implements OnClickListener {
 	private ArrayList<DeclarationLine> declarationLines;
 	private ArrayList<Supervisor> supervisors;
 	private Button declareButton, mainButton, addLineButton, addDeclaration;
+	private ListView decLinesView;
 	private Spinner spinnerSupervisors;
 	private ArrayList<JSONObject> attachments;
-	private double totalPrice;
-	private DecimalFormat currencyFormat;
 	private MultiAutoCompleteTextView commentTextView;
 	private Boolean validation = true;
 	private String errorMsg;
@@ -66,7 +68,8 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_declare);
 		declarationLines = new ArrayList<DeclarationLine>();
-		currencyFormat = new DecimalFormat("0.00");
+		new DecimalFormat("0.00");
+		decLinesView = (ListView) findViewById(R.id.list);
 		spinnerSupervisors = (Spinner) findViewById(R.id.spinnerSupervisors);
 		commentTextView = (MultiAutoCompleteTextView) findViewById(R.id.commentTextView);
 		declareButton = (Button) findViewById(R.id.buttonDeclare);
@@ -75,23 +78,24 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		mainButton.setOnClickListener(this);
 		addLineButton = (Button) findViewById(R.id.onAddLineButton);
 		addLineButton.setOnClickListener(this);
-
+		new GetSupervisors(this).execute();
+		if(this.getIntent().getExtras() != null){
+			long x = getIntent().getExtras().getLong("decId");
+			new GetSpecificDeclaration(this, x).execute();
+		}
 		findViewById(R.id.onAddDeclaration).setOnClickListener(
 				new OnClickListener() {
-
 					@Override
 					public void onClick(View arg0) {
-						// Check Declaration
-						isValidDeclaration();
-						// Check Comment
-						final String comment = commentTextView.getText()
-								.toString();
-						if (!isValidComment(comment)) {
+						if(!isValidDeclaration()){
+							validation = false;
+						};
+						if (!isValidComment(commentTextView.getText().toString())) {
+							validation = false;
 							String message = getErrorMsg();
 							commentTextView.setError(spanString(message));
 						}
 						if (validation == false) {
-							// General Error Message
 							Toast.makeText(getApplicationContext(),
 									"Declaratie bevat fouten",
 									Toast.LENGTH_LONG).show();
@@ -100,8 +104,6 @@ public class DeclareActivity extends Activity implements OnClickListener {
 						}
 					}
 				});
-
-		new GetSupervisors(this).execute();
 	}
 
 	// Setter & Getters
@@ -130,9 +132,7 @@ public class DeclareActivity extends Activity implements OnClickListener {
 								.getLong("declaratieSubSoortId")),
 						b.getDouble("bedrag"));
 				declarationLines.add(line);
-				totalPrice += b.getDouble("bedrag");
-				DeclarationLineAdapter ad = new DeclarationLineAdapter(this,
-						declarationLines);
+				b.getDouble("bedrag");
 				ArrayList<String> temp = b.getStringArrayList("attachments");
 				for (int i = 0; i < temp.size(); i++) {
 					try {
@@ -141,22 +141,9 @@ public class DeclareActivity extends Activity implements OnClickListener {
 						e.printStackTrace();
 					}
 				}
-
-				String itemsStart = "Declaratie items: (";
-				String itemsEnd = " totaal)";
-				TextView declartionItemsTitle = (TextView) findViewById(R.id.declartionItemsTitle);
-
-				String itemsfinal = itemsStart + "<b>" + "\u20AC"
-						+ currencyFormat.format(totalPrice) + "</b>" + itemsEnd;
-				declartionItemsTitle.setText(Html.fromHtml(itemsfinal));
-
-				LinearLayout layout = (LinearLayout) findViewById(R.id.list);
-				layout.removeAllViews();
-				final int adapterCount = ad.getCount();
-				for (int i = 0; i < adapterCount; i++) {
-					View item = ad.getView(i, null, null);
-					layout.addView(item);
-				}
+				DeclarationLineAdapter ad = new DeclarationLineAdapter(this,
+						declarationLines);
+				decLinesView.setAdapter(ad);
 			}
 		}
 	}
@@ -172,7 +159,7 @@ public class DeclareActivity extends Activity implements OnClickListener {
 			decl.put("assigned_to", temp.getId());
 			decl.put("supervisor", temp.getId());
 			decl.put("comment", comment.getText());
-			decl.put("items_total_price", totalPrice);
+			decl.put("items_total_price", getTotalPrice());
 			decl.put("items_count", declarationLines.size());
 			decl.put("lines", linesToJSONArray());
 			decl.put("attachments", new JSONArray(attachments));
@@ -180,14 +167,6 @@ public class DeclareActivity extends Activity implements OnClickListener {
 			e.printStackTrace();
 		}
 		return decl;
-	}
-
-	private JSONArray attachmentsToJSONArray() {
-		JSONArray attach = new JSONArray();
-		for (int i = 0; i < declarationLines.size(); i++) {
-			JSONObject temp = new JSONObject();
-		}
-		return attach;
 	}
 
 	private JSONArray linesToJSONArray() {
@@ -207,6 +186,13 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		return lines;
 	}
 
+	private double getTotalPrice(){
+		double x = 0;
+		for(int i = 0; i < declarationLines.size(); i++){
+			x += declarationLines.get(i).getBedrag();
+		}
+		return x;
+	}
 	public void onAddLineButtonClick() {
 		Intent intent = new Intent(this, DeclareLineActivity.class);
 		startActivityForResult(intent, 1);
@@ -233,7 +219,6 @@ public class DeclareActivity extends Activity implements OnClickListener {
 	}
 
 	private class AddDeclaration extends AsyncTask<Void, Void, Void> {
-
 		@Override
 		protected Void doInBackground(Void... params) {
 			String result = "";
@@ -320,7 +305,71 @@ public class DeclareActivity extends Activity implements OnClickListener {
 			spinnerSupervisors.setAdapter(dataAdapter);
 		}
 	}
+	
+	private class GetSpecificDeclaration extends AsyncTask<Void, Void, String>{
+		
+		private Activity activity;
+		private long decId;
+		
+		public GetSpecificDeclaration(Activity activity, Long decId){
+			this.activity = activity;
+			this.decId = decId;
+		}
 
+		protected String doInBackground(Void... params) {
+			String result = "";
+			HttpClient httpClient = new DefaultHttpClient();
+			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declaration/" + decId);
+			httpGet.setHeader("Authorization", LoggedInPerson.token);
+			try {
+				HttpResponse response = httpClient.execute(httpGet);
+				InputStream inputStream = response.getEntity().getContent();
+				if (inputStream != null) {
+					// parse the inputStream to string
+					result = InputStreamConverter.convertInputStreamToString(inputStream);
+				} else {
+					result = "Did not Work";
+				}
+			} catch (Exception e) {
+				Log.d("InputStream", e.getLocalizedMessage());
+			}
+			return result;
+		}
+
+		protected void onPostExecute(String result) {
+			try {
+				JSONObject declarationDetails = new JSONObject(result);
+				JSONObject supervisor = (JSONObject) declarationDetails.get("last_assigned_to");				
+				JSONArray lines = (JSONArray) declarationDetails.get("lines");
+				for(int i = 0; i < lines.length(); i++){
+					JSONObject line = lines.getJSONObject(i);
+					JSONObject declarationType = (JSONObject) line.get("declaration_type");
+					JSONObject declarationSubType = (JSONObject) line.get("declaration_sub_type");
+					DeclarationLine decLine = new DeclarationLine(line.getLong("id"), line.getString("receipt_date"),
+							new DeclarationTypes(declarationType.getString("name"), declarationType.getLong("id")), 
+							new DeclarationSubTypes(declarationSubType.getString("name"), declarationSubType.getLong("id")), line.getInt("cost"));
+					declarationLines.add(decLine);
+				}
+				DeclarationLineAdapter decLineAdapter = new DeclarationLineAdapter(activity, declarationLines);
+				int x = 0;
+				for(int i = 0; i < supervisors.size(); i++){
+					Supervisor temp = supervisors.get(i);
+					if(temp.getFirstName().equals(supervisor.getString("first_name"))
+							&& temp.getLastName().equals(supervisor.getString("last_name"))){
+						x = i;
+					}
+				}
+				if(x != 0){
+					spinnerSupervisors.setSelection(x);
+				}
+				decLinesView.setAdapter(decLineAdapter);
+				commentTextView.setText(declarationDetails.getString("comment"));
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	// Form validation
 	public SpannableStringBuilder spanString(String spanstring) {
 		int textColor = Color.BLACK;
@@ -340,18 +389,15 @@ public class DeclareActivity extends Activity implements OnClickListener {
 			validation = false;
 			return false;
 		}
-
 		setErrorMsg(null);
 		commentTextView.setError(null);
-		validation = true;
 		return true;
 	}
 
 	private boolean isValidDeclaration() {
 		if (declarationLines.size() <= 0) {
-			Toast.makeText(this, "Minimaal één declaratie toevoegen!",
+			Toast.makeText(this, "Minimaal een declaratie toevoegen!",
 					Toast.LENGTH_LONG).show();
-			validation = false;
 			return false;
 		}
 		return true;

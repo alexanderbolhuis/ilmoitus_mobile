@@ -60,7 +60,6 @@ public class DeclarationDetailsActivity extends Activity{
 				intent.putExtra("data", b);
 				startActivity(intent);
 			}
-			
 		});
 	}
 	
