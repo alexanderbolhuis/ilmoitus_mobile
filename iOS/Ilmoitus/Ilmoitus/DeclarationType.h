@@ -8,9 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DeclarationMainTypes : NSObject
+@interface DeclarationType : NSObject
 
-@property (nonatomic) int64_t *mainTypeId;
+@property (nonatomic) int64_t ident;
 @property (strong, nonatomic) NSString *mainTypeName;
 
 @end

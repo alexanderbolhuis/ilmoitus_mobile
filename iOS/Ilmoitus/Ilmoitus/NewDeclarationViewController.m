@@ -216,14 +216,16 @@
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
-    // Declaration
-    NSDictionary *declaration = @{@"state":decl.status, @"created_at":decl.createdAt, @"created_by":[NSNumber numberWithLongLong:decl.createdBy], @"assigned_to":decl.assignedTo, @"comment":decl.comment, @"items_total_price":[NSNumber numberWithFloat:decl.itemsTotalPrice], @"items_count":[NSNumber numberWithInt:decl.itemsCount]};
     
     // Lines
     NSMutableArray *declarationlines = [[NSMutableArray alloc] init];
     for (DeclarationLine *line in decl.lines)
     {
-        NSDictionary *currentline = @{@"receipt_date": line.date, @"cost":[NSNumber numberWithFloat:line.cost], @"declaration_sub_type":[NSNumber numberWithLongLong:line.subtype]};
+        
+        //todo remove{
+        line.subtype.ident = 4656664208736256;
+        //}
+        NSDictionary *currentline = @{@"receipt_date": line.date, @"cost":[NSNumber numberWithFloat:line.cost], @"declaration_sub_type":[NSNumber numberWithLongLong:line.subtype.ident]};
         [declarationlines addObject:currentline];
     }
     
@@ -235,8 +237,12 @@
         [attachments addObject:currentAttachment];
     }
     
+    // Declaration
+    NSDictionary *declaration = @{@"state":decl.status, @"created_at":decl.createdAt, @"created_by":[NSNumber numberWithLongLong:decl.createdBy], @"supervisor":[decl.assignedTo firstObject], @"comment":decl.comment, @"items_total_price":[NSNumber numberWithFloat:decl.itemsTotalPrice], @"items_count":[NSNumber numberWithInt:decl.itemsCount], @"lines":declarationlines, @"attachments":attachments};
+    
+    
     // Total dict
-    NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":attachments};
+    NSDictionary *params = @{@"declaration":declaration};
     
     NSLog(@"JSON data that is going to be saved/sent: %@",params);
     
@@ -268,7 +274,7 @@
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
-    NSString *url = [NSString stringWithFormat:@"%@/supervisors/", baseURL];
+    NSString *url = [NSString stringWithFormat:@"%@/current_user/supervisors", baseURL];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError* error;
         NSDictionary* json = [NSJSONSerialization

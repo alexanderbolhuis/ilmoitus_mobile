@@ -10,16 +10,13 @@
 
 @implementation DeclarationLine
 
-- (instancetype)initWithDate:(NSString *)date SubType:(NSString *)subtype Cost:(float)cost
+- (instancetype)init
 {
     self = [super init];
     if (self)
     {
-        self.cost = cost;
-        self.subtype = subtype;
-        self.date = date;
+        self.subtype = [[DeclarationSubType alloc]init];
     }
-    
     return self;
 }
 

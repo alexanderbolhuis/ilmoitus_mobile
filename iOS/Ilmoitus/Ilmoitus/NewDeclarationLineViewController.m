@@ -127,9 +127,9 @@
     if (sender == self.add)
     {
         self.declarationLine.cost = [self.costField.text floatValue];
-        self.declarationLine.date = self.dateField.text;
+        self.declarationLine.date = @"2014-05-15 07:27:33.448849";//self.dateField.text;
         // Todo get subtypes
-        self.declarationLine.subtype = 4519529661071360;
+//        self.declarationLine.subtype = nil;//4519529661071360;
     }
     else if (sender == self.cancel)
     {
@@ -184,7 +184,7 @@
 -(void)doneButtonPressed
 {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd-MM-yyyy"];
+    [formatter setDateFormat:@"yyyy-MM-dd' 'HH:mm:ss.S"];
     
     NSString *stringFromDate = [formatter stringFromDate:self.pktStatePicker.date];
     self.declarationLine.date = stringFromDate;
