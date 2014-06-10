@@ -26,6 +26,8 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -54,6 +56,7 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+		this.checkConnection();
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 		mPasswordView = (EditText) findViewById(R.id.password);
@@ -64,9 +67,27 @@ public class LoginActivity extends Activity {
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						attemptLogin();
+						if(checkConnection())
+						{
+							attemptLogin();
+						}
 					}
 				});
+	}
+	
+	public Boolean checkConnection() {
+		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netInfo = cm.getActiveNetworkInfo();
+		View notConected = findViewById(R.id.notConected);
+		
+		if (netInfo != null && netInfo.isConnected()) {
+			notConected.setVisibility(View.GONE);
+			return true;
+		}
+		
+		notConected.setVisibility(View.VISIBLE);
+		
+		return false;
 	}
 
 
