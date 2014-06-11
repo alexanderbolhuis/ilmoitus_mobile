@@ -79,11 +79,11 @@
                 [declarationsFound addObject:declaration];
         }
         
-        [_declarationList removeAllObjects];
-        _declarationList = declarationsFound;
+        [self.declarationList removeAllObjects];
+        self.declarationList = declarationsFound;
         
         [self.tableView reloadData];
-    [self.refreshControl endRefreshing];
+        [self.refreshControl endRefreshing];
         
         NSLog(@"GET request success response for all declarations: %@", json);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {

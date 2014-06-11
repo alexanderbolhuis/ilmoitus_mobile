@@ -48,7 +48,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_declarationLines count];
+    return [self.declarationLines count];
 }
 
 /*
@@ -77,7 +77,7 @@
     dateLabel.text = line.date;
     // TODO Get subtype
     subTypeLabel.text = @"Type";
-    costLabel.text =[NSString stringWithFormat:@"€%.02f", line.cost];
+    costLabel.text =[NSString stringWithFormat:@"€%.2f", line.cost];
     
     
     return cell;

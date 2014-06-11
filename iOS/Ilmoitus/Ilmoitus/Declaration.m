@@ -7,6 +7,7 @@
 //
 
 #import "Declaration.h"
+#import "DeclarationLine.h"
 
 @implementation Declaration
 
@@ -16,8 +17,21 @@
     if (self) {
         self.lines = [[NSMutableArray alloc]init];
         self.attachments = [[NSMutableArray alloc] init];
+        self.assignedTo = [[NSMutableArray alloc]init];
     }
     return self;
+}
+
+-(float)calculateTotalPrice
+{
+    float price = 0.00;
+    for (DeclarationLine *line in self.lines) {
+        price = price + line.cost;
+    }
+    
+    self.itemsTotalPrice = price;
+    
+    return self.itemsTotalPrice;
 }
 
 @end

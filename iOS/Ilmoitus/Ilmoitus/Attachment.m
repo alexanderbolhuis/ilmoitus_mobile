@@ -12,7 +12,7 @@
 
 -(void)setAttachmentData:(NSString *)dataString;
 {
-    _data = dataString;
+    self.data = dataString;
 }
 
 -(NSString *)NSDataToDataString:(NSData *)data
