@@ -7,14 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DeclarationSubType.h"
 
 @interface DeclarationLine : NSObject
 
 @property (strong, nonatomic) NSString *date;
 @property (nonatomic) float cost;
-// ID of the subtype for this declarationline
-@property (nonatomic) int64_t subtype;
-
-- (instancetype)initWithDate:(NSString *)date SubType:(NSString *)subtype Cost:(float)cost;
+@property (nonatomic, strong) DeclarationSubType *subtype;
 
 @end

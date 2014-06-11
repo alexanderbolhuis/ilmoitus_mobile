@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface Supervisor : NSObject
+@property (nonatomic) int64_t ident;
 @property (strong, nonatomic) NSString *class_name;
 @property (strong, nonatomic) NSString *first_name;
 @property (strong, nonatomic) NSString *last_name;

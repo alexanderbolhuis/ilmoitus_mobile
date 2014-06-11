@@ -9,7 +9,7 @@
 #ifndef Ilmoitus_constants_h
 #define Ilmoitus_constants_h
 
-#define baseURL @"http://2.sns-ilmoitus.appspot.com"
+#define baseURL @"http://5.sns-ilmoitus.appspot.com"
 
 
 

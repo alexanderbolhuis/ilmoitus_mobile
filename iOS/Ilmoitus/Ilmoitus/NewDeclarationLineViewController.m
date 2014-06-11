@@ -19,6 +19,9 @@
 @property (weak, nonatomic) IBOutlet UITextField *typeField;
 @property (weak, nonatomic) IBOutlet UITextField *subtypeField;
 @property (weak, nonatomic) IBOutlet UITextField *costField;
+@property (nonatomic) UIDatePicker *pktStatePicker;
+@property (nonatomic) UIToolbar *mypickerToolbar;
+@property (nonatomic) UIActionSheet *pickerViewPopup;
 @end
 
 @implementation NewDeclarationLineViewController
@@ -80,7 +83,6 @@
 
 -(void)presentImagePicker
 {
-    // Depreciated method removed
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
@@ -95,9 +97,9 @@
     
     UIImage *image = (UIImage *)[info valueForKey:UIImagePickerControllerOriginalImage];
     
-    _attachment = [[Attachment alloc]init];
-    [_attachment SetAttachmentDataFromImage:image];
-    _attachment.name = [imageURL path];
+    self.attachment = [[Attachment alloc]init];
+    [self.attachment SetAttachmentDataFromImage:image];
+    self.attachment.name = [imageURL path];
     
     [self dismissViewControllerAnimated:YES completion:nil];
 }
@@ -107,32 +109,32 @@
     imagePicker = [[UIImagePickerController alloc]init];
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    _dateField.delegate = self;
-    _costField.delegate = self;
-    _typeField.delegate = self;
-    _subtypeField.delegate = self;
+    self.dateField.delegate = self;
+    self.costField.delegate = self;
+    self.typeField.delegate = self;
+    self.subtypeField.delegate = self;
     imagePicker.delegate = self;
     
     // Create blank line
     
     // TODO get date from datepicker(datefField) in right format
-    _dateField.text = @"15-05-2014";
-    _declarationLine = [[DeclarationLine alloc] init];
+    self.dateField.text = @"15-05-2014";
+    self.declarationLine = [[DeclarationLine alloc] init];
 }
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if (sender == self.add)
     {
-        _declarationLine.cost = [_costField.text floatValue];
-        _declarationLine.date = @"2014-05-15 07:27:33.448849";
+        self.declarationLine.cost = [self.costField.text floatValue];
+        self.declarationLine.date = @"2014-05-15 07:27:33.448849";//self.dateField.text;
         // Todo get subtypes
-        _declarationLine.subtype = 4519529661071360;
+//        self.declarationLine.subtype = nil;//4519529661071360;
     }
     else if (sender == self.cancel)
     {
-        _declarationLine = nil;
-        _attachment = nil;
+        self.declarationLine = nil;
+        self.attachment = nil;
     }
 }
 
@@ -142,4 +144,57 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void)textFieldDidBeginEditing:(UITextField*)textField
+{
+    if (textField == self.dateField) {
+        [self.dateField resignFirstResponder];
+        
+        self.pickerViewPopup = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
+        
+        self.pktStatePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, 44, 0, 0)];
+        self.pktStatePicker.datePickerMode = UIDatePickerModeDate;
+        self.pktStatePicker.hidden = NO;
+        self.pktStatePicker.date = [NSDate date];
+        
+        self.mypickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 44)];
+        self.mypickerToolbar.tintColor = [UIColor whiteColor];
+        self.mypickerToolbar.barTintColor = [UIColor colorWithRed:(189/255.0) green:(26/255.0) blue:(47/255.0) alpha:1.0];
+        [self.mypickerToolbar sizeToFit];
+        
+        NSMutableArray *barItems = [[NSMutableArray alloc] init];
+        
+        UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        [barItems addObject:flexSpace];
+        
+        UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonPressed)];
+        [barItems addObject:doneBtn];
+        
+        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed)];
+        [barItems addObject:cancelBtn];
+        
+        [self.mypickerToolbar setItems:barItems animated:YES];
+        
+        [self.pickerViewPopup addSubview:self.mypickerToolbar];
+        [self.pickerViewPopup addSubview:self.pktStatePicker];
+        [self.pickerViewPopup showInView:self.view];
+        [self.pickerViewPopup setBounds:CGRectMake(0,0,320, 464)];
+    }
+}
+
+-(void)doneButtonPressed
+{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd' 'HH:mm:ss.S"];
+    
+    NSString *stringFromDate = [formatter stringFromDate:self.pktStatePicker.date];
+    self.declarationLine.date = stringFromDate;
+    
+    [self.dateField setText: stringFromDate];
+    [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+}
+
+-(void)cancelButtonPressed
+{
+    [self.pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
+}
 @end

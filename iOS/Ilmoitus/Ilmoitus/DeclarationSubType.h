@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DeclarationSubTypes : NSObject
+@interface DeclarationSubType : NSObject
 
-@property (nonatomic) int64_t *subTypeId;
+@property (nonatomic) int64_t ident;
 @property (strong, nonatomic) NSString *subTypeName;
 @property (strong, nonatomic) NSString *subTypeDescription;
-@property (nonatomic) NSDecimal * subTypeMaxCost;
+@property (nonatomic) float subTypeMaxCost;
 
 
 @end

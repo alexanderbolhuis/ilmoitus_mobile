@@ -8,8 +8,8 @@
 
 #import "constants.h"
 #import "DeclarationTypeController.h"
-#import "DeclarationMainTypes.h"
-#import "DeclarationSubTypes.h"
+#import "DeclarationType.h"
+#import "DeclarationSubType.h"
 
 @interface DeclarationTypeController()
 
@@ -40,10 +40,10 @@
         
         for (NSDictionary *decl in json)
         {
-            DeclarationMainTypes *declarationMainTypes = [[DeclarationMainTypes alloc] init];
-            *declarationMainTypes.mainTypeId = [decl[@"id"] longLongValue];
-            declarationMainTypes.mainTypeName = [decl[@"name"] stringValue];
-            [declarationsTypesFound addObject:declarationMainTypes];
+            DeclarationType *declarationType = [[DeclarationType alloc] init];
+            declarationType.ident = [decl[@"id"] longLongValue];
+            declarationType.mainTypeName = [decl[@"name"] stringValue];
+            [declarationsTypesFound addObject:declarationType];
         }
         
         NSLog(@"GET request success response for all declarations: %@", json);
@@ -78,12 +78,12 @@
         
         for (NSDictionary *decl in json)
         {
-            DeclarationSubTypes *declarationSubTypes = [[DeclarationSubTypes alloc] init];
-            *declarationSubTypes.subTypeId = [decl[@"id"] longLongValue];
-            declarationSubTypes.subTypeName = [decl[@"name"] stringValue];
-            declarationSubTypes.subTypeDescription = [decl[@"declarationType"] stringValue];
-            *declarationSubTypes.subTypeMaxCost = [decl[@"max_cost"] decimalValue];
-            [declarationsSubTypesFound addObject:declarationSubTypes];
+            DeclarationSubType *declarationSubType = [[DeclarationSubType alloc] init];
+            declarationSubType.ident = [decl[@"id"] longLongValue];
+            declarationSubType.subTypeName = [decl[@"name"] stringValue];
+            declarationSubType.subTypeDescription = [decl[@"declarationType"] stringValue];
+            declarationSubType.subTypeMaxCost = [decl[@"max_cost"] floatValue];
+            [declarationsSubTypesFound addObject:declarationSubType];
         }
         
         NSLog(@"GET request success response for all declarations sub types: %@", json);

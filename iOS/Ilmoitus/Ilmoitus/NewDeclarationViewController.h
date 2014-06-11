@@ -9,7 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "Declaration.h"
 
-@interface NewDeclarationViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface NewDeclarationViewController : UIViewController <UITextFieldDelegate, UITextViewDelegate, UITableViewDataSource, UITableViewDelegate, UIPickerViewDelegate, UIPickerViewDataSource>
 @property Declaration *declaration;
 
+
+typedef enum {
+    EDIT,
+    VIEW,
+    NEW
+} StateType;
 @end

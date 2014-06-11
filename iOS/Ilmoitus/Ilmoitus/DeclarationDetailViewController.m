@@ -36,7 +36,6 @@
     [self.scroll setScrollEnabled:YES];
     [self.scroll setContentSize:CGSizeMake(320, 831)];
     self.declarationLines = [[NSMutableArray alloc]init];
-    [self fill];
     // Do any additional setup after loading the view.
 }
 
@@ -48,7 +47,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_declarationLines count];
+    return [self.declarationLines count];
 }
 
 /*
@@ -77,23 +76,10 @@
     dateLabel.text = line.date;
     // TODO Get subtype
     subTypeLabel.text = @"Type";
-    costLabel.text =[NSString stringWithFormat:@"€%.02f", line.cost];
+    costLabel.text =[NSString stringWithFormat:@"€%.2f", line.cost];
     
     
     return cell;
-}
-
--(void)fill
-{
-    DeclarationLine *line1 = [[DeclarationLine alloc]initWithDate:@"24-04-2014" SubType:@"Reiskosten" Cost:24.75];
-    
-    DeclarationLine *line2 = [[DeclarationLine alloc]initWithDate:@"20-04-2014" SubType:@"Studiekosten" Cost:314.15];
-    
-    DeclarationLine *line3 = [[DeclarationLine alloc]initWithDate:@"12-03-2014" SubType:@"Lunchkosten" Cost:3.14];
-    
-    DeclarationLine *line4 = [[DeclarationLine alloc]initWithDate:@"20-03-2014" SubType:@"Autokosten" Cost:358.93];
-    
-    [self.declarationLines addObjectsFromArray:@[line1, line2, line3, line4]];
 }
 
 @end

@@ -16,71 +16,170 @@
 
 @interface NewDeclarationViewController ()
 @property (weak, nonatomic) IBOutlet UITextField *supervisor;
-@property (weak, nonatomic) NSMutableArray *supervisorList;
+@property (nonatomic) NSMutableArray *supervisorList;
 @property (weak, nonatomic) IBOutlet UITextView *comment;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (nonatomic) UIPickerView * pktStatePicker;
+@property (nonatomic) UIToolbar *mypickerToolbar;
+@property (weak, nonatomic) IBOutlet UILabel *totalPrice;
+@property (nonatomic) StateType state;
+
 @end
 
 @implementation NewDeclarationViewController
+
+@synthesize declaration = _declaration;
+
+-(Declaration *)declaration
+{
+    if(_declaration == nil)
+    {
+        self.declaration = [[Declaration alloc]init];
+        self.state = NEW;
+    }
+    return _declaration;
+}
+
+-(void)setDeclaration:(Declaration *)declaration
+{
+    _declaration = declaration;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    _supervisor.delegate = self;
-    [_comment setReturnKeyType: 	UIReturnKeyDone];
-    _comment.delegate = self;
-    _tableView.delegate = self;
-    _tableView.dataSource = self;
+    self.supervisor.delegate = self;
+    [self.comment setReturnKeyType: UIReturnKeyDone];
+    self.comment.delegate = self;
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     
     [self getSupervisorList];
+
+    [self declarationLinesChanged];
+    self.comment.text = self.declaration.comment;
     
-    if (_declaration == nil) {
-        _declaration = [[Declaration alloc] init];
-    }
-    _comment.text = _declaration.comment;
+    // Textfield delegates
+    self.supervisor.delegate = self;
+    [self.comment setReturnKeyType: UIReturnKeyDone];
+    self.comment.delegate = self;
+    
+    // TextView styling
+    [self.comment.layer setBorderColor:[[[UIColor grayColor] colorWithAlphaComponent:0.5] CGColor]];
+    [self.comment.layer setBorderWidth:0.5];
+    self.comment.layer.cornerRadius = 5;
+    self.comment.clipsToBounds = YES;
+    
+    [self.supervisor addTarget:self
+                    action:@selector(textFieldDidChange)
+          forControlEvents:UIControlEventEditingChanged];
+
+    [self createSupervisorPicker];
 }
 
-- (IBAction)postDeclaration:(id)sender {
-    _declaration.className = @"open_declaration";
-    _declaration.status = @"Open";
-        // TODO get current date in right format
-    _declaration.createdAt = @"2014-05-15 07:27:33.448849";
-    _declaration.createdBy = [[[NSUserDefaults standardUserDefaults] stringForKey:@"person_id"] longLongValue];
+-(void)createSupervisorPicker
+{
+    // Create SupervisorPicker
+    self.supervisorList = [[NSMutableArray alloc] init];
     
-    // TODO Get supervisor from dropdown
-    NSMutableArray *at = [[NSMutableArray alloc]init];
-    [at addObject:[NSNumber numberWithLongLong:[[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]]];
-    _declaration.assignedTo = at;
-    _declaration.comment = _comment.text;
-    // TODO Calc price and items
-    _declaration.itemsTotalPrice = 30.00;
-    _declaration.itemsCount = 2;
-    [self saveDeclaration];
+    self.pktStatePicker = [[UIPickerView alloc] initWithFrame:CGRectMake(0, 43, 320, 480)];
+    
+    self.pktStatePicker.delegate = self;
+    
+    self.pktStatePicker.dataSource = self;
+    
+    [self.pktStatePicker  setShowsSelectionIndicator:YES];
+    
+    self.supervisor.inputView =  self.pktStatePicker  ;
+    
+    // Create done button in UIPickerView
+    self.mypickerToolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 56)];
+    
+    self.mypickerToolbar.tintColor = [UIColor whiteColor];
+    self.mypickerToolbar.barTintColor = [UIColor colorWithRed:(189/255.0) green:(26/255.0) blue:(47/255.0) alpha:1.0];
+    
+    [self.mypickerToolbar sizeToFit];
+    
+    
+    NSMutableArray *barItems = [[NSMutableArray alloc] init];
+    
+    
+    UIBarButtonItem *flexSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+    
+    [barItems addObject:flexSpace];
+    
+    
+    UIBarButtonItem *doneBtn = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(pickerDoneClicked)];
+    
+    [barItems addObject:doneBtn];
+    
+    
+    [self.mypickerToolbar setItems:barItems animated:YES];
+    
+    
+    self.supervisor.inputAccessoryView = self.mypickerToolbar;
 }
+
 
 -(IBAction)unwindToNewDeclaration:(UIStoryboardSegue *)segue
 {
     NewDeclarationLineViewController * source = [segue sourceViewController];
     if(source.declarationLine != nil)
     {
-        [_declaration.lines addObject:source.declarationLine];
-        [self.tableView reloadData];
+        [self.declaration.lines addObject:source.declarationLine];
+        [self declarationLinesChanged];
     }
     if(source.attachment != nil)
     {
-        [_declaration.attachments addObject:source.attachment];
+        [self.declaration.attachments addObject:source.attachment];
     }
 }
 
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
+-(void)textFieldDidChange
+{
+    NSLog( @"Supervisor TextField changed: %@", self.supervisor.text);
+    
+    for (int i = 0; i < [self.supervisorList count]; i++){
+        Supervisor *supervisor = [self.supervisorList objectAtIndex:i];
+        if ([NSString stringWithFormat:@"%@ %@", supervisor.first_name, supervisor.last_name] == self.supervisor.text) {
+            [self.declaration.assignedTo addObject:[NSNumber numberWithLongLong:supervisor.ident]];
+            [self.pktStatePicker selectRow:i inComponent:0 animated:YES];
+        }
+    }
+}
+
+-(void)pickerDoneClicked
+{
+    [self.supervisor resignFirstResponder];
+}
+
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+    return 1;
+}
+
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+    return [self.supervisorList count];
+}
+
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    Supervisor *sup = [self.supervisorList objectAtIndex:row];
+    return [NSString stringWithFormat:@"%@ %@ (%d)", sup.first_name, sup.last_name, sup.employee_number];
+}
+
+- (void) pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    Supervisor *sup = [self.supervisorList objectAtIndex:row];
+    self.supervisor.text = @"";
+    [self.supervisor insertText:[NSString stringWithFormat:@"%@ %@ (%d)", sup.first_name, sup.last_name, sup.employee_number]];
 }
 
 -(BOOL)textViewShouldEndEditing:(UITextView *)textView {
-    _declaration.comment = _comment.text;
+    self.declaration.comment = self.comment.text;
     return YES;
 }
 
@@ -95,8 +194,8 @@
 }
 
 - (IBAction)cancelDeclaration:(id)sender {
-    _declaration = nil;
-    [_tableView reloadData];
+    self.declaration = nil;
+    [self viewDidLoad];
 }
 
 - (void)didReceiveMemoryWarning
@@ -105,34 +204,50 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)saveDeclaration
+- (IBAction)saveDeclaration:(id)sender
 {
-    Declaration *decl = _declaration;
+    if(self.state == VIEW)
+    {
+        //TODO error?
+        return;
+    }
+    
+    self.declaration.createdBy = [[[NSUserDefaults standardUserDefaults] stringForKey:@"person_id"] longLong
+    self.declaration.className = @"open_declaration";
+    self.declaration.status = @"Open";
+    
+    Declaration *decl = self.declaration;
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
-    // Declaration
-    NSDictionary *declaration = @{@"state":decl.status, @"created_at":decl.createdAt, @"created_by":[NSNumber numberWithLongLong:decl.createdBy], @"assigned_to":decl.assignedTo, @"comment":decl.comment, @"items_total_price":[NSNumber numberWithFloat:decl.itemsTotalPrice], @"items_count":[NSNumber numberWithInt:decl.itemsCount]};
     
     // Lines
     NSMutableArray *declarationlines = [[NSMutableArray alloc] init];
     for (DeclarationLine *line in decl.lines)
     {
-        NSDictionary *currentline = @{@"receipt_date": line.date, @"cost":[NSNumber numberWithFloat:line.cost], @"declaration_sub_type":[NSNumber numberWithLongLong:line.subtype]};
+        
+        //todo remove{
+        line.subtype.ident = 4656664208736256;
+        //}
+        NSDictionary *currentline = @{@"receipt_date": line.date, @"cost":[NSNumber numberWithFloat:line.cost], @"declaration_sub_type":[NSNumber numberWithLongLong:line.subtype.ident]};
         [declarationlines addObject:currentline];
     }
     
     // Attachments
     NSMutableArray *attachments = [[NSMutableArray alloc] init];
-    for (Attachment *attachment in _declaration.attachments)
+    for (Attachment *attachment in self.declaration.attachments)
     {
         NSDictionary *currentAttachment = @{@"name":attachment.name, @"file":attachment.data};
         [attachments addObject:currentAttachment];
     }
     
+    // Declaration
+    NSDictionary *declaration = @{@"state":decl.status, @"created_at":decl.createdAt, @"created_by":[NSNumber numberWithLongLong:decl.createdBy], @"supervisor":[decl.assignedTo firstObject], @"comment":decl.comment, @"items_total_price":[NSNumber numberWithFloat:decl.itemsTotalPrice], @"items_count":[NSNumber numberWithInt:decl.itemsCount], @"lines":declarationlines, @"attachments":attachments};
+    
+    
     // Total dict
-    NSDictionary *params = @{@"declaration":declaration, @"lines":declarationlines, @"attachments":attachments};
+    NSDictionary *params = @{@"declaration":declaration};
     
     NSLog(@"JSON data that is going to be saved/sent: %@",params);
     
@@ -164,7 +279,7 @@
     manager.responseSerializer = [AFHTTPResponseSerializer serializer];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     [manager.requestSerializer setValue:[[NSUserDefaults standardUserDefaults] stringForKey:@"token"] forHTTPHeaderField:@"Authorization"];
-    NSString *url = [NSString stringWithFormat:@"%@/supervisors/", baseURL];
+    NSString *url = [NSString stringWithFormat:@"%@/current_user/supervisors", baseURL];
     [manager GET:url parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSError* error;
         NSDictionary* json = [NSJSONSerialization
@@ -178,6 +293,7 @@
         NSMutableArray *supervisorsFound = [[NSMutableArray alloc] init];
         for (NSDictionary *supervisor in json) {
             Supervisor *sup = [[Supervisor alloc] init];
+            sup.ident = [supervisor[@"id"]longLongValue];
             sup.class_name = supervisor[@"class_name"];
             sup.first_name = supervisor[@"first_name"];
             sup.last_name = supervisor[@"last_name"];
@@ -187,15 +303,18 @@
             sup.supervisor = [supervisor[@"supervisor"] longLongValue];
             sup.max_declaration_price = [supervisor[@"max_declaration_price"] floatValue];
             
-            
-            if ([supervisor[@"id"] longLongValue] == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) {
-                _supervisor.text = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
-            }
-            
-            
             [supervisorsFound addObject:sup];
+            
+            // Set default supervisor
+            if ((sup.ident == [[[NSUserDefaults standardUserDefaults] stringForKey:@"supervisor"] longLongValue]) && ([self.declaration.assignedTo firstObject] == nil)) {
+                self.supervisor.text = @"";
+                NSString *spv = [NSString stringWithFormat:@"%@ %@", sup.first_name, sup.last_name];
+                [self.supervisor insertText:spv];
+            }
         }
-        _supervisorList = supervisorsFound;
+        self.supervisorList = supervisorsFound;
+        
+        [self.pktStatePicker reloadAllComponents];
         
         // TODO create dropdown to select supervisor
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -205,7 +324,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_declaration.lines count];
+    return [self.declaration.lines count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -213,9 +332,9 @@
     return 1;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+-(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"DeclarationLineCell";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil)
@@ -223,9 +342,10 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
-    DeclarationLine *line = [_declaration.lines objectAtIndex:indexPath.row];
+    DeclarationLine *line = [self.declaration.lines objectAtIndex:indexPath.row];
     
-    cell.textLabel.text = [NSString stringWithFormat:@"%@ - %f/2",@"DecalrationSubType", line.cost];
+    UILabel *label = (UILabel *)[cell viewWithTag:1];
+    label.text = [NSString stringWithFormat:@"%@ - %@ - €%.2f", line.date, @"Decalration(Sub)Type", line.cost];
     
     return cell;
 }
@@ -233,8 +353,9 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [_declaration.lines removeObjectAtIndex:indexPath.row];
+        [self.declaration.lines removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        [self setTotalPrice];
     }
 }
 
@@ -248,5 +369,18 @@
 {
     // Return NO if you do not want the item to be re-orderable.
     return NO;
+}
+
+-(void)declarationLinesChanged
+{
+    [self.tableView reloadData];
+    [self setTotalPrice];
+}
+
+-(void)setTotalPrice
+{
+    NSString* formattedAmount = [NSString stringWithFormat:@"%.2f", self.declaration.calculateTotalPrice];
+    self.totalPrice.text = [NSString stringWithFormat:@"Totaal bedrag: €%@", formattedAmount];
+
 }
 @end
