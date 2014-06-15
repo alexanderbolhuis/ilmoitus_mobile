@@ -45,6 +45,16 @@
 
                 <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewSubTitle"
+                    android:text="Bijlage" />
+
+                <LinearLayout
+                    android:id="@+id/attachmentDetailsList"
+                    style="@style/LinearLayoutList"
+                    android:orientation="vertical" >
+                </LinearLayout>
+
+                <com.ilmoitus.activity.CustomTextView
+                    style="@style/TextViewSubTitle"
                     android:text="Opmerkingen:" />
 
                 <MultiAutoCompleteTextView

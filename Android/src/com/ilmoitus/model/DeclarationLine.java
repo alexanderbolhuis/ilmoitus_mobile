@@ -1,6 +1,7 @@
 package com.ilmoitus.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class DeclarationLine implements Serializable
 {
@@ -9,6 +10,7 @@ public class DeclarationLine implements Serializable
 	private DeclarationTypes declaratieSoort;
 	private DeclarationSubTypes declaratieSubSoort;
 	private double bedrag;
+	private ArrayList<String> attachments = new ArrayList<String>();
 	
 	public DeclarationLine(Long id, String datum, DeclarationTypes declaratieSoort, 
 			DeclarationSubTypes declaratieSubSoort, double bedrag){
@@ -17,6 +19,7 @@ public class DeclarationLine implements Serializable
 		this.declaratieSoort = declaratieSoort;
 		this.declaratieSubSoort = declaratieSubSoort;
 		this.bedrag = bedrag;
+		//this.attachments.add(attachment);
 	}
 	
 	public long getId(){
@@ -55,5 +58,18 @@ public class DeclarationLine implements Serializable
 		this.bedrag = bedrag;
 	}
 	
+	public void addAttachment(String newAttachment)
+	{
+		attachments.add(newAttachment);
+	}
 	
+	public void getAttachment(int position)
+	{
+		attachments.get(position);
+	}	
+	
+	public ArrayList<String> getAttachmentArray()
+	{
+		return attachments;
+	}
 }

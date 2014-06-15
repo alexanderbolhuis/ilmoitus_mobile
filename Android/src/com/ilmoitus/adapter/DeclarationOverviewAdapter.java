@@ -12,6 +12,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
+import com.ilmoitus.activity.DeclarationDetailsActivity;
+import com.ilmoitus.activity.DeclareActivity;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.BaseDeclaration;
@@ -20,6 +22,7 @@ import com.ilmoitus.model.OpenDeclaration;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,11 +30,15 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class DeclarationOverviewAdapter extends BaseAdapter {
 
@@ -72,38 +79,38 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		if (declarations.get(position).getClass() == ClosedDeclaration.class) {
 			closedDeclaration = (ClosedDeclaration) declarations.get(position);
 		}
-		View rowView = inflator.inflate(R.layout.row, null);
-		TextView top = (TextView) rowView.findViewById(R.id.text1);
-		TextView bottom = (TextView) rowView.findViewById(R.id.text2);
+		View rowView = inflator.inflate(R.layout.row_main, null);
+		ImageView icon = (ImageView) rowView.findViewById(R.id.item_statusicon);
+		TextView top = (TextView) rowView.findViewById(R.id.item_title);
+		TextView bottom = (TextView) rowView.findViewById(R.id.item_subtitle);
+		TextView total = (TextView) rowView.findViewById(R.id.item_total);
+		Button delete = (Button) rowView.findViewById(R.id.item_delete);
 		if (openDeclaration != null) {
+			icon.setBackgroundResource(R.drawable.open_declaration);
 			top.setText("Declaratie op "
 					+ openDeclaration.getCreatedAt().substring(0, 10));
-			bottom.setText("open "
-					+ "\u20AC"
-					+ currencyFormat.format(openDeclaration
-							.getItemsTotalPrice()));
-			LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.layout);
-			Button btnDelete = new Button(activity);
-			btnDelete.setFocusable(false);
-			btnDelete.setTag(position);
-			btnDelete.setLayoutParams(new LayoutParams(200, LayoutParams.WRAP_CONTENT));
-			btnDelete.setText("Annuleren");
-			btnDelete.setOnClickListener(new OnClickListener(){
+			bottom.setText("open");
+			total.setText("\u20AC" + currencyFormat.format(openDeclaration.getItemsTotalPrice()));
+			delete.setFocusable(false);
+			delete.setTag(position);
+			delete.setOnClickListener(new OnClickListener() {
+				@Override
 				public void onClick(View v) {
+					// TODO Auto-generated method stub
 					String pos = v.getTag().toString();
 					int position = Integer.parseInt(pos);
 					new RemoveDeclerationTask(position).execute();
 				}
 			});
-			layout.addView(btnDelete);
+			delete.setVisibility(View.VISIBLE);
 		}
 		if (closedDeclaration != null) {
+			icon.setBackgroundResource(R.drawable.closed_declaration);
 			top.setText("Declaratie op "
 					+ closedDeclaration.getCreatedAt().substring(0, 10));
-			bottom.setText("in behandeling "
-					+ "\u20AC"
-					+ currencyFormat.format(closedDeclaration
-							.getItemsTotalPrice()));
+			bottom.setText("in behandeling");
+			total.setText("\u20AC" + currencyFormat.format(closedDeclaration.getItemsTotalPrice()));
+			delete.setVisibility(View.INVISIBLE);
 		}
 		return rowView;
 	}

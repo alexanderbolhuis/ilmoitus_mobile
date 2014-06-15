@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    style="@style/MyListFrontContent"
+    android:orientation="vertical"
+    android:tag="front" >
+
+    <!-- icon -->
+
+    <ImageView
+        android:id="@+id/item_statusicon"
+        style="@style/MyListImage"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp" />
+
+    <!-- title -->
+
+    <TextView
+        android:id="@+id/item_title"
+        style="@style/MyListTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/item_statusicon"/>
+
+    <TextView
+        android:id="@+id/item_subtitle"
+        style="@style/MyListStatusTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_title"
+        android:layout_toRightOf="@id/item_statusicon" />
+	
+    <!-- counter -->
+
+    <TextView
+        android:id="@+id/item_total"
+        android:layout_width="48dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp" />
+    
+    <!-- delete -->
+
+	<Button
+	    android:id="@+id/item_delete"
+	    style="@style/MyListButtonAction"
+	    android:drawableTop="@drawable/delete_declaration"
+        android:background="@android:color/transparent"
+        android:layout_toLeftOf="@id/item_total" />
+
+</RelativeLayout>
