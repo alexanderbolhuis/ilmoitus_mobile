@@ -20,9 +20,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
+import com.ilmoitus.adapter.AttachmentOverviewAdapter;
+import com.ilmoitus.adapter.DeclarationOverviewAdapter;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.fragment.DatePickerFragment;
+import com.ilmoitus.model.Attachment;
 import com.ilmoitus.model.DeclarationSubTypes;
 import com.ilmoitus.model.DeclarationTypes;
 
@@ -72,8 +75,7 @@ public class DeclareLineActivity extends Activity implements
 	private EditText currencyEditText, dateEditText;
 	private ImageView photo;
 	private ArrayList<String> attachmentsData = new ArrayList<String>();
-	private ArrayList<HashMap<String, String>> attachmentItem = new ArrayList<HashMap<String, String>>();
-	private HashMap<String, String> map;
+	private ArrayList<Attachment> attachments = new ArrayList<Attachment>();
 	private String errorMsg;
 	private Boolean validation = true;
 	private double maxCost;
@@ -101,7 +103,7 @@ public class DeclareLineActivity extends Activity implements
 		currencyEditText
 				.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
 		attachmentListView = (LinearLayout) findViewById(R.id.attachmentList);
-		attachmentListView.removeAllViews();
+//		attachmentListView.removeAllViews();
 		commentTextView = (MultiAutoCompleteTextView) findViewById(R.id.commentTextView);
 
 		// SimpleAdapter mSchedule = new SimpleAdapter (this.getBaseContext(),
@@ -274,19 +276,14 @@ public class DeclareLineActivity extends Activity implements
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			if (requestCode == 1) {
+				
+				// Ophalen van de genomen image
 				Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 
-				// test voor het ophalen om het te zien
-				// photo.setImageBitmap(imageBitmap);
+				// Image in arraylist voor overzicht
+				attachments.add(new Attachment(imageBitmap, "image "));
 
-				map = new HashMap<String, String>();
-				map.put("title", "Excel");
-				map.put("description", "Tableur");
-				map.put("img", String.valueOf(new BitmapDrawable(
-						getResources(), imageBitmap)));
-				attachmentItem.add(map);
-
-				// ArrayList base64 string
+				// ArrayList base64 string (uiteindelijk naar database)
 				attachmentsData.add(BitmapToBase64String(imageBitmap));
 
 			} else if (requestCode == 2) {
@@ -298,30 +295,22 @@ public class DeclareLineActivity extends Activity implements
 				int columnIndex = c.getColumnIndex(filePath[0]);
 				String picturePath = c.getString(columnIndex);
 				c.close();
+				
+				// Ophalen van de genomen image
 				Bitmap imageBitmap = (BitmapFactory.decodeFile(picturePath));
-				// photo.setImageBitmap(imageBitmap);
+				
+				// Image in arraylist voor overzicht
+				attachments.add(new Attachment(imageBitmap, "image "));
 
-				map = new HashMap<String, String>();
-				map.put("title", "Excel");
-				map.put("description", "test");
-				map.put("img", String.valueOf(new BitmapDrawable(
-						getResources(), imageBitmap)));
-				attachmentItem.add(map);
-
-				// ArrayList base64 string
+				// ArrayList base64 string (uiteindelijk naar database)
 				attachmentsData.add(BitmapToBase64String(imageBitmap));
 			}
 
-			SimpleAdapter sa = new SimpleAdapter(this.getBaseContext(),
-					attachmentItem, R.layout.attachment_view_list,
-					new String[] { "img", "title", "description" }, new int[] {
-							R.id.attachmentImage, R.id.attachmentTitle,
-							R.id.attachmentDescription });
-			final int adapterCount = sa.getCount();
-			// for (int i = 0; i < adapterCount; i++) {
-			View item = sa.getView(adapterCount - 1, null, null);
+			AttachmentOverviewAdapter adapter = new AttachmentOverviewAdapter(
+					this, attachments);		
+			final int adapterCount = adapter.getCount();
+			View item = adapter.getView(adapterCount - 1, null, null);
 			attachmentListView.addView(item);
-			// }
 		}
 	}
 
@@ -599,8 +588,8 @@ public class DeclareLineActivity extends Activity implements
 	}
 
 	private boolean isValidAttachment() {
-		if (attachmentItem.size() <= 0) {
-			Toast.makeText(this, "Minimaal ï¿½ï¿½n bijlage toevoegen!",
+		if (attachments.size() <= 0) {
+			Toast.makeText(this, "Minimaal één bijlage toevoegen!",
 					Toast.LENGTH_LONG).show();
 			return false;
 		}

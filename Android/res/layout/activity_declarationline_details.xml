@@ -43,9 +43,4 @@
     <TextView
         android:id="@+id/cost"
         style="@style/TextView" />
-
-    <com.ilmoitus.activity.CustomTextView
-        style="@style/TextViewTitle"
-        android:text="Bijlage" />
-
 </LinearLayout>

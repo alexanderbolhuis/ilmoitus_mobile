@@ -8,7 +8,7 @@
     <!-- image -->
 
     <ImageView
-        android:id="@+id/attachment_image"
+        android:id="@+id/attachment_detail_image"
         style="@style/MyListAttachmentImage"
         android:layout_marginLeft="2dp"
         android:layout_marginRight="2dp"
@@ -19,7 +19,7 @@
     <!-- title -->
 
     <TextView
-        android:id="@+id/attachment_name"
+        android:id="@+id/attachment_detail_name"
         style="@style/MyListTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

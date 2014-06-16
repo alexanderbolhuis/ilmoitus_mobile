@@ -13,17 +13,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
+import com.ilmoitus.adapter.AttachmentOverviewDetialsAdapter;
 import com.ilmoitus.adapter.DeclarationLineAdapter;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
+import com.ilmoitus.model.Attachment;
 import com.ilmoitus.model.DeclarationLine;
 import com.ilmoitus.model.DeclarationSubTypes;
 import com.ilmoitus.model.DeclarationTypes;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,6 +42,7 @@ public class DeclarationDetailsActivity extends Activity{
 
 	private long decId;
 	private ArrayList<DeclarationLine> decLines;
+	private LinearLayout attachmentList;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -57,6 +63,7 @@ public class DeclarationDetailsActivity extends Activity{
 				b.putString("declaratieSoort", line.getDeclaratieSoort().getName());
 				b.putString("declaratieSubSoort", line.getDeclaratieSubSoort().getName());
 				b.putDouble("cost", line.getBedrag());
+				b.putStringArrayList("attachments", line.getAttachmentArray());
 				intent.putExtra("data", b);
 				startActivity(intent);
 			}
@@ -98,10 +105,13 @@ public class DeclarationDetailsActivity extends Activity{
 		protected void onPostExecute(String result) {
 			try {
 				JSONObject declarationDetails = new JSONObject(result);
+				
+				JSONArray attachments = new JSONArray(declarationDetails.getString("attachments"));
+						
 				JSONObject supervisor = (JSONObject) declarationDetails.get("last_assigned_to");				
 				JSONArray lines = (JSONArray) declarationDetails.get("lines");
 				for(int i = 0; i < lines.length(); i++){
-					JSONObject line = lines.getJSONObject(i);
+					JSONObject line = lines.getJSONObject(i);		
 					JSONObject declarationType = (JSONObject) line.get("declaration_type");
 					JSONObject declarationSubType = (JSONObject) line.get("declaration_sub_type");
 					DeclarationLine decLine = new DeclarationLine(line.getLong("id"), line.getString("receipt_date"),
@@ -120,6 +130,28 @@ public class DeclarationDetailsActivity extends Activity{
 				MultiAutoCompleteTextView comment = (MultiAutoCompleteTextView) findViewById(R.id.comment);
 				comment.setText(declarationDetails.getString("comment"));
 				comment.setEnabled(false);
+				
+				ArrayList<Attachment> temp = new ArrayList<Attachment>();
+				for(int i = 0; i < attachments.length(); i++)
+				{
+					JSONObject object = attachments.getJSONObject(i);
+					
+					String base64String = object.getString("data");
+		            byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
+		            Bitmap bitmapObj = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+					//attachmentDetail.add(new Attachment(bitmapObj, "image "));
+					
+					temp.add(new Attachment(bitmapObj, object.getString("name")));
+				}
+				
+				attachmentList = (LinearLayout) findViewById(R.id.attachmentDetailsList);	
+				
+				AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(
+						activity, temp);		
+				final int adapterCount = adapter.getCount();
+				View item = adapter.getView(adapterCount - 1, null, null);
+				attachmentList.addView(item);	
+				
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
