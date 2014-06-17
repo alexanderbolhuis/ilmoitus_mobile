@@ -3,20 +3,21 @@
 
     <!--
 	Base application theme, dependent on API level. This theme is replaced
-	by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+	by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
     -->
 
-    <style name="AppBaseTheme" parent="android:Theme.Light">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!--
 	Theme customizations available in newer API levels can go in
 	res/values-vXX/styles.xml, while customizations related to
-	backward-compatibility can go here.
+	backward-compatibility can go here.
         -->
     </style>
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="android:Theme.Light.NoTitleBar">
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    <style name="AppTheme" parent="android:Theme.Holo.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
     </style>
 
     <style name="LoginFormContainer">
@@ -193,20 +194,21 @@
     </style>
 
     <style name="MyListButtonAction">
-        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingTop">8dp</item>
         <item name="android:layout_margin">5dp</item>
-        <item name="android:layout_width">36dp</item>
+        <item name="android:layout_width">30dp</item>
         <item name="android:layout_height">36dp</item>
+        <item name="android:scaleGravity">fill</item>
     </style>
 
     <style name="MyListImage">
-        <item name="android:layout_width">34dp</item>
-        <item name="android:layout_height">34dp</item>
+        <item name="android:layout_width">22dp</item>
+        <item name="android:layout_height">30dp</item>
         <item name="android:scaleGravity">fill</item>
         <item name="android:layout_marginRight">10dp</item>
         <item name="android:paddingLeft">20dp</item>
     </style>
-    
+
     <style name="MyListAttachmentImage">
         <item name="android:layout_width">50dp</item>
         <item name="android:layout_height">50dp</item>
@@ -219,6 +221,7 @@
         <item name="android:textStyle">bold</item>
         <item name="android:maxLines">2</item>
         <item name="android:ellipsize">end</item>
+        <item name="android:textColor">#242E7D</item>
     </style>
 
     <style name="MyListSubTitle">
@@ -231,6 +234,7 @@
     <style name="MyListStatusTitle">
         <item name="android:textSize">12sp</item>
         <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#242E7D</item>
     </style>
 
     <color name="coloredText">#00BFFF</color>

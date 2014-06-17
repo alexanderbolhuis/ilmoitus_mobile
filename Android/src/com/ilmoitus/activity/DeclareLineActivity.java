@@ -339,7 +339,7 @@ public class DeclareLineActivity extends Activity implements
 
 	// Form validation & Error messaging
 	public SpannableStringBuilder spanString(String spanstring) {
-		int textColor = Color.BLACK;
+		int textColor = Color.WHITE;
 		ForegroundColorSpan fgcspan = new ForegroundColorSpan(textColor);
 		SpannableStringBuilder ssbuilder = new SpannableStringBuilder(
 				spanstring);

@@ -109,12 +109,10 @@ public class MainActivity extends Activity {
 				JSONArray declaration = new JSONArray(result);
 				for (int i = 0; i < declaration.length(); i++) {
 					JSONObject object = declaration.getJSONObject(i);
-					if (object.getString("class_name").equals(
-							"open_declaration")) {
+					if (object.getString("class_name").equals("open_declaration")) {
 						declarations.add(new OpenDeclaration(object));
 					}
-					if (object.getString("class_name").equals(
-							"locked_declaration")) {
+					if (object.getString("class_name").equals("locked_declaration")) {
 						declarations.add(new ClosedDeclaration(object));
 					}
 				}

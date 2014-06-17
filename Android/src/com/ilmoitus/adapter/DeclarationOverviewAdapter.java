@@ -86,7 +86,7 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		TextView total = (TextView) rowView.findViewById(R.id.item_total);
 		Button delete = (Button) rowView.findViewById(R.id.item_delete);
 		if (openDeclaration != null) {
-			icon.setBackgroundResource(R.drawable.open_declaration);
+			icon.setBackgroundResource(R.drawable.icon_open_declaratie);
 			top.setText("Declaratie op "
 					+ openDeclaration.getCreatedAt().substring(0, 10));
 			bottom.setText("open");
@@ -105,7 +105,7 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 			delete.setVisibility(View.VISIBLE);
 		}
 		if (closedDeclaration != null) {
-			icon.setBackgroundResource(R.drawable.closed_declaration);
+			icon.setBackgroundResource(R.drawable.icon_gesloten_declaratie);
 			top.setText("Declaratie op "
 					+ closedDeclaration.getCreatedAt().substring(0, 10));
 			bottom.setText("in behandeling");

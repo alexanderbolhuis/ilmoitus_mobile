@@ -3,11 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/RelativeLayout" >
 
+    <ScrollView style="@style/ScrollView" >
     <LinearLayout
         style="@style/LinearLayout"
         android:orientation="vertical" >
-
-        <ScrollView style="@style/ScrollView" >
 
             <LinearLayout
                 style="@style/Container"
@@ -44,9 +43,16 @@
 
                 <Button
                     android:id="@+id/onAddLineButton"
-                    style="@style/Button"
-                    android:onClick="onAddLineButtonClick"
-                    android:text="Voeg toe" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_toevoegen"
+                    android:text=" Voeg toe"
+                    android:textColor="@color/magneta"
+                    android:textSize="14sp" 
+                    android:onClick="onAddLineButtonClick"/>
+
 
                 <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
@@ -63,28 +69,33 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
 
-                <com.ilmoitus.croscutting.CustomTextView
-                    style="@style/TextViewSubTitle"
-                    android:text="Opmerkingen:" />
+               <com.ilmoitus.activity.CustomTextView
+                style="@style/TextViewSubTitle"
+                android:text="Opmerkingen:" />
 
-                <MultiAutoCompleteTextView
-                    android:id="@+id/commentTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center" />
+            <MultiAutoCompleteTextView
+                android:id="@+id/commentTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
 
-                <Button
-                    android:id="@+id/onAddDeclaration"
-                    style="@style/Button"
-                    android:onClick="addDeclaration"
-                    android:text="Indienen" />
-            </LinearLayout>
-        </ScrollView>
+            <Button
+                android:id="@+id/onAddDeclaration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="50dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/icon_indienen"
+                android:text=" Indienen"
+                android:textSize="14sp"
+                android:textColor="@color/magneta" />
+        </LinearLayout>
 
         <fragment
             android:id="@+id/menu_fragment"
             android:name="com.ilmoitus.fragment.MenuFragment"
             style="@style/FragmentMenu" />
     </LinearLayout>
-
+    </ScrollView>
 </RelativeLayout>

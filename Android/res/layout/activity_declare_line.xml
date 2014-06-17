@@ -10,9 +10,11 @@
 
         <LinearLayout
             style="@style/Container"
+            android:layout_height="1px"
+            android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.ilmoitus.croscutting.CustomTextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewTitle"
                 android:text="Declaratie indienen" />
 
@@ -21,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/dottedline" />
 
-            <com.ilmoitus.croscutting.CustomTextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Datum:" />
 
@@ -49,14 +51,15 @@
 
                 <Button
                     style="@style/Button"
-                    android:layout_width="0dp"
-                    android:layout_marginTop="0dp"
-                    android:layout_weight="1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_date_chooser"
                     android:onClick="showDatePickerDialog"
-                    android:text="@string/pick_date" />
+                    android:paddingLeft="15dp" />
             </LinearLayout>
 
-            <com.ilmoitus.croscutting.CustomTextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Declaratiesoort:" />
 
@@ -70,7 +73,7 @@
                 style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
 
-            <com.ilmoitus.croscutting.CustomTextView
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Bedrag:" />
 
@@ -81,7 +84,29 @@
                 android:hint="Bedrag"
                 android:inputType="numberDecimal" />
 
-            <com.ilmoitus.croscutting.CustomTextView
+            <com.ilmoitus.activity.CustomTextView
+                style="@style/TextViewSubTitle"
+                android:text="Bijlage:" />
+
+            <Button
+                android:id="@+id/buttonAddImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/icon_toevoegen"
+                android:onClick="onAddImageButtonClick"
+                android:text=" Bijlage toevoegen"
+                android:textColor="@color/magneta"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:id="@+id/attachmentList"
+                style="@style/LinearLayoutList"
+                android:orientation="vertical" >
+            </LinearLayout>
+
+            <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Opmerkingen:" />
 
@@ -93,18 +118,31 @@
 
                 <Button
                     android:id="@+id/buttonCancel"
-                    style="@style/ContainerButtonCommit"
-                    android:layout_marginRight="2dp"
-                    android:text="@string/cancel" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="60dp"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_cancelen"
+                    android:text=" Cancel"
+                    android:textColor="@color/magneta"
+                    android:textSize="14sp" 
                     android:onClick="onCancelButtonClick"/>
 
                 <Button
                     android:id="@+id/buttonAdd"
-                    style="@style/ContainerButtonCommit"
-                    android:layout_marginLeft="2dp"
-                    android:text="@string/add" 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginLeft="60dp"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_indienen"
+                    android:text=" Add"
+                    android:textColor="@color/magneta"
+                    android:textSize="14sp" 
                     android:onClick="onAddButtonClick"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
 </RelativeLayout>

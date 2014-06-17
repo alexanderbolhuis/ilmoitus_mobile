@@ -371,7 +371,7 @@ public class DeclareActivity extends Activity {
 
 	// Form validation
 	public SpannableStringBuilder spanString(String spanstring) {
-		int textColor = Color.BLACK;
+		int textColor = Color.WHITE;
 		ForegroundColorSpan fgcspan = new ForegroundColorSpan(textColor);
 		SpannableStringBuilder ssbuilder = new SpannableStringBuilder(
 				spanstring);

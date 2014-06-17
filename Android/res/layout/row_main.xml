@@ -13,7 +13,7 @@
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="9dp" />
 
     <!-- title -->
 
@@ -36,14 +36,14 @@
 
     <TextView
         android:id="@+id/item_total"
-        android:layout_width="48dp"
+        android:layout_width="60dp"
         android:layout_height="32dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/rectangle"
         android:gravity="center"
-        android:textColor="#FFFFFF"
+        android:textColor="#242E7D"
         android:textSize="12sp" />
     
     <!-- delete -->
@@ -51,7 +51,7 @@
 	<Button
 	    android:id="@+id/item_delete"
 	    style="@style/MyListButtonAction"
-	    android:drawableTop="@drawable/delete_declaration"
+	    android:drawableTop="@drawable/icon_delete_declaratie"
         android:background="@android:color/transparent"
         android:layout_toLeftOf="@id/item_total" />
 
