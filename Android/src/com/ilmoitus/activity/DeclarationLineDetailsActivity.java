@@ -53,19 +53,5 @@ public class DeclarationLineDetailsActivity extends Activity {
 		
 		TextView cost = (TextView) findViewById(R.id.cost);
 		cost.setText("\u20AC" + data.getDouble("cost"));
-		
-//		attachmentList = (LinearLayout) findViewById(R.id.attachmentDetailsList);	
-//		for(int i = 0; i < data.getStringArrayList("attachments").size(); i++)
-//		{
-//			String base64String = data.getStringArrayList("attachments").get(i);
-//            byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-//            Bitmap bitmapObj = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-//			attachmentDetail.add(new Attachment(bitmapObj, "image "));
-//		}		
-//		AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(
-//				this, attachmentDetail);		
-//		final int adapterCount = adapter.getCount();
-//		View item = adapter.getView(adapterCount - 1, null, null);
-//		attachmentList.addView(item);	
 	}	
 }

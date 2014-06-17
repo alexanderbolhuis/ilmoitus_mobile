@@ -174,6 +174,12 @@ public class DeclareLineActivity extends Activity implements
 				.setAdapter(spinnerDeclarationSubTypesListAdapter);
 	}
 
+	private void startMainActivity(){
+		Intent intent = new Intent();
+		intent.setClass(this, MainActivity.class);
+		startActivity(intent);
+	}
+	
 	public void bundleDeclaration() {
 		Bundle b = new Bundle();
 		b.putString("date", dateEditText.getText().toString());
@@ -244,7 +250,7 @@ public class DeclareLineActivity extends Activity implements
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 			return result;
 		}
@@ -265,7 +271,7 @@ public class DeclareLineActivity extends Activity implements
 						.setAdapter(spinnerDeclarationTypesListAdapter);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 		}
 	}
@@ -296,7 +302,7 @@ public class DeclareLineActivity extends Activity implements
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				// Log.d("InputStream", e.getLocalizedMessage());
+				startMainActivity();
 			}
 			return result;
 		}
@@ -319,7 +325,7 @@ public class DeclareLineActivity extends Activity implements
 						.setAdapter(spinnerDeclarationSubTypesListAdapter);
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 		}
 	}

@@ -64,7 +64,6 @@ public class MainActivity extends Activity {
 					startActivity(intent);
 				}
 			}
-
 		});
 	}
 
@@ -101,7 +100,7 @@ public class MainActivity extends Activity {
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				Toast.makeText(activity, "Fout opgetreden", 4);
 			}
 			return result;
 		}
@@ -134,7 +133,7 @@ public class MainActivity extends Activity {
 						activity, declarations);
 				context.setAdapter(adapter);
 			} catch (Exception e) {
-				e.printStackTrace();
+				Toast.makeText(activity, "Fout opgetreden", 4);
 			}
 		}
 	}
