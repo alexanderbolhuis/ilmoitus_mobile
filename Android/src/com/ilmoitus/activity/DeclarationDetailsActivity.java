@@ -1,6 +1,7 @@
 
 package com.ilmoitus.activity;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -182,11 +183,25 @@ public class DeclarationDetailsActivity extends Activity{
 			return tempList;
 		}
 		
-		protected void onPostExecute(ArrayList<Attachment> attachments) {
+		protected void onPostExecute(final ArrayList<Attachment> attachments) {
 			ListView attachmentList = (ListView) findViewById(R.id.attachmentDetailsList);	
 			AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(
 					activity, attachments);
 			attachmentList.setAdapter(adapter);
+			attachmentList.setOnItemClickListener(new OnItemClickListener(){
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					Bitmap bm = attachments.get(position).getAttachment();
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+					byte[] b = baos.toByteArray();
+					String base64 = Base64.encodeToString(b, Base64.DEFAULT);
+					Intent intent = new Intent(getApplicationContext(), ImageFullScreen.class);
+					intent.putExtra("base64", base64);
+					startActivity(intent);	
+				}
+			});
 			ListViewUtility.setListViewHeightBasedOnChildren(attachmentList);
 		}
 	}

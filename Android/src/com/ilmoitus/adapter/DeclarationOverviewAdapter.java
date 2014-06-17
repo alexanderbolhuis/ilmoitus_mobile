@@ -16,8 +16,10 @@ import com.ilmoitus.activity.DeclarationDetailsActivity;
 import com.ilmoitus.activity.DeclareActivity;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
+import com.ilmoitus.model.ApprovedDeclaration;
 import com.ilmoitus.model.BaseDeclaration;
 import com.ilmoitus.model.ClosedDeclaration;
+import com.ilmoitus.model.DeclinedDeclaration;
 import com.ilmoitus.model.OpenDeclaration;
 
 import android.app.Activity;
@@ -73,11 +75,19 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		OpenDeclaration openDeclaration = null;
 		ClosedDeclaration closedDeclaration = null;
+		ApprovedDeclaration approvedDeclaration = null;
+		DeclinedDeclaration declinedDeclaration = null;
 		if (declarations.get(position).getClass() == OpenDeclaration.class) {
 			openDeclaration = (OpenDeclaration) declarations.get(position);
 		}
 		if (declarations.get(position).getClass() == ClosedDeclaration.class) {
 			closedDeclaration = (ClosedDeclaration) declarations.get(position);
+		}
+		if (declarations.get(position).getClass() == ApprovedDeclaration.class) {
+			approvedDeclaration = (ApprovedDeclaration) declarations.get(position);
+		}
+		if (declarations.get(position).getClass() == DeclinedDeclaration.class) {
+			declinedDeclaration = (DeclinedDeclaration) declarations.get(position);
 		}
 		View rowView = inflator.inflate(R.layout.row_main, null);
 		ImageView icon = (ImageView) rowView.findViewById(R.id.item_statusicon);
@@ -110,6 +120,22 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 					+ closedDeclaration.getCreatedAt().substring(0, 10));
 			bottom.setText("in behandeling");
 			total.setText("\u20AC" + currencyFormat.format(closedDeclaration.getItemsTotalPrice()));
+			delete.setVisibility(View.INVISIBLE);
+		}
+		if (approvedDeclaration != null){
+			icon.setBackgroundResource(R.drawable.icon_gesloten_declaratie);
+			top.setText("Declaratie op "
+					+ approvedDeclaration.getCreatedAt().substring(0, 10));
+			bottom.setText("Goedgekeurd");
+			total.setText("\u20AC" + currencyFormat.format(approvedDeclaration.getItemsTotalPrice()));
+			delete.setVisibility(View.INVISIBLE);
+		}
+		if (declinedDeclaration != null){
+			icon.setBackgroundResource(R.drawable.icon_gesloten_declaratie);
+			top.setText("Declaratie op "
+					+ declinedDeclaration.getCreatedAt().substring(0, 10));
+			bottom.setText("Afgekeurd");
+			total.setText("\u20AC" + currencyFormat.format(declinedDeclaration.getItemsTotalPrice()));
 			delete.setVisibility(View.INVISIBLE);
 		}
 		return rowView;

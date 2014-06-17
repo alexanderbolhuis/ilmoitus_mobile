@@ -60,6 +60,7 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -69,6 +70,7 @@ import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class DeclareActivity extends Activity {
 	private ArrayList<DeclarationLine> declarationLines;
@@ -92,6 +94,20 @@ public class DeclareActivity extends Activity {
 		declarationLines = new ArrayList<DeclarationLine>();
 		new DecimalFormat("0.00");
 		attachmentListView = (ListView) findViewById(R.id.attachmentDetailsList);
+		attachmentListView.setOnItemClickListener(new OnItemClickListener(){
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				Bitmap bm = attachments.get(position).getAttachment();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+				byte[] b = baos.toByteArray();
+				String base64 = Base64.encodeToString(b, Base64.DEFAULT);
+				Intent intent = new Intent(getApplicationContext(), ImageFullScreen.class);
+				intent.putExtra("base64", base64);
+				startActivity(intent);	
+			}
+		});
 		decLinesView = (ListView) findViewById(R.id.list);
 		decLinesView.setVerticalScrollBarEnabled(false);
 		spinnerSupervisors = (Spinner) findViewById(R.id.spinnerSupervisors);
