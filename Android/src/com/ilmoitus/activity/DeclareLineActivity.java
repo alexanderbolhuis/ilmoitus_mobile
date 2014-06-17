@@ -439,7 +439,7 @@ public class DeclareLineActivity extends Activity implements
 
 	private boolean isValidAttachment() {
 		if (attachments.size() <= 0) {
-			Toast.makeText(this, "Minimaal ��n bijlage toevoegen!",
+			Toast.makeText(this, "Minimaal een bijlage toevoegen!",
 					Toast.LENGTH_LONG).show();
 			return false;
 		}

@@ -3,11 +3,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    
-    <ImageView
-        android:id="@+id/imageview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
-   
+
+    <LinearLayout
+        style="@style/Container"
+        android:orientation="vertical" >
+
+        <com.ilmoitus.croscutting.CustomTextView
+            style="@style/TextViewTitle"
+            android:text="Bijlage Detials" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/dottedline" />
+
+        <com.ilmoitus.croscutting.CustomTextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="125dp"
+            android:gravity="left"
+            android:text="Bijlage:"
+            android:textAllCaps="true"
+            android:textColor="@color/blauw"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/imageview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" 
+            android:layout_marginTop="-115dp"/>
+    </LinearLayout>
 
 </LinearLayout>
