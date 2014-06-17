@@ -7,11 +7,11 @@
         style="@style/LinearLayout"
         android:orientation="vertical" >
 
-        <ScrollView style="@style/ScrollView" >
-
             <LinearLayout
                 style="@style/Container"
-                android:orientation="vertical" >
+                android:orientation="vertical" 
+                android:layout_weight="1" 
+            android:layout_height = "1px">
 
                 <com.ilmoitus.activity.CustomTextView
                     android:id="@+id/person_title"
@@ -40,7 +40,7 @@
     			<ListView
         			android:id="@+id/list"
         			android:layout_width="fill_parent"
-        			android:layout_height="200dp"/>
+        			android:layout_height="wrap_content"/>
 
                 <Button
                     android:id="@+id/onAddLineButton"
@@ -53,8 +53,8 @@
 
                 <MultiAutoCompleteTextView
                     android:id="@+id/commentTextView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="center" />
 
                 <Button
@@ -62,7 +62,6 @@
                     style="@style/Button"
                     android:text="Indienen" />
             </LinearLayout>
-        </ScrollView>
 
         <fragment
             android:id="@+id/menu_fragment"

@@ -127,7 +127,7 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpDelete httpDelete = new HttpDelete("http://6.sns-ilmoitus.appspot.com/" + declarations.get(position).getId());
+			HttpDelete httpDelete = new HttpDelete("http://8.sns-ilmoitus.appspot.com/" + declarations.get(position).getId());
 			httpDelete.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpDelete);

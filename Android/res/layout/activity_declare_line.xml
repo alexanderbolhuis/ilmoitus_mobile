@@ -10,7 +10,9 @@
 
         <LinearLayout
             style="@style/Container"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:layout_weight="1" 
+            android:layout_height = "1px">
 
             <com.ilmoitus.activity.CustomTextView
                 style="@style/TextViewTitle"
