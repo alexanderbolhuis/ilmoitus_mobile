@@ -32,6 +32,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class DeclarationLineAdapter extends BaseAdapter{
@@ -68,11 +69,16 @@ public class DeclarationLineAdapter extends BaseAdapter{
 		line = (DeclarationLine) declarationLines.get(position);
 
 		View rowView = inflator.inflate(R.layout.row_declaration_line, null);
-		TextView top = (TextView) rowView.findViewById(R.id.text1);
-		top.setText(line.getDatum() + " - " + line.getDeclaratieSoort().getName() + " - "
-				+ "\u20AC" + currencyFormat.format(line.getBedrag()));
-		LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.declarationLineLayout);
-		Button btnDelete = (Button) rowView.findViewById(R.id.delete);
+		TextView title = (TextView) rowView.findViewById(R.id.item_title);
+		TextView sub_title = (TextView) rowView.findViewById(R.id.item_subtitle);
+		TextView total = (TextView) rowView.findViewById(R.id.item_total);
+			
+		title.setText(line.getDatum());
+		sub_title.setText(line.getDeclaratieSoort().getName());
+		total.setText("\u20AC" + currencyFormat.format(line.getBedrag()));
+		
+		RelativeLayout layout = (RelativeLayout) rowView.findViewById(R.id.layout);
+		Button btnDelete = (Button) rowView.findViewById(R.id.item_delete);
 		if(activity.getClass() == DeclarationDetailsActivity.class){
 			layout.removeView(btnDelete);
 		}

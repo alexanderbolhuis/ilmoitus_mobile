@@ -47,9 +47,9 @@ public class LoginActivity extends Activity {
 	private String mPassword = "123456";
 	private EditText mEmailView;
 	private EditText mPasswordView;
-	private View mLoginFormView;
-	private View mLoginStatusView;
-	private TextView mLoginStatusMessageView;
+//	private View mLoginFormView;
+//	private View mLoginStatusView;
+//	private TextView mLoginStatusMessageView;
 
 	
 	@Override
@@ -60,9 +60,9 @@ public class LoginActivity extends Activity {
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 		mPasswordView = (EditText) findViewById(R.id.password);
-		mLoginFormView = findViewById(R.id.login_form);
-		mLoginStatusView = findViewById(R.id.login_status);
-		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+//		mLoginFormView = findViewById(R.id.login_form);
+//		mLoginStatusView = findViewById(R.layout.activity_login_status);
+//		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -133,7 +133,7 @@ public class LoginActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			//mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			mAuthTask = new UserLoginTask(this);
 			mAuthTask.execute((Void) null);
@@ -152,32 +152,32 @@ public class LoginActivity extends Activity {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
-			mLoginStatusView.setVisibility(View.VISIBLE);
-			mLoginStatusView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 1 : 0)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginStatusView.setVisibility(show ? View.VISIBLE
-									: View.GONE);
-						}
-					});
+//			mLoginStatusView.setVisibility(View.VISIBLE);
+//			mLoginStatusView.animate().setDuration(shortAnimTime)
+//					.alpha(show ? 1 : 0)
+//					.setListener(new AnimatorListenerAdapter() {
+//						@Override
+//						public void onAnimationEnd(Animator animation) {
+//							mLoginStatusView.setVisibility(show ? View.VISIBLE
+//									: View.GONE);
+//						}
+//					});
 
-			mLoginFormView.setVisibility(View.VISIBLE);
-			mLoginFormView.animate().setDuration(shortAnimTime)
-					.alpha(show ? 0 : 1)
-					.setListener(new AnimatorListenerAdapter() {
-						@Override
-						public void onAnimationEnd(Animator animation) {
-							mLoginFormView.setVisibility(show ? View.GONE
-									: View.VISIBLE);
-						}
-					});
+//			mLoginFormView.setVisibility(View.VISIBLE);
+//			mLoginFormView.animate().setDuration(shortAnimTime)
+//					.alpha(show ? 0 : 1)
+//					.setListener(new AnimatorListenerAdapter() {
+//						@Override
+//						public void onAnimationEnd(Animator animation) {
+//							mLoginFormView.setVisibility(show ? View.GONE
+//									: View.VISIBLE);
+//						}
+//					});
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
-			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+//			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+//			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
 
