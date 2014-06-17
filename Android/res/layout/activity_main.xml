@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:ignore="all" >
 
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         android:id="@+id/person_title"
         style="@style/TextViewTitle"
         android:paddingLeft="16dp"

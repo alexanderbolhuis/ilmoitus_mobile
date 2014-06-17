@@ -17,7 +17,9 @@ import org.json.JSONObject;
 import com.example.ilmoitus.R;
 import com.ilmoitus.adapter.AttachmentOverviewDetialsAdapter;
 import com.ilmoitus.adapter.DeclarationLineAdapter;
+import com.ilmoitus.croscutting.ExpandableListView;
 import com.ilmoitus.croscutting.InputStreamConverter;
+import com.ilmoitus.croscutting.ListViewUtility;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.Attachment;
 import com.ilmoitus.model.DeclarationLine;
@@ -121,6 +123,8 @@ public class DeclarationDetailsActivity extends Activity{
 				}
 				DeclarationLineAdapter decLineAdapter = new DeclarationLineAdapter(activity, decLines);
 				context.setAdapter(decLineAdapter);
+				ListViewUtility.setListViewHeightBasedOnChildren(context);
+				
 				TextView totalPrice = (TextView) findViewById(R.id.totalPrice);
 				totalPrice.setText("\u20AC" + declarationDetails.getString("items_total_price"));
 				
@@ -183,19 +187,7 @@ public class DeclarationDetailsActivity extends Activity{
 			AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(
 					activity, attachments);
 			attachmentList.setAdapter(adapter);
+			ListViewUtility.setListViewHeightBasedOnChildren(attachmentList);
 		}
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	}
 }

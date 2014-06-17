@@ -35,7 +35,7 @@ public class LoggedInPerson {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-		    HttpGet httpGet = new HttpGet("http://8.sns-ilmoitus.appspot.com/" + id);
+		    HttpGet httpGet = new HttpGet("http://10.0.3.2:8080/" + id);
 		    httpGet.setHeader("Authorization",LoggedInPerson.token);
 		    try {
 		        HttpResponse response = httpClient.execute(httpGet);

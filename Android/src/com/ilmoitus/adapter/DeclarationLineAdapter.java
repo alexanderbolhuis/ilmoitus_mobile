@@ -15,6 +15,7 @@ import org.json.JSONObject;
 import com.example.ilmoitus.R;
 import com.ilmoitus.activity.DeclarationDetailsActivity;
 import com.ilmoitus.croscutting.InputStreamConverter;
+import com.ilmoitus.croscutting.ListViewUtility;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.ClosedDeclaration;
 import com.ilmoitus.model.DeclarationLine;
@@ -89,6 +90,7 @@ public class DeclarationLineAdapter extends BaseAdapter{
 					String pos = v.getTag().toString();
 					int position = Integer.parseInt(pos);
 					declarationLines.remove(position);
+					ListViewUtility.setListViewHeightBasedOnChildren((ListView) activity.findViewById(R.id.list));
 					notifyDataSetChanged();
 				}
 			});

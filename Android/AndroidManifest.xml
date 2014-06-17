@@ -57,12 +57,27 @@
             android:screenOrientation="portrait" >
         </activity>
         <activity
+            android:name="com.ilmoitus.activity.ChangeDeclareActivity"
+            android:label="title_activity_declare_item"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name="com.ilmoitus.activity.ImageFullScreen"
+            android:label="title_activity_declare_item"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
             android:name="com.ilmoitus.activity.DeclareItemActivity"
             android:label="title_activity_declare_item"
             android:screenOrientation="portrait" >
         </activity>
         <activity
             android:name="com.ilmoitus.activity.DeclareLineActivity"
+            android:label="@string/title_activity_declare_line"
+            android:screenOrientation="portrait" >
+        </activity>
+                <activity
+            android:name="com.ilmoitus.activity.ImageView"
             android:label="@string/title_activity_declare_line"
             android:screenOrientation="portrait" >
         </activity>

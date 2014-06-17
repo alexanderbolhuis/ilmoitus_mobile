@@ -11,9 +11,9 @@
             android:drawableTop="@drawable/overview_declaration"
             android:background="@android:color/transparent"
             android:layout_marginRight="17dp"
-            android:onClick="onButtonClick"
             android:text="@string/overvieuw"
             android:textSize="12sp" />
+        
 
         <Button
             android:id="@+id/buttonDeclare"
@@ -21,7 +21,6 @@
             android:layout_height="wrap_content"
             android:drawableTop="@drawable/add_declaration"
             android:background="@android:color/transparent"
-            android:onClick="onDeclareButtonClick"
             android:layout_marginRight="17dp"
             android:text="@string/declare"
             android:textSize="12sp" />

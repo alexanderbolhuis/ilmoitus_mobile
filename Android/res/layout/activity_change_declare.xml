@@ -37,32 +37,32 @@
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
-                <ListView
-                    android:id="@+id/list"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content" />
+    			<ListView
+        			android:id="@+id/list"
+        			android:layout_width="fill_parent"
+        			android:layout_height="wrap_content"/>
 
                 <Button
                     android:id="@+id/onAddLineButton"
                     style="@style/Button"
-                    android:onClick="onAddLineButtonClick"
-                    android:text="Voeg toe" />
+                    android:text="Voeg toe" 
+                    android:onClick="onAddLineButtonClick"/>
 
-                <com.ilmoitus.croscutting.CustomTextView
+              	<com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
-                    android:text="Bijlage:" />
+                    android:text="Bijlage" />
 
-                <Button
+              	<Button
                     android:id="@+id/buttonAddImage"
                     style="@style/Button"
                     android:onClick="onAddImageButtonClick"
                     android:text="@string/addImage" />
-
+              	
                 <ListView
                     android:id="@+id/attachmentDetailsList"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
-
+                
                 <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Opmerkingen:" />
@@ -74,10 +74,10 @@
                     android:gravity="center" />
 
                 <Button
-                    android:id="@+id/onAddDeclaration"
+                    android:id="@+id/onChangeDeclaration"
                     style="@style/Button"
-                    android:onClick="addDeclaration"
-                    android:text="Indienen" />
+                    android:text="Verander" 
+                    android:onClick="onChangeDeclarationClick"/>
             </LinearLayout>
         </ScrollView>
 

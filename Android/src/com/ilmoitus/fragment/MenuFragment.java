@@ -11,7 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.example.ilmoitus.R;
+import com.ilmoitus.activity.DeclareActivity;
 import com.ilmoitus.activity.LoginActivity;
+import com.ilmoitus.activity.MainActivity;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.model.Supervisor;
@@ -37,6 +39,10 @@ public class MenuFragment extends Fragment implements OnClickListener{
 		View view =  inflater.inflate(R.layout.menu_fragment, container, false);
 		Button logout = (Button) view.findViewById(R.id.buttonLogout);
 		logout.setOnClickListener(this);
+		Button overView = (Button) view.findViewById(R.id.buttonOvervieuw);
+		overView.setOnClickListener(this);
+		Button declareButton = (Button) view.findViewById(R.id.buttonDeclare);
+		declareButton.setOnClickListener(this);
 		return view;
 	}
 
@@ -46,11 +52,25 @@ public class MenuFragment extends Fragment implements OnClickListener{
 		case R.id.buttonLogout:
 			new UserLogoutTask(getActivity()).execute();
 			break;
+		case R.id.buttonDeclare:
+			onDeclareButtonClick();
+			break;
+		case R.id.buttonOvervieuw:
+			onOverviewButtonClick();
+			break;
 		}
 	}
 	
+	public void onDeclareButtonClick(){
+		Intent intent = new Intent(getActivity(), DeclareActivity.class);
+		startActivity(intent);
+	}
+	public void onOverviewButtonClick() {
+		Intent intent = new Intent(getActivity(), MainActivity.class);
+		startActivity(intent);
+	}
+	
 	private class UserLogoutTask extends AsyncTask<Void, Void, String>{
-
 		private Activity activity;
 		
 		public UserLogoutTask(Activity activity){

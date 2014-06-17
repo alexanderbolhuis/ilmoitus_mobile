@@ -3,7 +3,7 @@
     style="@style/Container"
     android:orientation="vertical" >
 
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         style="@style/TextViewTitle"
         android:text="Details" />
 
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/dottedline" />
 
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         style="@style/TextViewSubTitle"
         android:text="Datum:" />
 
@@ -20,7 +20,7 @@
         android:id="@+id/date"
         style="@style/TextView" />
 
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         style="@style/TextViewSubTitle"
         android:text="Declaratie soort:" />
 
@@ -28,7 +28,7 @@
         android:id="@+id/declarationtype"
         style="@style/TextView" />
 
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         style="@style/TextViewSubTitle"
         android:text="Declaratie sub soort:" />
 
@@ -36,7 +36,7 @@
         android:id="@+id/declarationsubtype"
         style="@style/TextView" />
 
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         style="@style/TextViewSubTitle"
         android:text="Bedrag:" />
 

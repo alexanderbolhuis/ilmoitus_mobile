@@ -24,7 +24,7 @@
         android:textColor="#176CEC"
         android:textStyle="bold" />
 
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         android:id="@+id/notConected"
         style="@style/TextView"
         android:layout_width="fill_parent"
