@@ -80,6 +80,7 @@ public class DeclarationLineAdapter extends BaseAdapter{
 		
 		RelativeLayout layout = (RelativeLayout) rowView.findViewById(R.id.layout);
 		Button btnDelete = (Button) rowView.findViewById(R.id.item_delete);
+		
 		if(activity.getClass() == DeclarationDetailsActivity.class){
 			layout.removeView(btnDelete);
 		}

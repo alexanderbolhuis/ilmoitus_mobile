@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout"
     style="@style/MyListFrontContent"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:tag="front" >
 
     <!-- image -->
@@ -27,4 +27,9 @@
         android:layout_marginLeft="65dp"
         android:layout_gravity="left"/>
 
+    <Button
+	    android:id="@+id/item_delete"
+	    style="@style/MyListButtonAction"
+	    android:drawableTop="@drawable/icon_delete_declaratie"
+        android:background="@android:color/transparent"/>
 </LinearLayout>

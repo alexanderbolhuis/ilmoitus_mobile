@@ -30,12 +30,11 @@ public class LoggedInPerson {
 	}
 	
 	private static class InitPerson extends AsyncTask<Void, Void, String>{
-	
 		@Override
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-		    HttpGet httpGet = new HttpGet("http://10.0.3.2:8080/" + id);
+		    HttpGet httpGet = new HttpGet("http://10.0.3.2:8080/employee/" + id);
 		    httpGet.setHeader("Authorization",LoggedInPerson.token);
 		    try {
 		        HttpResponse response = httpClient.execute(httpGet);

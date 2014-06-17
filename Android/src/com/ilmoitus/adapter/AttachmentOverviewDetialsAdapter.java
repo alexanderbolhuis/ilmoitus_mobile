@@ -4,7 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import com.example.ilmoitus.R;
+import com.ilmoitus.activity.ChangeDeclareActivity;
+import com.ilmoitus.activity.DeclarationDetailsActivity;
+import com.ilmoitus.activity.DeclareActivity;
 import com.ilmoitus.activity.ImageFullScreen;
+import com.ilmoitus.croscutting.ListViewUtility;
 import com.ilmoitus.model.Attachment;
 
 import android.app.Activity;
@@ -17,7 +21,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class AttachmentOverviewDetialsAdapter extends BaseAdapter {
@@ -55,8 +63,7 @@ public class AttachmentOverviewDetialsAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		attachment = (Attachment) attachments.get(position);
 		View rowView = inflator.inflate(R.layout.attachment_details_view_list, null);
-		ImageView image = (ImageView) rowView
-				.findViewById(R.id.attachment_detail_image);
+		ImageView image = (ImageView) rowView.findViewById(R.id.attachment_detail_image);
 		TextView name = (TextView) rowView.findViewById(R.id.attachment_detail_name);
 
 		if (attachment != null) {
@@ -70,18 +77,22 @@ public class AttachmentOverviewDetialsAdapter extends BaseAdapter {
 			}
 			name.setText(attachmentName);
 		}
-		rowView.setOnClickListener(new OnClickListener(){
+		LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.layout);
+		Button delete = (Button) rowView.findViewById(R.id.item_delete);
+		delete.setFocusable(false);
+		delete.setTag(position);
+		if(activity.getClass() == DeclarationDetailsActivity.class){
+			layout.removeView(delete);
+		}
+		delete.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				Bitmap bm = attachment.getAttachment();
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-				byte[] b = baos.toByteArray();
-				String base64 = Base64.encodeToString(b, Base64.DEFAULT);
-				Intent intent = new Intent(activity, ImageFullScreen.class);
-				intent.putExtra("base64", base64);
-				activity.startActivity(intent);	
-			}	
+				String pos = v.getTag().toString();
+				int position = Integer.parseInt(pos);
+				attachments.remove(position);
+				ListViewUtility.setListViewHeightBasedOnChildren((ListView) activity.findViewById(R.id.attachmentDetailsList));
+				notifyDataSetChanged();
+			}		
 		});
 		return rowView;
 	}
