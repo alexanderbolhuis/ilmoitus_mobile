@@ -2,7 +2,7 @@
 <resources>
 	
     <string name="base_url">http://10.0.3.2:8080</string>
-    <string name="app_name">Ilmoitus</string>
+    <string name="app_name">SNS Ilmoitus</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="declare">indienen</string>
@@ -20,6 +20,8 @@
     <string name="addImage">Afbeelding Toevoegen</string>
     <string name="lbl_register">LOGIN</string>
     <string name="lbl_signin">Sign in</string>
+    <string name="connection_warning">U bent niet verbonden met het internet!</string>
+    <string name="copyright">SNS Ilmoitus APP 2014©</string>
     
     <string name="bekijk">Bekijken</string>
     <string name="bewerk">Bewerken</string>

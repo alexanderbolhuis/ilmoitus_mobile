@@ -7,61 +7,74 @@
         style="@style/LinearLayout"
         android:orientation="vertical" >
 
-            <LinearLayout
-                style="@style/Container"
-                android:orientation="vertical" 
-                android:layout_weight="1" 
-            android:layout_height = "1px">
+        <LinearLayout
+            style="@style/Container"
+            android:layout_height="1px"
+            android:layout_weight="1"
+            android:orientation="vertical" >
 
-                <com.ilmoitus.activity.CustomTextView
-                    android:id="@+id/person_title"
-                    style="@style/TextViewTitle"
-                    android:text="Declaratie indienen" />
+            <com.ilmoitus.activity.CustomTextView
+                android:id="@+id/person_title"
+                style="@style/TextViewTitle"
+                android:text="Declaratie indienen" />
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/dottedline" />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/dottedline" />
 
-                <com.ilmoitus.activity.CustomTextView
-                    style="@style/TextViewSubTitle"
-                    android:text="Leidinggevende:" />
+            <com.ilmoitus.activity.CustomTextView
+                style="@style/TextViewSubTitle"
+                android:text="Leidinggevende:" />
 
-                <Spinner
-                    android:id="@+id/spinnerSupervisors"
-                    style="@style/Spinner"
-                    android:prompt="@string/prompt_spinner" />
+            <Spinner
+                android:id="@+id/spinnerSupervisors"
+                style="@style/Spinner"
+                android:prompt="@string/prompt_spinner" />
 
-                <com.ilmoitus.activity.CustomTextView
-                    android:id="@+id/declartionItemsTitle"
-                    style="@style/TextViewSubTitle"
-                    android:text="Declaratie items:" />
+            <com.ilmoitus.activity.CustomTextView
+                android:id="@+id/declartionItemsTitle"
+                style="@style/TextViewSubTitle"
+                android:text="Declaratie items:" />
 
-    			<ListView
-        			android:id="@+id/list"
-        			android:layout_width="fill_parent"
-        			android:layout_height="wrap_content"/>
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content" />
 
-                <Button
-                    android:id="@+id/onAddLineButton"
-                    style="@style/Button"
-                    android:text="Voeg toe" />
+            <Button
+                android:id="@+id/onAddLineButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/icon_toevoegen"
+                android:text=" Voeg toe"
+                android:textColor="@color/magneta"
+                android:textSize="14sp" />
 
-                <com.ilmoitus.activity.CustomTextView
-                    style="@style/TextViewSubTitle"
-                    android:text="Opmerkingen:" />
+            <com.ilmoitus.activity.CustomTextView
+                style="@style/TextViewSubTitle"
+                android:text="Opmerkingen:" />
 
-                <MultiAutoCompleteTextView
-                    android:id="@+id/commentTextView"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center" />
+            <MultiAutoCompleteTextView
+                android:id="@+id/commentTextView"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center" />
 
-                <Button
-                    android:id="@+id/onAddDeclaration"
-                    style="@style/Button"
-                    android:text="Indienen" />
-            </LinearLayout>
+            <Button
+                android:id="@+id/onAddDeclaration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="50dp"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/icon_indienen"
+                android:text=" Indienen"
+                android:textSize="14sp"
+                android:textColor="@color/magneta" />
+        </LinearLayout>
 
         <fragment
             android:id="@+id/menu_fragment"
