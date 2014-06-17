@@ -3,7 +3,7 @@
     android:id="@+id/login_form"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F0F0F0"
+    android:background="#ecf0f1"
     android:orientation="vertical" >
 
     <ImageView
@@ -17,25 +17,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:text="@string/lbl_register"
+        android:padding="0dp"
         android:textAllCaps="true"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#176CEC"
         android:textStyle="bold" />
-
-    <com.ilmoitus.activity.CustomTextView
-        android:id="@+id/notConected"
-        style="@style/TextView"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginBottom="10dp"
-        android:background="#FF0000"
-        android:padding="4dp"
-        android:text="Geen internetverbinding!"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:visibility="gone" />
 
     <EditText
         android:id="@+id/email"
@@ -67,11 +53,32 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="20dp"
-        
         android:onClick="attemptLogin()"
         android:text="@string/lbl_signin"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="#fff" 
         android:background="@drawable/button"/>
-
+    
+    <com.ilmoitus.activity.CustomTextView
+        android:id="@+id/notConected"
+        style="@style/TextView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="10dp"
+        android:textColor="#FF0000"
+        android:padding="4dp"
+        android:text="@string/connection_warning"
+        android:textSize="18sp"
+        android:visibility="gone" />
+    
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="0dp"
+        android:text="@string/copyright"
+        android:textAllCaps="true"
+        android:textColor="@color/blauw"
+        android:layout_gravity="center"
+        android:gravity="bottom"/>
+    
 </LinearLayout>

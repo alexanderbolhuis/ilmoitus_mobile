@@ -22,6 +22,7 @@ import com.ilmoitus.croscutting.LoggedInPerson;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
@@ -31,7 +32,9 @@ import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -47,11 +50,11 @@ public class LoginActivity extends Activity {
 	private String mPassword = "123456";
 	private EditText mEmailView;
 	private EditText mPasswordView;
-//	private View mLoginFormView;
-//	private View mLoginStatusView;
-//	private TextView mLoginStatusMessageView;
 
-	
+	// private View mLoginFormView;
+	// private View mLoginStatusView;
+	// private TextView mLoginStatusMessageView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,36 +63,35 @@ public class LoginActivity extends Activity {
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 		mPasswordView = (EditText) findViewById(R.id.password);
-//		mLoginFormView = findViewById(R.id.login_form);
-//		mLoginStatusView = findViewById(R.layout.activity_login_status);
-//		mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
+		// mLoginFormView = findViewById(R.id.login_form);
+		// mLoginStatusView = findViewById(R.layout.activity_login_status);
+		// mLoginStatusMessageView = (TextView)
+		// findViewById(R.id.login_status_message);
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
 					public void onClick(View view) {
-						if(checkConnection())
-						{
+						if (checkConnection()) {
 							attemptLogin();
 						}
 					}
 				});
 	}
-	
+
 	public Boolean checkConnection() {
 		ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo netInfo = cm.getActiveNetworkInfo();
 		View notConected = findViewById(R.id.notConected);
-		
+
 		if (netInfo != null && netInfo.isConnected()) {
 			notConected.setVisibility(View.GONE);
 			return true;
 		}
-		
+
 		notConected.setVisibility(View.VISIBLE);
-		
+
 		return false;
 	}
-
 
 	public void attemptLogin() {
 		if (mAuthTask != null) {
@@ -106,22 +108,22 @@ public class LoginActivity extends Activity {
 
 		// Check for a valid password.
 		if (TextUtils.isEmpty(mPassword)) {
-			mPasswordView.setError(getString(R.string.error_field_required));
+			mPasswordView.setError(spanString(getString(R.string.error_field_required)));
 			focusView = mPasswordView;
 			cancel = true;
 		} else if (mPassword.length() < 4) {
-			mPasswordView.setError(getString(R.string.error_invalid_password));
+			mPasswordView.setError(spanString(getString(R.string.error_invalid_password)));
 			focusView = mPasswordView;
 			cancel = true;
 		}
 
 		// Check for a valid email address.
 		if (TextUtils.isEmpty(mEmail)) {
-			mEmailView.setError(getString(R.string.error_field_required));
+			mEmailView.setError(spanString(getString(R.string.error_field_required)));
 			focusView = mEmailView;
 			cancel = true;
 		} else if (!mEmail.contains("@")) {
-			mEmailView.setError(getString(R.string.error_invalid_email));
+			mEmailView.setError(spanString(getString(R.string.error_invalid_email)));
 			focusView = mEmailView;
 			cancel = true;
 		}
@@ -133,11 +135,21 @@ public class LoginActivity extends Activity {
 		} else {
 			// Show a progress spinner, and kick off a background task to
 			// perform the user login attempt.
-			//mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
+			// mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
 			showProgress(true);
 			mAuthTask = new UserLoginTask(this);
 			mAuthTask.execute((Void) null);
 		}
+	}
+
+	// Login validation
+	public SpannableStringBuilder spanString(String spanstring) {
+		int textColor = Color.WHITE;
+		ForegroundColorSpan fgcspan = new ForegroundColorSpan(textColor);
+		SpannableStringBuilder ssbuilder = new SpannableStringBuilder(
+				spanstring);
+		ssbuilder.setSpan(fgcspan, 0, spanstring.length(), 0);
+		return ssbuilder;
 	}
 
 	/**
@@ -152,32 +164,32 @@ public class LoginActivity extends Activity {
 			int shortAnimTime = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
 
-//			mLoginStatusView.setVisibility(View.VISIBLE);
-//			mLoginStatusView.animate().setDuration(shortAnimTime)
-//					.alpha(show ? 1 : 0)
-//					.setListener(new AnimatorListenerAdapter() {
-//						@Override
-//						public void onAnimationEnd(Animator animation) {
-//							mLoginStatusView.setVisibility(show ? View.VISIBLE
-//									: View.GONE);
-//						}
-//					});
+			// mLoginStatusView.setVisibility(View.VISIBLE);
+			// mLoginStatusView.animate().setDuration(shortAnimTime)
+			// .alpha(show ? 1 : 0)
+			// .setListener(new AnimatorListenerAdapter() {
+			// @Override
+			// public void onAnimationEnd(Animator animation) {
+			// mLoginStatusView.setVisibility(show ? View.VISIBLE
+			// : View.GONE);
+			// }
+			// });
 
-//			mLoginFormView.setVisibility(View.VISIBLE);
-//			mLoginFormView.animate().setDuration(shortAnimTime)
-//					.alpha(show ? 0 : 1)
-//					.setListener(new AnimatorListenerAdapter() {
-//						@Override
-//						public void onAnimationEnd(Animator animation) {
-//							mLoginFormView.setVisibility(show ? View.GONE
-//									: View.VISIBLE);
-//						}
-//					});
+			// mLoginFormView.setVisibility(View.VISIBLE);
+			// mLoginFormView.animate().setDuration(shortAnimTime)
+			// .alpha(show ? 0 : 1)
+			// .setListener(new AnimatorListenerAdapter() {
+			// @Override
+			// public void onAnimationEnd(Animator animation) {
+			// mLoginFormView.setVisibility(show ? View.GONE
+			// : View.VISIBLE);
+			// }
+			// });
 		} else {
 			// The ViewPropertyAnimator APIs are not available, so simply show
 			// and hide the relevant UI components.
-//			mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-//			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+			// mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
+			// mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
 		}
 	}
 
@@ -187,31 +199,34 @@ public class LoginActivity extends Activity {
 	 */
 	private class UserLoginTask extends AsyncTask<Void, Void, String> {
 		private Context context;
-		
-		public UserLoginTask(Context context){
+
+		public UserLoginTask(Context context) {
 			this.context = context.getApplicationContext();
 		}
-		
+
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-		    HttpPost httpPost = new HttpPost(getResources().getString(R.string.base_url) + "/auth/login");
+			HttpPost httpPost = new HttpPost(getResources().getString(
+					R.string.base_url)
+					+ "/auth/login");
 			try {
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-		        nameValuePairs.add(new BasicNameValuePair("email", mEmail));
-		        nameValuePairs.add(new BasicNameValuePair("password", mPassword));
-		        httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-		        HttpResponse response = httpClient.execute(httpPost);
-		        InputStream inputStream = response.getEntity().getContent();
-				if(inputStream != null){
-					//parse the inputStream to string
-					result = InputStreamConverter.convertInputStreamToString(inputStream);
-				}
-				else{
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
+						2);
+				nameValuePairs.add(new BasicNameValuePair("email", mEmail));
+				nameValuePairs
+						.add(new BasicNameValuePair("password", mPassword));
+				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				HttpResponse response = httpClient.execute(httpPost);
+				InputStream inputStream = response.getEntity().getContent();
+				if (inputStream != null) {
+					// parse the inputStream to string
+					result = InputStreamConverter
+							.convertInputStreamToString(inputStream);
+				} else {
 					result = "Did not Work";
 				}
-			} 
-			catch (Exception e) {
+			} catch (Exception e) {
 				Log.d("InputStream", e.getLocalizedMessage());
 			}
 			return result;
@@ -230,10 +245,12 @@ public class LoginActivity extends Activity {
 				intent.setClass(getApplicationContext(), MainActivity.class);
 				startActivity(intent);
 			} catch (JSONException e) {
-				mPasswordView.setError(getString(R.string.error_incorrect_password));
+				mPasswordView
+						.setError(spanString(getString(R.string.error_incorrect_password)));
 				mPasswordView.requestFocus();
 			}
 		}
+
 		@Override
 		protected void onCancelled() {
 			mAuthTask = null;

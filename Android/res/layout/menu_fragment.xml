@@ -1,48 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp" >
+
+    <Button
+        android:id="@+id/buttonOvervieuw"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center" >
-    
-        <Button
-            android:id="@+id/buttonOvervieuw"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/overview_declaration"
-            android:background="@android:color/transparent"
-            android:layout_marginRight="17dp"
-            android:onClick="onButtonClick"
-            android:text="@string/overvieuw"
-            android:textSize="12sp" />
+        android:layout_alignParentLeft="true"
+        android:background="@android:color/transparent"
+        android:drawableTop="@drawable/icon_declaratie_overzicht"
+        android:onClick="onButtonClick"
+        android:text="@string/overvieuw"
+        android:textSize="12sp" />
 
-        <Button
-            android:id="@+id/buttonDeclare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/add_declaration"
-            android:background="@android:color/transparent"
-            android:onClick="onDeclareButtonClick"
-            android:layout_marginRight="17dp"
-            android:text="@string/declare"
-            android:textSize="12sp" />
+    <Button
+        android:id="@+id/buttonDeclare"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableTop="@drawable/icon_declaratie_toevoegen"
+        android:onClick="onDeclareButtonClick"
+        android:text="@string/declare"
+        android:textSize="12sp" 
+        android:layout_marginLeft="13dp"
+        android:layout_toRightOf="@+id/buttonOvervieuw"/>
 
-        <Button
-            android:id="@+id/buttonSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/instellingen"
-            android:background="@android:color/transparent"
-            android:layout_marginRight="15dp"
-            android:text="@string/settings"
-            android:textSize="12sp" />
+    <Button
+        android:id="@+id/buttonSetting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableTop="@drawable/icon_instellingen"
+        android:text="@string/settings"
+        android:textSize="12sp" 
+        android:layout_marginRight="13dp"
+        android:layout_toLeftOf="@+id/buttonLogout"/>
 
-        <Button
-            android:id="@+id/buttonLogout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableTop="@drawable/uitloggen"
-            android:background="@android:color/transparent"
-            android:layout_marginRight="15dp"
-            android:text="@string/log_out"
-            android:textSize="12sp" />
-</LinearLayout>
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:drawableTop="@drawable/icon_uitloggen"
+        android:text="@string/log_out"
+        android:textSize="12sp" 
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>

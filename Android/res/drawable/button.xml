@@ -4,7 +4,7 @@
         <shape>
             <solid android:color="@color/magneta" />
             <corners
-                android:radius="4dp" />
+                android:radius="0dp" />
             <padding
                 android:left="10dp"
                 android:top="11dp"

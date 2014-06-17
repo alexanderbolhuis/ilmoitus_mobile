@@ -86,7 +86,7 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		TextView total = (TextView) rowView.findViewById(R.id.item_total);
 		Button delete = (Button) rowView.findViewById(R.id.item_delete);
 		if (openDeclaration != null) {
-			icon.setBackgroundResource(R.drawable.open_declaration);
+			icon.setBackgroundResource(R.drawable.icon_open_declaratie);
 			top.setText("Declaratie op "
 					+ openDeclaration.getCreatedAt().substring(0, 10));
 			bottom.setText("open");
@@ -105,7 +105,7 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 			delete.setVisibility(View.VISIBLE);
 		}
 		if (closedDeclaration != null) {
-			icon.setBackgroundResource(R.drawable.closed_declaration);
+			icon.setBackgroundResource(R.drawable.icon_gesloten_declaratie);
 			top.setText("Declaratie op "
 					+ closedDeclaration.getCreatedAt().substring(0, 10));
 			bottom.setText("in behandeling");
@@ -127,7 +127,7 @@ public class DeclarationOverviewAdapter extends BaseAdapter {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpDelete httpDelete = new HttpDelete("http://8.sns-ilmoitus.appspot.com/" + declarations.get(position).getId());
+			HttpDelete httpDelete = new HttpDelete("http://10.0.3.2:8080/" + declarations.get(position).getId());
 			httpDelete.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpDelete);
