@@ -118,6 +118,13 @@ public class DeclareActivity extends Activity {
 		addLineButton = (Button) findViewById(R.id.onAddLineButton);
 	}
 
+	private void startMainActivity(){
+		Toast.makeText(this, "Fout opgetreden", 4);
+		Intent intent = new Intent();
+		intent.setClass(this, MainActivity.class);
+		startActivity(intent);
+	}
+	
 	// Setter & Getters
 	public void setErrorMsg(String err) {
 		this.errorMsg = err;
@@ -151,7 +158,7 @@ public class DeclareActivity extends Activity {
 					try {
 						attachmentsJSON.add(new JSONObject(BitmapToBase64String(imageBitmap, tempAttachment.getAttachmentName())));
 					} catch (JSONException e) {
-						e.printStackTrace();
+						startMainActivity();
 					}
 				} else if (requestCode == 3) {
 					Uri selectedImage = data.getData();
@@ -167,7 +174,7 @@ public class DeclareActivity extends Activity {
 					try {
 						attachmentsJSON.add(new JSONObject(BitmapToBase64String(imageBitmap, tempAttachment.getAttachmentName())));
 					} catch (JSONException e) {
-						e.printStackTrace();
+						startMainActivity();
 					}
 				}
 				AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(this, attachments);
@@ -214,7 +221,7 @@ public class DeclareActivity extends Activity {
 			decl.put("lines", linesToJSONArray());
 			decl.put("attachments", new JSONArray(attachmentsJSON));
 		} catch (JSONException e) {
-			e.printStackTrace();
+			startMainActivity();
 		}
 		return decl;
 	}
@@ -296,7 +303,7 @@ public class DeclareActivity extends Activity {
 			object.put("name", name);
 			object.put("file", String.format("data:%s;base64,%s", "image/jpeg", temp));
 		} catch (Exception e) {
-			e.printStackTrace();
+			startMainActivity();
 		}
 		return object.toString();
 	}
@@ -321,7 +328,7 @@ public class DeclareActivity extends Activity {
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 			return null;
 		}
@@ -360,7 +367,7 @@ public class DeclareActivity extends Activity {
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				startMainActivity();
 			}
 			return result;
 		}
@@ -375,7 +382,7 @@ public class DeclareActivity extends Activity {
 					supervisors.add(supervisor);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 			ArrayAdapter<Supervisor> dataAdapter = new ArrayAdapter<Supervisor>(
 					activity, android.R.layout.simple_spinner_item, supervisors);

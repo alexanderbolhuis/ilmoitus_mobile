@@ -97,6 +97,13 @@ public class ChangeDeclareActivity extends Activity{
 		return this.errorMsg;
 	}
 
+	private void startMainActivity(){
+		Toast.makeText(this, "Fout opgetreden", 4);
+		Intent intent = new Intent();
+		intent.setClass(this, MainActivity.class);
+		startActivity(intent);
+	}
+	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK) {
 			if (requestCode == 1) {
@@ -191,7 +198,7 @@ public class ChangeDeclareActivity extends Activity{
 			object.put("name", name);
 			object.put("file", String.format("data:%s;base64,%s", "image/jpeg", temp));
 		} catch (Exception e) {
-			e.printStackTrace();
+			startMainActivity();
 		}
 		return object.toString();
 	}
@@ -215,7 +222,7 @@ public class ChangeDeclareActivity extends Activity{
 			decl.put("lines", linesToJSONArray());
 			decl.put("attachments", new JSONArray(attachmentsJSON));
 		} catch (JSONException e) {
-			e.printStackTrace();
+			startMainActivity();
 		}
 		return decl;
 	}
@@ -230,7 +237,7 @@ public class ChangeDeclareActivity extends Activity{
 				temp.put("declaration_sub_type", declarationLines.get(i)
 						.getDeclaratieSubSoort().getId());
 			} catch (JSONException e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 			lines.put(temp);
 		}
@@ -274,7 +281,7 @@ public class ChangeDeclareActivity extends Activity{
 				} else {
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 			return null;
 		}
@@ -313,7 +320,7 @@ public class ChangeDeclareActivity extends Activity{
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				startMainActivity();
 			}
 			return result;
 		}
@@ -328,7 +335,7 @@ public class ChangeDeclareActivity extends Activity{
 					supervisors.add(supervisor);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 			ArrayAdapter<Supervisor> dataAdapter = new ArrayAdapter<Supervisor>(
 					activity, android.R.layout.simple_spinner_item, supervisors);
@@ -366,7 +373,7 @@ public class ChangeDeclareActivity extends Activity{
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				startMainActivity();
 			}
 			return result;
 		}
@@ -407,7 +414,7 @@ public class ChangeDeclareActivity extends Activity{
 				commentTextView
 						.setText(declarationDetails.getString("comment"));
 			} catch (JSONException e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 		}
 	}
@@ -444,11 +451,11 @@ public class ChangeDeclareActivity extends Activity{
 					tempList.add(new Attachment(bitmap, attachment.getString("name")));
 					
 				} catch (JSONException e) {
-					e.printStackTrace();
+					startMainActivity();
 				} catch (ClientProtocolException e) {
-					e.printStackTrace();
+					startMainActivity();
 				} catch (IOException e) {
-					e.printStackTrace();
+					startMainActivity();;
 				}
 			}
 			return tempList;
@@ -461,11 +468,9 @@ public class ChangeDeclareActivity extends Activity{
 					activity, attachmentList);
 			attachmentListView.setAdapter(adapter);
 			attachmentListView.setOnItemClickListener(new OnItemClickListener(){
-
 				@Override
 				public void onItemClick(AdapterView<?> parent, View view,
 						int position, long id) {
-					
 					Bitmap bm = attachmentList.get(position).getAttachment();
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -475,13 +480,11 @@ public class ChangeDeclareActivity extends Activity{
 					intent.putExtra("base64", base64);
 					startActivity(intent);	
 				}
-				
 			});
 			ListViewUtility.setListViewHeightBasedOnChildren(attachmentListView);
 		}
 	}
 
-	// Form validation
 	public SpannableStringBuilder spanString(String spanstring) {
 		int textColor = Color.BLACK;
 		ForegroundColorSpan fgcspan = new ForegroundColorSpan(textColor);

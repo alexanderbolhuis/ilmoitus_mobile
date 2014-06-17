@@ -42,6 +42,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class DeclarationDetailsActivity extends Activity{
 
@@ -74,6 +75,13 @@ public class DeclarationDetailsActivity extends Activity{
 		});
 	}
 	
+	private void startMainActivity(){
+		Toast.makeText(this, "Fout opgetreden", 4);
+		Intent intent = new Intent();
+		intent.setClass(this, MainActivity.class);
+		startActivity(intent);
+	}
+	
 	private class GetSpecificDeclaration extends AsyncTask<Void, Void, String>{
 		
 		private Activity activity;
@@ -100,7 +108,7 @@ public class DeclarationDetailsActivity extends Activity{
 					result = "Did not Work";
 				}
 			} catch (Exception e) {
-				Log.d("InputStream", e.getLocalizedMessage());
+				startMainActivity();
 			}
 			return result;
 		}
@@ -136,7 +144,7 @@ public class DeclarationDetailsActivity extends Activity{
 				comment.setText(declarationDetails.getString("comment"));
 				comment.setEnabled(false);	
 			} catch (JSONException e) {
-				e.printStackTrace();
+				startMainActivity();
 			}
 		}
 	}
@@ -173,11 +181,11 @@ public class DeclarationDetailsActivity extends Activity{
 					tempList.add(new Attachment(bitmap, attachment.getString("name")));
 					
 				} catch (JSONException e) {
-					e.printStackTrace();
+					startMainActivity();
 				} catch (ClientProtocolException e) {
-					e.printStackTrace();
+					startMainActivity();
 				} catch (IOException e) {
-					e.printStackTrace();
+					startMainActivity();
 				}
 			}
 			return tempList;
