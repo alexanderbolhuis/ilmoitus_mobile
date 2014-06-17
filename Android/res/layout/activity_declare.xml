@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?><RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/RelativeLayout" >
 
-    <ScrollView style="@style/ScrollView" >
     <LinearLayout
         style="@style/LinearLayout"
         android:orientation="vertical" >
 
+            <ScrollView style="@style/ScrollView" >
             <LinearLayout
                 style="@style/Container"
                 android:orientation="vertical" >
@@ -69,7 +68,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
 
-               <com.ilmoitus.activity.CustomTextView
+               <com.ilmoitus.croscutting.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Opmerkingen:" />
 
@@ -89,13 +88,14 @@
                 android:drawableLeft="@drawable/icon_indienen"
                 android:text=" Indienen"
                 android:textSize="14sp"
-                android:textColor="@color/magneta" />
+                android:textColor="@color/magneta"
+                android:onClick="addDeclaration" />
         </LinearLayout>
-
+   		 </ScrollView>
         <fragment
             android:id="@+id/menu_fragment"
             android:name="com.ilmoitus.fragment.MenuFragment"
             style="@style/FragmentMenu" />
     </LinearLayout>
-    </ScrollView>
+
 </RelativeLayout>

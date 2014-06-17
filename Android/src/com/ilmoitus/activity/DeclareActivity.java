@@ -76,7 +76,7 @@ public class DeclareActivity extends Activity {
 	private Button declareButton, mainButton, addLineButton, addDeclaration;
 	private ListView decLinesView;
 	private Spinner spinnerSupervisors;
-	private ArrayList<JSONObject> attachmentsJSON;
+	private ArrayList<JSONObject> attachmentsJSON = new ArrayList<JSONObject>();
 	private ArrayList<Attachment> attachments = new ArrayList<Attachment>();
 	private MultiAutoCompleteTextView commentTextView;
 	private Boolean validation = true;

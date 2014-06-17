@@ -59,7 +59,7 @@
         android:textColor="#fff" 
         android:background="@drawable/button"/>
     
-    <com.ilmoitus.activity.CustomTextView
+    <com.ilmoitus.croscutting.CustomTextView
         android:id="@+id/notConected"
         style="@style/TextView"
         android:layout_width="fill_parent"
