@@ -118,7 +118,7 @@ public class DeclarationDetailsActivity extends Activity{
 					JSONObject declarationSubType = (JSONObject) line.get("declaration_sub_type");
 					DeclarationLine decLine = new DeclarationLine(line.getLong("id"), line.getString("receipt_date"),
 							new DeclarationTypes(declarationType.getString("name"), declarationType.getLong("id")), 
-							new DeclarationSubTypes(declarationSubType.getString("name"), declarationSubType.getLong("id")), line.getInt("cost"));
+							new DeclarationSubTypes(declarationSubType.getString("name"), declarationSubType.getLong("id")), line.getDouble("cost"));
 					decLines.add(decLine);
 				}
 				DeclarationLineAdapter decLineAdapter = new DeclarationLineAdapter(activity, decLines);
