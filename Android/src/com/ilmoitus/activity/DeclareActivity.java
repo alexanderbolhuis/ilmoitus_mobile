@@ -42,10 +42,13 @@ import android.text.method.DateTimeKeyListener;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Spinner;
@@ -70,6 +73,7 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		declarationLines = new ArrayList<DeclarationLine>();
 		new DecimalFormat("0.00");
 		decLinesView = (ListView) findViewById(R.id.list);
+		decLinesView.setVerticalScrollBarEnabled(false);
 		spinnerSupervisors = (Spinner) findViewById(R.id.spinnerSupervisors);
 		commentTextView = (MultiAutoCompleteTextView) findViewById(R.id.commentTextView);
 		declareButton = (Button) findViewById(R.id.buttonDeclare);
@@ -79,7 +83,7 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		addLineButton = (Button) findViewById(R.id.onAddLineButton);
 		addLineButton.setOnClickListener(this);
 		new GetSupervisors(this).execute();
-		if(this.getIntent().getExtras() != null){
+		if (this.getIntent().getExtras() != null) {
 			long x = getIntent().getExtras().getLong("decId");
 			new GetSpecificDeclaration(this, x).execute();
 		}
@@ -87,10 +91,12 @@ public class DeclareActivity extends Activity implements OnClickListener {
 				new OnClickListener() {
 					@Override
 					public void onClick(View arg0) {
-						if(!isValidDeclaration()){
+						if (!isValidDeclaration()) {
 							validation = false;
-						};
-						if (!isValidComment(commentTextView.getText().toString())) {
+						}
+						;
+						if (!isValidComment(commentTextView.getText()
+								.toString())) {
 							validation = false;
 							String message = getErrorMsg();
 							commentTextView.setError(spanString(message));
@@ -186,13 +192,14 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		return lines;
 	}
 
-	private double getTotalPrice(){
+	private double getTotalPrice() {
 		double x = 0;
-		for(int i = 0; i < declarationLines.size(); i++){
+		for (int i = 0; i < declarationLines.size(); i++) {
 			x += declarationLines.get(i).getBedrag();
 		}
 		return x;
 	}
+
 	public void onAddLineButtonClick() {
 		Intent intent = new Intent(this, DeclareLineActivity.class);
 		startActivityForResult(intent, 1);
@@ -305,13 +312,13 @@ public class DeclareActivity extends Activity implements OnClickListener {
 			spinnerSupervisors.setAdapter(dataAdapter);
 		}
 	}
-	
-	private class GetSpecificDeclaration extends AsyncTask<Void, Void, String>{
-		
+
+	private class GetSpecificDeclaration extends AsyncTask<Void, Void, String> {
+
 		private Activity activity;
 		private long decId;
-		
-		public GetSpecificDeclaration(Activity activity, Long decId){
+
+		public GetSpecificDeclaration(Activity activity, Long decId) {
 			this.activity = activity;
 			this.decId = decId;
 		}
@@ -319,14 +326,17 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		protected String doInBackground(Void... params) {
 			String result = "";
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/declaration/" + decId);
+			HttpGet httpGet = new HttpGet(getResources().getString(
+					R.string.base_url)
+					+ "/declaration/" + decId);
 			httpGet.setHeader("Authorization", LoggedInPerson.token);
 			try {
 				HttpResponse response = httpClient.execute(httpGet);
 				InputStream inputStream = response.getEntity().getContent();
 				if (inputStream != null) {
 					// parse the inputStream to string
-					result = InputStreamConverter.convertInputStreamToString(inputStream);
+					result = InputStreamConverter
+							.convertInputStreamToString(inputStream);
 				} else {
 					result = "Did not Work";
 				}
@@ -339,37 +349,49 @@ public class DeclareActivity extends Activity implements OnClickListener {
 		protected void onPostExecute(String result) {
 			try {
 				JSONObject declarationDetails = new JSONObject(result);
-				JSONObject supervisor = (JSONObject) declarationDetails.get("last_assigned_to");				
+				JSONObject supervisor = (JSONObject) declarationDetails
+						.get("last_assigned_to");
 				JSONArray lines = (JSONArray) declarationDetails.get("lines");
-				for(int i = 0; i < lines.length(); i++){
+				for (int i = 0; i < lines.length(); i++) {
 					JSONObject line = lines.getJSONObject(i);
-					JSONObject declarationType = (JSONObject) line.get("declaration_type");
-					JSONObject declarationSubType = (JSONObject) line.get("declaration_sub_type");
-					DeclarationLine decLine = new DeclarationLine(line.getLong("id"), line.getString("receipt_date"),
-							new DeclarationTypes(declarationType.getString("name"), declarationType.getLong("id")), 
-							new DeclarationSubTypes(declarationSubType.getString("name"), declarationSubType.getLong("id")), line.getInt("cost"));
+					JSONObject declarationType = (JSONObject) line
+							.get("declaration_type");
+					JSONObject declarationSubType = (JSONObject) line
+							.get("declaration_sub_type");
+					DeclarationLine decLine = new DeclarationLine(
+							line.getLong("id"), line.getString("receipt_date"),
+							new DeclarationTypes(declarationType
+									.getString("name"), declarationType
+									.getLong("id")),
+							new DeclarationSubTypes(declarationSubType
+									.getString("name"), declarationSubType
+									.getLong("id")), line.getInt("cost"));
 					declarationLines.add(decLine);
 				}
-				DeclarationLineAdapter decLineAdapter = new DeclarationLineAdapter(activity, declarationLines);
+				DeclarationLineAdapter decLineAdapter = new DeclarationLineAdapter(
+						activity, declarationLines);
 				int x = 0;
-				for(int i = 0; i < supervisors.size(); i++){
+				for (int i = 0; i < supervisors.size(); i++) {
 					Supervisor temp = supervisors.get(i);
-					if(temp.getFirstName().equals(supervisor.getString("first_name"))
-							&& temp.getLastName().equals(supervisor.getString("last_name"))){
+					if (temp.getFirstName().equals(
+							supervisor.getString("first_name"))
+							&& temp.getLastName().equals(
+									supervisor.getString("last_name"))) {
 						x = i;
 					}
 				}
-				if(x != 0){
+				if (x != 0) {
 					spinnerSupervisors.setSelection(x);
 				}
 				decLinesView.setAdapter(decLineAdapter);
-				commentTextView.setText(declarationDetails.getString("comment"));
+				commentTextView
+						.setText(declarationDetails.getString("comment"));
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	// Form validation
 	public SpannableStringBuilder spanString(String spanstring) {
 		int textColor = Color.BLACK;
@@ -401,5 +423,29 @@ public class DeclareActivity extends Activity implements OnClickListener {
 			return false;
 		}
 		return true;
+	}
+
+	public static void setListViewHeightBasedOnChildren(ListView listView) {
+		ListAdapter listAdapter = listView.getAdapter();
+		if (listAdapter == null) {
+			// pre-condition
+			return;
+		}
+
+		int totalHeight = 0;
+		int desiredWidth = MeasureSpec.makeMeasureSpec(listView.getWidth(),
+				MeasureSpec.AT_MOST);
+		for (int i = 0; i < listAdapter.getCount(); i++) {
+			View listItem = listAdapter.getView(i, null, listView);
+			listItem.measure(desiredWidth, MeasureSpec.UNSPECIFIED);
+			totalHeight += listItem.getMeasuredHeight();
+		}
+
+		ViewGroup.LayoutParams params = listView.getLayoutParams();
+		params.height = totalHeight
+				+ (listView.getDividerHeight() * (listAdapter.getCount() - 1));
+		listView.setLayoutParams(params);
+		listView.requestLayout();
+
 	}
 }
