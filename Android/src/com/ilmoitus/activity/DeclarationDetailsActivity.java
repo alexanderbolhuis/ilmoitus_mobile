@@ -1,10 +1,12 @@
 
 package com.ilmoitus.activity;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -42,7 +44,6 @@ public class DeclarationDetailsActivity extends Activity{
 
 	private long decId;
 	private ArrayList<DeclarationLine> decLines;
-	private LinearLayout attachmentList;
 	
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -105,9 +106,8 @@ public class DeclarationDetailsActivity extends Activity{
 		protected void onPostExecute(String result) {
 			try {
 				JSONObject declarationDetails = new JSONObject(result);
-				
-				JSONArray attachments = new JSONArray(declarationDetails.getString("attachments"));
-						
+				JSONArray attachments = new JSONArray(declarationDetails.getString("attachments"));	
+				new GetAttachments(activity, attachments).execute();
 				JSONObject supervisor = (JSONObject) declarationDetails.get("last_assigned_to");				
 				JSONArray lines = (JSONArray) declarationDetails.get("lines");
 				for(int i = 0; i < lines.length(); i++){
@@ -129,32 +129,73 @@ public class DeclarationDetailsActivity extends Activity{
 				
 				MultiAutoCompleteTextView comment = (MultiAutoCompleteTextView) findViewById(R.id.comment);
 				comment.setText(declarationDetails.getString("comment"));
-				comment.setEnabled(false);
-				
-				ArrayList<Attachment> temp = new ArrayList<Attachment>();
-				for(int i = 0; i < attachments.length(); i++)
-				{
-					JSONObject object = attachments.getJSONObject(i);
-					
-					String base64String = object.getString("data");
-		            byte[] decodedString = Base64.decode(base64String, Base64.DEFAULT);
-		            Bitmap bitmapObj = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-					//attachmentDetail.add(new Attachment(bitmapObj, "image "));
-					
-					temp.add(new Attachment(bitmapObj, object.getString("name")));
-				}
-				
-				attachmentList = (LinearLayout) findViewById(R.id.attachmentDetailsList);	
-				
-				AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(
-						activity, temp);		
-				final int adapterCount = adapter.getCount();
-				View item = adapter.getView(adapterCount - 1, null, null);
-				attachmentList.addView(item);	
-				
+				comment.setEnabled(false);	
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	private class GetAttachments extends AsyncTask<Void, Void, ArrayList<Attachment>>{
+
+		private Activity activity;
+		private JSONArray attachments;
+		
+		public GetAttachments(Activity activity, JSONArray attachments){
+			this.activity = activity;
+			this.attachments = attachments;
+		}
+		
+		@Override
+		protected ArrayList<Attachment> doInBackground(Void... arg0) {
+			ArrayList<Attachment> tempList = new ArrayList<Attachment>();
+			for(int i = 0; i < attachments.length(); i++){
+				try {
+					String result;
+					JSONObject attachment = attachments.getJSONObject(i);
+					HttpClient httpClient = new DefaultHttpClient();
+					HttpGet httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/attachment_token/" + attachment.getLong("id"));
+					httpGet.setHeader("Authorization", LoggedInPerson.token);
+					HttpResponse response = httpClient.execute(httpGet);
+					InputStream inputStream = response.getEntity().getContent();
+					result = InputStreamConverter.convertInputStreamToString(inputStream);
+					JSONObject token = new JSONObject(result);
+					httpGet = new HttpGet(getResources().getString(R.string.base_url) + "/attachment/" + attachment.getLong("id") + "/" + token.getString("attachment_token"));
+					httpGet.setHeader("Authorization", LoggedInPerson.token);
+					response = httpClient.execute(httpGet);
+					inputStream = response.getEntity().getContent();
+					Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+					tempList.add(new Attachment(bitmap, attachment.getString("name")));
+					
+				} catch (JSONException e) {
+					e.printStackTrace();
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			return tempList;
+		}
+		
+		protected void onPostExecute(ArrayList<Attachment> attachments) {
+			ListView attachmentList = (ListView) findViewById(R.id.attachmentDetailsList);	
+			AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(
+					activity, attachments);
+			attachmentList.setAdapter(adapter);
+		}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	}
 }

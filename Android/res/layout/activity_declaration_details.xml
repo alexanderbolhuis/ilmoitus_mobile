@@ -7,12 +7,13 @@
         style="@style/LinearLayout"
         android:orientation="vertical" >
 
-        <ScrollView style="@style/ScrollView" >
-
-            <LinearLayout
+           <LinearLayout
                 style="@style/Container"
-                android:orientation="vertical" >
+                android:orientation="vertical"
+                android:layout_weight="1" 
+                android:layout_height = "1px">
 
+              
                 <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewTitle"
                     android:text="Declaratie Details" />
@@ -41,18 +42,17 @@
                 <ListView
                     android:id="@+id/list"
                     android:layout_width="fill_parent"
-                    android:layout_height="200dp" />
+                    android:layout_height="wrap_content"/>
 
                 <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Bijlage" />
 
-                <LinearLayout
-                    android:id="@+id/attachmentDetailsList"
-                    style="@style/LinearLayoutList"
-                    android:orientation="vertical" >
-                </LinearLayout>
-
+                <ListView
+        			android:id="@+id/attachmentDetailsList"
+        			android:layout_width="fill_parent"
+        			android:layout_height="wrap_content"/>
+                
                 <com.ilmoitus.activity.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Opmerkingen:" />
@@ -63,7 +63,6 @@
                     android:layout_height="match_parent"
                     android:gravity="center" />
             </LinearLayout>
-        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>
