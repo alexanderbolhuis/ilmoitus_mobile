@@ -22,9 +22,21 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/dottedline" />
 
+                <com.ilmoitus.croscutting.CustomTextView
+                    style="@style/TextViewSubTitle"
+                    android:text="Totaal bedrag:" />
+
                 <TextView
                     android:id="@+id/totalPrice"
-                    style="@style/TextView" />
+                    android:layout_width="60dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="-27dp"
+                    android:background="@drawable/rectangle"
+                    android:gravity="center"
+                    android:textColor="#242E7D"
+                    android:textSize="12sp"/>
 
                 <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
@@ -32,7 +44,10 @@
 
                 <TextView
                     android:id="@+id/leidinggevende"
-                    style="@style/TextView" />
+                    style="@style/TextView" 
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginTop="-20dp"/>
 
                 <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"

@@ -17,7 +17,7 @@
     <string name="pick_date">Selecteer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_declare_line">DeclareLineActivity</string>
-    <string name="addImage">Afbeelding Toevoegen</string>
+    <string name="addImage"> Bijlage Toevoegen</string>
     <string name="lbl_register">LOGIN</string>
     <string name="lbl_signin">Sign in</string>
     <string name="connection_warning">U bent niet verbonden met het internet!</string>

@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="30dp"
-    android:paddingRight="30dp" >
+    android:paddingRight="30dp" 
+    android:background="#ecf0f1">
 
     <Button
         android:id="@+id/buttonOvervieuw"
@@ -13,7 +14,8 @@
         android:background="@android:color/transparent"
         android:drawableTop="@drawable/icon_declaratie_overzicht"
         android:text="@string/overvieuw"
-        android:textSize="12sp" />
+        android:textSize="12sp" 
+        android:paddingTop="6dp"/>
 
     <Button
         android:id="@+id/buttonDeclare"
@@ -24,7 +26,8 @@
         android:text="@string/declare"
         android:textSize="12sp" 
         android:layout_marginLeft="13dp"
-        android:layout_toRightOf="@+id/buttonOvervieuw"/>
+        android:layout_toRightOf="@+id/buttonOvervieuw"
+        android:paddingTop="6dp"/>
 
     <Button
         android:id="@+id/buttonSetting"
@@ -35,7 +38,8 @@
         android:text="@string/settings"
         android:textSize="12sp" 
         android:layout_marginRight="13dp"
-        android:layout_toLeftOf="@+id/buttonLogout"/>
+        android:layout_toLeftOf="@+id/buttonLogout"
+        android:paddingTop="6dp"/>
 
     <Button
         android:id="@+id/buttonLogout"
@@ -45,6 +49,7 @@
         android:drawableTop="@drawable/icon_uitloggen"
         android:text="@string/log_out"
         android:textSize="12sp" 
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:paddingTop="6dp"/>
 
 </RelativeLayout>

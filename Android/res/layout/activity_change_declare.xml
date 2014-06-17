@@ -37,32 +37,44 @@
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
-    			<ListView
-        			android:id="@+id/list"
-        			android:layout_width="fill_parent"
-        			android:layout_height="wrap_content"/>
+                <ListView
+                    android:id="@+id/list"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
 
                 <Button
                     android:id="@+id/onAddLineButton"
-                    style="@style/Button"
-                    android:text="Voeg toe" 
-                    android:onClick="onAddLineButtonClick"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_toevoegen"
+                    android:onClick="onAddLineButtonClick"
+                    android:text=" Voeg toe"
+                    android:textColor="@color/magneta"
+                    android:textSize="14sp" />
 
-              	<com.ilmoitus.croscutting.CustomTextView
+                <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Bijlage" />
 
-              	<Button
+                <Button
                     android:id="@+id/buttonAddImage"
-                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_toevoegen"
                     android:onClick="onAddImageButtonClick"
-                    android:text="@string/addImage" />
-              	
+                    android:text=" Voeg toe"
+                    android:textColor="@color/magneta"
+                    android:textSize="14sp" />
+
                 <ListView
                     android:id="@+id/attachmentDetailsList"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
-                
+
                 <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Opmerkingen:" />
@@ -75,9 +87,16 @@
 
                 <Button
                     android:id="@+id/onChangeDeclaration"
-                    style="@style/Button"
-                    android:text="Verander" 
-                    android:onClick="onChangeDeclarationClick"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="50dp"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_indienen"
+                    android:onClick="onChangeDeclarationClick"
+                    android:text=" Verander"
+                    android:textColor="@color/magneta"
+                    android:textSize="14sp" />
             </LinearLayout>
         </ScrollView>
 

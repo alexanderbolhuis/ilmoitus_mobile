@@ -59,9 +59,15 @@
 
                 <Button
                     android:id="@+id/buttonAddImage"
-                    style="@style/Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@android:color/transparent"
+                    android:drawableLeft="@drawable/icon_toevoegen"
+                    android:textColor="@color/magneta"
+                    android:textSize="14sp" 
                     android:onClick="onAddImageButtonClick"
-                    android:text="@string/addImage" />
+                    android:text=" Voeg toe" />
 
                 <ListView
                     android:id="@+id/attachmentDetailsList"

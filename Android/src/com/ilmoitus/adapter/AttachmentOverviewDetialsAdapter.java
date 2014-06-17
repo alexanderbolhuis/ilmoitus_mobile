@@ -77,7 +77,7 @@ public class AttachmentOverviewDetialsAdapter extends BaseAdapter {
 			}
 			name.setText(attachmentName);
 		}
-		LinearLayout layout = (LinearLayout) rowView.findViewById(R.id.layout);
+		RelativeLayout layout = (RelativeLayout) rowView.findViewById(R.id.layout);
 		Button delete = (Button) rowView.findViewById(R.id.item_delete);
 		delete.setFocusable(false);
 		delete.setTag(position);
