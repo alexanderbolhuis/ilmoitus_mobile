@@ -52,7 +52,7 @@ public class MainActivity extends Activity {
 					int position, long id) {
 				BaseDeclaration declaration = declarations.get(position);
 				if(declaration.getClass() == OpenDeclaration.class){
-					Intent intent = new Intent(getApplicationContext(), DeclareActivity.class);
+					Intent intent = new Intent(getApplicationContext(), ChangeDeclareActivity.class);
 					intent.putExtra("decId", declaration.getId());
 					startActivity(intent);
 				}
@@ -69,11 +69,6 @@ public class MainActivity extends Activity {
 	public void onButtonClick(View view) {
 		Toast.makeText(getApplicationContext(), "On button Clicked",
 				Toast.LENGTH_SHORT).show();
-	}
-
-	public void onDeclareButtonClick(View view) {
-		Intent intent = new Intent(this, DeclareActivity.class);
-		startActivity(intent);
 	}
 
 	private class GetDeclerationsTask extends AsyncTask<Void, Void, String> {
@@ -114,12 +109,10 @@ public class MainActivity extends Activity {
 				JSONArray declaration = new JSONArray(result);
 				for (int i = 0; i < declaration.length(); i++) {
 					JSONObject object = declaration.getJSONObject(i);
-					if (object.getString("class_name").equals(
-							"open_declaration")) {
+					if (object.getString("class_name").equals("open_declaration")) {
 						declarations.add(new OpenDeclaration(object));
 					}
-					if (object.getString("class_name").equals(
-							"locked_declaration")) {
+					if (object.getString("class_name").equals("locked_declaration")) {
 						declarations.add(new ClosedDeclaration(object));
 					}
 				}

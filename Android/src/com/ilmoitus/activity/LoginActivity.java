@@ -51,10 +51,6 @@ public class LoginActivity extends Activity {
 	private EditText mEmailView;
 	private EditText mPasswordView;
 
-	// private View mLoginFormView;
-	// private View mLoginStatusView;
-	// private TextView mLoginStatusMessageView;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

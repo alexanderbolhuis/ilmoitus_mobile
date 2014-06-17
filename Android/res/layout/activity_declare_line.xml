@@ -8,13 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <LinearLayout
+       <LinearLayout
             style="@style/Container"
             android:layout_height="1px"
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <com.ilmoitus.activity.CustomTextView
+            <com.ilmoitus.croscutting.CustomTextView
                 style="@style/TextViewTitle"
                 android:text="Declaratie indienen" />
 
@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/dottedline" />
 
-            <com.ilmoitus.activity.CustomTextView
+            <com.ilmoitus.croscutting.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Datum:" />
 
@@ -59,7 +59,7 @@
                     android:paddingLeft="15dp" />
             </LinearLayout>
 
-            <com.ilmoitus.activity.CustomTextView
+            <com.ilmoitus.croscutting.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Declaratiesoort:" />
 
@@ -73,7 +73,7 @@
                 style="@style/Spinner"
                 android:prompt="@string/prompt_spinner" />
 
-            <com.ilmoitus.activity.CustomTextView
+            <com.ilmoitus.croscutting.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Bedrag:" />
 
@@ -84,29 +84,7 @@
                 android:hint="Bedrag"
                 android:inputType="numberDecimal" />
 
-            <com.ilmoitus.activity.CustomTextView
-                style="@style/TextViewSubTitle"
-                android:text="Bijlage:" />
-
-            <Button
-                android:id="@+id/buttonAddImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@android:color/transparent"
-                android:drawableLeft="@drawable/icon_toevoegen"
-                android:onClick="onAddImageButtonClick"
-                android:text=" Bijlage toevoegen"
-                android:textColor="@color/magneta"
-                android:textSize="14sp" />
-
-            <LinearLayout
-                android:id="@+id/attachmentList"
-                style="@style/LinearLayoutList"
-                android:orientation="vertical" >
-            </LinearLayout>
-
-            <com.ilmoitus.activity.CustomTextView
+            <com.ilmoitus.croscutting.CustomTextView
                 style="@style/TextViewSubTitle"
                 android:text="Opmerkingen:" />
 
@@ -126,7 +104,8 @@
                     android:drawableLeft="@drawable/icon_cancelen"
                     android:text=" Cancel"
                     android:textColor="@color/magneta"
-                    android:textSize="14sp" />
+                    android:textSize="14sp" 
+                    android:onClick="onCancelButtonClick"/>
 
                 <Button
                     android:id="@+id/buttonAdd"
@@ -138,7 +117,8 @@
                     android:drawableLeft="@drawable/icon_indienen"
                     android:text=" Add"
                     android:textColor="@color/magneta"
-                    android:textSize="14sp" />
+                    android:textSize="14sp" 
+                    android:onClick="onAddButtonClick"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

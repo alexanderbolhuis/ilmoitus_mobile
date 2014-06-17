@@ -12,7 +12,6 @@
         android:layout_alignParentLeft="true"
         android:background="@android:color/transparent"
         android:drawableTop="@drawable/icon_declaratie_overzicht"
-        android:onClick="onButtonClick"
         android:text="@string/overvieuw"
         android:textSize="12sp" />
 
@@ -22,7 +21,6 @@
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
         android:drawableTop="@drawable/icon_declaratie_toevoegen"
-        android:onClick="onDeclareButtonClick"
         android:text="@string/declare"
         android:textSize="12sp" 
         android:layout_marginLeft="13dp"

@@ -22,6 +22,7 @@ import org.json.JSONObject;
 import com.example.ilmoitus.R;
 import com.ilmoitus.adapter.AttachmentOverviewAdapter;
 import com.ilmoitus.adapter.DeclarationOverviewAdapter;
+import com.ilmoitus.croscutting.CurrencyFormatInputFilter;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
 import com.ilmoitus.fragment.DatePickerFragment;
@@ -66,118 +67,78 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 
 public class DeclareLineActivity extends Activity implements
-		DatePickerFragment.OnDateSelectedListener, OnClickListener {
+		DatePickerFragment.OnDateSelectedListener {
 
 	private Spinner spinnerDeclarationTypes, spinnerDeclarationSubTypes;
 	private Calendar date;
 	private TextView title;
 	private MultiAutoCompleteTextView commentTextView;
 	private EditText currencyEditText, dateEditText;
-	private ImageView photo;
 	private ArrayList<String> attachmentsData = new ArrayList<String>();
 	private ArrayList<Attachment> attachments = new ArrayList<Attachment>();
 	private String errorMsg;
 	private Boolean validation = true;
-	private double maxCost;
-	private int spinnerDeclarationTypesPosition,
-			spinnerDeclarationSubTypesPosition;
-	private LinearLayout attachmentListView;
-
-	ArrayAdapter<DeclarationTypes> spinnerDeclarationTypesListAdapter;
-	ArrayAdapter<DeclarationSubTypes> spinnerDeclarationSubTypesListAdapter;
-	ArrayList<DeclarationTypes> declarationTypesList;
-	ArrayList<DeclarationSubTypes> declarationSubTypesList;
+	private int spinnerDeclarationTypesPosition;
+	private ArrayAdapter<DeclarationTypes> spinnerDeclarationTypesListAdapter;
+	private ArrayAdapter<DeclarationSubTypes> spinnerDeclarationSubTypesListAdapter;
+	private ArrayList<DeclarationTypes> declarationTypesList;
+	private ArrayList<DeclarationSubTypes> declarationSubTypesList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_declare_line);
-
 		title = (TextView) findViewById(R.id.person_title);
 		dateEditText = (EditText) findViewById(R.id.editTextDate);
 		spinnerDeclarationTypes = (Spinner) findViewById(R.id.spinnerDeclarationType);
-		spinnerDeclarationTypes
-				.setOnItemSelectedListener(new spinnerListener());
+		spinnerDeclarationTypes.setOnItemSelectedListener(new spinnerListener());
 		spinnerDeclarationTypesPosition = 0;
 		currencyEditText = (EditText) findViewById(R.id.editCurrency);
-		currencyEditText
-				.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
-		attachmentListView = (LinearLayout) findViewById(R.id.attachmentList);
-//		attachmentListView.removeAllViews();
+		currencyEditText.setFilters(new InputFilter[] { new CurrencyFormatInputFilter() });
 		commentTextView = (MultiAutoCompleteTextView) findViewById(R.id.commentTextView);
-
-		// SimpleAdapter mSchedule = new SimpleAdapter (this.getBaseContext(),
-		// attachmentItem, R.layout.attachment_view_list,
-		// new String[] {"img", "title", "description"}, new int[]
-		// {R.id.attachmentImage, R.id.attachmentTitle,
-		// R.id.attachmentDescription});
-		// attachmentListView.setAdapter(mSchedule);
-
-		findViewById(R.id.buttonAdd).setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View arg0) {
-				final String date = dateEditText.getText().toString();
-				if (!isValidDate(date)) {
-					validation = false;
-					String message = getErrorMsg();
-					dateEditText.setError(spanString(message));
-				}
-				// Check Declaration Type & SubType
-				if(!isValidType()){
-					validation = false;
-				}
-				// Check Currency
-				final String currency = currencyEditText.getText().toString();
-				if (!isValidCurrency(currency)) {
-					validation = false;
-					String message = getErrorMsg();
-					currencyEditText.setError(spanString(message));
-				}
-				// Check Attachments
-				if(!isValidAttachment()){
-					validation = false;
-				}
-				// Check Comment
-				final String comment = commentTextView.getText().toString();
-				if (!isValidComment(comment)) {
-					validation = false;
-					String message = getErrorMsg();
-					commentTextView.setError(spanString(message));
-				}
-				if (validation == false) {
-					Toast.makeText(getApplicationContext(),
-							"Declaratie regel bevat fouten", Toast.LENGTH_LONG)
-							.show();
-					validation = true;
-				} else {
-					bundleDeclaration();
-				}
-			}
-		});
-
-		findViewById(R.id.buttonCancel).setOnClickListener(
-				new OnClickListener() {
-
-					@Override
-					public void onClick(View arg0) {
-						onBackPressed();
-					}
-				});
-
 		spinnerDeclarationSubTypes = (Spinner) findViewById(R.id.spinnerDeclarationSubType);
-		spinnerDeclarationSubTypesPosition = 0;
-
-		// photo = (ImageView) findViewById(R.id.mImageView);
-
 		if (savedInstanceState == null) {
 			date = Calendar.getInstance();
-
 			setDeclarationTypes();
 			setDeclarationSubTypes();
 		}
 	}
 
+	public void onAddButtonClick(View v){
+		final String date = dateEditText.getText().toString();
+		if (!isValidDate(date)) {
+			validation = false;
+			String message = getErrorMsg();
+			dateEditText.setError(spanString(message));
+		}
+		if(!isValidType()){
+			validation = false;
+		}
+		final String currency = currencyEditText.getText().toString();
+		if (!isValidCurrency(currency)) {
+			validation = false;
+			String message = getErrorMsg();
+			currencyEditText.setError(spanString(message));
+		}
+		final String comment = commentTextView.getText().toString();
+		if (!isValidComment(comment)) {
+			validation = false;
+			String message = getErrorMsg();
+			commentTextView.setError(spanString(message));
+		}
+		if (validation == false) {
+			Toast.makeText(getApplicationContext(),
+					"Declaratie regel bevat fouten", Toast.LENGTH_LONG)
+					.show();
+			validation = true;
+		} else {
+			bundleDeclaration();
+		}
+	}
+	
+	public void onCancelButtonClick(View v){
+		super.onBackPressed();
+	}
 	// Setter & Getters
 	public void setErrorMsg(String err) {
 		this.errorMsg = err;
@@ -238,98 +199,6 @@ public class DeclareLineActivity extends Activity implements
 		finish();
 	}
 
-	// TODO Make Photo / Select from library and post + display by Murat Aydin
-	public void onAddImageButtonClick(View view) {
-		selectImage();
-	}
-
-	private void selectImage() {
-		final CharSequence[] options = { "Foto via Camera",
-				"Foto via bibliotheek", "Annuleer" };
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				DeclareLineActivity.this);
-		builder.setTitle("Maak / Kies foto:");
-		builder.setItems(options, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int item) {
-				// TODO Auto-generated method stub
-				if (options[item].equals("Foto via Camera")) {
-					Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					startActivityForResult(intent, 1);
-				} else if (options[item].equals("Foto via bibliotheek")) {
-					Intent intent = new Intent(
-							Intent.ACTION_PICK,
-							android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-					startActivityForResult(intent, 2);
-				} else if (options[item].equals("Annuleer")) {
-					dialog.dismiss();
-				}
-			}
-		});
-		builder.show();
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK) {
-			if (requestCode == 1) {
-				
-				// Ophalen van de genomen image
-				Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
-
-				// Image in arraylist voor overzicht
-				attachments.add(new Attachment(imageBitmap, "image "));
-
-				// ArrayList base64 string (uiteindelijk naar database)
-				attachmentsData.add(BitmapToBase64String(imageBitmap));
-
-			} else if (requestCode == 2) {
-				Uri selectedImage = data.getData();
-				String[] filePath = { MediaStore.Images.Media.DATA };
-				Cursor c = getContentResolver().query(selectedImage, filePath,
-						null, null, null);
-				c.moveToFirst();
-				int columnIndex = c.getColumnIndex(filePath[0]);
-				String picturePath = c.getString(columnIndex);
-				c.close();
-				
-				// Ophalen van de genomen image
-				Bitmap imageBitmap = (BitmapFactory.decodeFile(picturePath));
-				
-				// Image in arraylist voor overzicht
-				attachments.add(new Attachment(imageBitmap, "image "));
-
-				// ArrayList base64 string (uiteindelijk naar database)
-				attachmentsData.add(BitmapToBase64String(imageBitmap));
-			}
-
-			AttachmentOverviewAdapter adapter = new AttachmentOverviewAdapter(
-					this, attachments);		
-			final int adapterCount = adapter.getCount();
-			View item = adapter.getView(adapterCount - 1, null, null);
-			attachmentListView.addView(item);
-		}
-	}
-
-	private String BitmapToBase64String(Bitmap bitmap) {
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-		byte[] b = baos.toByteArray();
-		String temp = Base64.encodeToString(b, Base64.DEFAULT);
-		JSONObject object = new JSONObject();
-		try {
-			object.put("name", bitmap.toString());
-			object.put("file",
-					String.format("data:%s;base64,%s", "image/jpeg", temp));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return object.toString();
-	}
-
 	public void showDatePickerDialog(View v) {
 		DialogFragment newFragment = new DatePickerFragment();
 		Bundle args = new Bundle();
@@ -352,27 +221,8 @@ public class DeclareLineActivity extends Activity implements
 		dateEditText.setText(formattedDate);
 	}
 
-	@Override
-	public void onClick(View v) {
-		switch (v.getId()) {
-		case R.id.buttonAdd:
-			// onAddButtonClick();
-			break;
-		case R.id.buttonCancel:
-			super.onBackPressed();
-			break;
-		}
-	}
-
-	public void onBackPressed() {
-		super.onBackPressed();
-	}
-
 	private class GetDeclerationTypesTask extends AsyncTask<Void, Void, String> {
-		private Activity activity;
-
 		public GetDeclerationTypesTask(Activity activity) {
-			this.activity = activity;
 		}
 
 		@Override
@@ -589,7 +439,7 @@ public class DeclareLineActivity extends Activity implements
 
 	private boolean isValidAttachment() {
 		if (attachments.size() <= 0) {
-			Toast.makeText(this, "Minimaal één bijlage toevoegen!",
+			Toast.makeText(this, "Minimaal ï¿½ï¿½n bijlage toevoegen!",
 					Toast.LENGTH_LONG).show();
 			return false;
 		}

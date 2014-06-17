@@ -1,14 +1,20 @@
 package com.ilmoitus.adapter;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import com.example.ilmoitus.R;
+import com.ilmoitus.activity.ImageFullScreen;
 import com.ilmoitus.model.Attachment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -20,6 +26,7 @@ public class AttachmentOverviewDetialsAdapter extends BaseAdapter {
 	private Activity activity;
 	private ArrayList<Attachment> attachments;
 	private String attachmentName;
+	private Attachment attachment;
 
 	public AttachmentOverviewDetialsAdapter(Activity activity,
 			ArrayList<Attachment> attachments) {
@@ -46,13 +53,7 @@ public class AttachmentOverviewDetialsAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		
-		Attachment attachment = null;
-
-		if (attachments.get(position).getClass() == Attachment.class) {
-			attachment = (Attachment) attachments.get(position);
-		}
-
+		attachment = (Attachment) attachments.get(position);
 		View rowView = inflator.inflate(R.layout.attachment_details_view_list, null);
 		ImageView image = (ImageView) rowView
 				.findViewById(R.id.attachment_detail_image);
@@ -69,6 +70,19 @@ public class AttachmentOverviewDetialsAdapter extends BaseAdapter {
 			}
 			name.setText(attachmentName);
 		}
+		rowView.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Bitmap bm = attachment.getAttachment();
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+				byte[] b = baos.toByteArray();
+				String base64 = Base64.encodeToString(b, Base64.DEFAULT);
+				Intent intent = new Intent(activity, ImageFullScreen.class);
+				intent.putExtra("base64", base64);
+				activity.startActivity(intent);	
+			}	
+		});
 		return rowView;
 	}
 }

@@ -7,14 +7,13 @@
         style="@style/LinearLayout"
         android:orientation="vertical" >
 
-           <LinearLayout
-                style="@style/Container"
-                android:orientation="vertical"
-                android:layout_weight="1" 
-                android:layout_height = "1px">
+        <ScrollView style="@style/ScrollView" >
 
-              
-                <com.ilmoitus.activity.CustomTextView
+            <LinearLayout
+                style="@style/Container"
+                android:orientation="vertical" >
+
+                <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewTitle"
                     android:text="Declaratie Details" />
 
@@ -27,7 +26,7 @@
                     android:id="@+id/totalPrice"
                     style="@style/TextView" />
 
-                <com.ilmoitus.activity.CustomTextView
+                <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Leidinggevende:" />
 
@@ -35,25 +34,25 @@
                     android:id="@+id/leidinggevende"
                     style="@style/TextView" />
 
-                <com.ilmoitus.activity.CustomTextView
+                <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Declaratie items:" />
 
                 <ListView
                     android:id="@+id/list"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
-                <com.ilmoitus.activity.CustomTextView
+                <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Bijlage" />
 
                 <ListView
-        			android:id="@+id/attachmentDetailsList"
-        			android:layout_width="fill_parent"
-        			android:layout_height="wrap_content"/>
-                
-                <com.ilmoitus.activity.CustomTextView
+                    android:id="@+id/attachmentDetailsList"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.ilmoitus.croscutting.CustomTextView
                     style="@style/TextViewSubTitle"
                     android:text="Opmerkingen:" />
 
@@ -63,6 +62,7 @@
                     android:layout_height="match_parent"
                     android:gravity="center" />
             </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.ilmoitus.activity;
+package com.ilmoitus.croscutting;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
