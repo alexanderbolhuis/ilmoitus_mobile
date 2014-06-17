@@ -59,10 +59,6 @@ public class LoginActivity extends Activity {
 		mEmailView = (EditText) findViewById(R.id.email);
 		mEmailView.setText(mEmail);
 		mPasswordView = (EditText) findViewById(R.id.password);
-		// mLoginFormView = findViewById(R.id.login_form);
-		// mLoginStatusView = findViewById(R.layout.activity_login_status);
-		// mLoginStatusMessageView = (TextView)
-		// findViewById(R.id.login_status_message);
 		findViewById(R.id.sign_in_button).setOnClickListener(
 				new View.OnClickListener() {
 					@Override
@@ -203,22 +199,17 @@ public class LoginActivity extends Activity {
 		protected String doInBackground(Void... params) {
 			String result = null;
 			HttpClient httpClient = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(getResources().getString(
-					R.string.base_url)
-					+ "/auth/login");
+			HttpPost httpPost = new HttpPost(getResources().getString(R.string.base_url)+ "/auth/login");
 			try {
-				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(
-						2);
+				List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(	2);
 				nameValuePairs.add(new BasicNameValuePair("email", mEmail));
-				nameValuePairs
-						.add(new BasicNameValuePair("password", mPassword));
+				nameValuePairs.add(new BasicNameValuePair("password", mPassword));
 				httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 				HttpResponse response = httpClient.execute(httpPost);
 				InputStream inputStream = response.getEntity().getContent();
 				if (inputStream != null) {
 					// parse the inputStream to string
-					result = InputStreamConverter
-							.convertInputStreamToString(inputStream);
+					result = InputStreamConverter.convertInputStreamToString(inputStream);
 				} else {
 					result = "Did not Work";
 				}

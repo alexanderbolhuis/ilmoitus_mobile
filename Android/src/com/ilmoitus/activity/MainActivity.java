@@ -4,9 +4,11 @@ import com.example.ilmoitus.R;
 import com.ilmoitus.adapter.DeclarationOverviewAdapter;
 import com.ilmoitus.croscutting.InputStreamConverter;
 import com.ilmoitus.croscutting.LoggedInPerson;
+import com.ilmoitus.model.ApprovedDeclaration;
 import com.ilmoitus.model.BaseDeclaration;
 import com.ilmoitus.model.ClosedDeclaration;
 import com.ilmoitus.model.DeclarationLine;
+import com.ilmoitus.model.DeclinedDeclaration;
 import com.ilmoitus.model.OpenDeclaration;
 
 import android.os.AsyncTask;
@@ -112,8 +114,16 @@ public class MainActivity extends Activity {
 					if (object.getString("class_name").equals("open_declaration")) {
 						declarations.add(new OpenDeclaration(object));
 					}
-					if (object.getString("class_name").equals("locked_declaration")) {
+					if (object.getString("class_name").equals("locked_declaration") ||
+							object.getString("class_name").equals("supervisor_approved_declaration")) {
 						declarations.add(new ClosedDeclaration(object));
+					}
+					if (object.getString("class_name").equals("supervisor_declined_declaration") ||
+							object.getString("class_name").equals("human_resources_declined_declaration")){
+						declarations.add(new DeclinedDeclaration(object));
+					}
+					if (object.getString("class_name").equals("human_resources_approved_declaration")){
+						declarations.add(new ApprovedDeclaration(object));
 					}
 				}
 				TextView titleView = (TextView) findViewById(R.id.person_title);

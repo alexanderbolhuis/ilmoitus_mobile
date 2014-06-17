@@ -35,6 +35,8 @@ import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -115,11 +117,6 @@ public class ChangeDeclareActivity extends Activity{
 					Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 					Attachment tempAttachment = new Attachment(imageBitmap, "image");
 					attachmentList.add(tempAttachment);
-					try {
-						attachmentsJSON.add(new JSONObject(BitmapToBase64String(imageBitmap, tempAttachment.getAttachmentName())));
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
 				} else if (requestCode == 3) {
 					Uri selectedImage = data.getData();
 					String[] filePath = { MediaStore.Images.Media.DATA };
@@ -131,11 +128,6 @@ public class ChangeDeclareActivity extends Activity{
 					Bitmap imageBitmap = (BitmapFactory.decodeFile(picturePath));
 					Attachment tempAttachment = new Attachment(imageBitmap, "image");
 					attachmentList.add(tempAttachment);
-					try {
-						attachmentsJSON.add(new JSONObject(BitmapToBase64String(imageBitmap, tempAttachment.getAttachmentName())));
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
 				}
 				AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(this, attachmentList);
 				attachmentListView.setAdapter(adapter);
@@ -204,10 +196,13 @@ public class ChangeDeclareActivity extends Activity{
 		return object.toString();
 	}
 	
-	public JSONObject createDeclaration() {
+	public JSONObject createDeclaration() throws JSONException {
 		MultiAutoCompleteTextView comment = (MultiAutoCompleteTextView) findViewById(R.id.commentTextView);
 		Supervisor temp = (Supervisor) spinnerSupervisors.getSelectedItem();
 		JSONObject decl = new JSONObject();
+		for(int i = 0; i < attachmentList.size(); i++){
+			attachmentsJSON.add(new JSONObject(BitmapToBase64String(attachmentList.get(i).getAttachment(), attachmentList.get(i).getAttachmentName())));
+		}
 		try {
 			decl.put("state", "open");
 			decl.put("created_at", new Date());
@@ -465,14 +460,24 @@ public class ChangeDeclareActivity extends Activity{
 			AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(
 					activity, attachmentList);
 			attachmentListView.setAdapter(adapter);
-			ListViewUtility.setListViewHeightBasedOnChildren(attachmentListView);
-			for(int i = 0; i < attachmentList.size(); i++){
-				try {
-					attachmentsJSON.add(new JSONObject(BitmapToBase64String(attachmentList.get(i).getAttachment(), attachmentList.get(i).getAttachmentName())));
-				} 	catch (JSONException e) {
-					e.printStackTrace();
+			attachmentListView.setOnItemClickListener(new OnItemClickListener(){
+
+				@Override
+				public void onItemClick(AdapterView<?> parent, View view,
+						int position, long id) {
+					
+					Bitmap bm = attachmentList.get(position).getAttachment();
+					ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+					byte[] b = baos.toByteArray();
+					String base64 = Base64.encodeToString(b, Base64.DEFAULT);
+					Intent intent = new Intent(getApplicationContext(), ImageFullScreen.class);
+					intent.putExtra("base64", base64);
+					startActivity(intent);	
 				}
-			}
+				
+			});
+			ListViewUtility.setListViewHeightBasedOnChildren(attachmentListView);
 		}
 	}
 
