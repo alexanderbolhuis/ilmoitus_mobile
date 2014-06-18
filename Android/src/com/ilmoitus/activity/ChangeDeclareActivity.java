@@ -171,6 +171,7 @@ public class ChangeDeclareActivity extends Activity{
 	}
 	
 	public void onChangeDeclarationClick(View v){
+		validation = true;
 		if (!isValidDeclaration()) {
 			validation = false;
 		}
