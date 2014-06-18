@@ -84,7 +84,6 @@ public class DeclareActivity extends Activity {
 	private Boolean validation = true;
 	private String errorMsg;
 	private ListView attachmentListView;
-	private ArrayList<String> attachmentsData = new ArrayList<String>();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -155,11 +154,6 @@ public class DeclareActivity extends Activity {
 					Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 					Attachment tempAttachment = new Attachment(imageBitmap, "image");
 					attachments.add(tempAttachment);
-					try {
-						attachmentsJSON.add(new JSONObject(BitmapToBase64String(imageBitmap, tempAttachment.getAttachmentName())));
-					} catch (JSONException e) {
-						startMainActivity();
-					}
 				} else if (requestCode == 3) {
 					Uri selectedImage = data.getData();
 					String[] filePath = { MediaStore.Images.Media.DATA };
@@ -170,12 +164,6 @@ public class DeclareActivity extends Activity {
 					c.close();
 					Bitmap imageBitmap = (BitmapFactory.decodeFile(picturePath));
 					Attachment tempAttachment = new Attachment(imageBitmap, "image");
-					attachments.add(tempAttachment);
-					try {
-						attachmentsJSON.add(new JSONObject(BitmapToBase64String(imageBitmap, tempAttachment.getAttachmentName())));
-					} catch (JSONException e) {
-						startMainActivity();
-					}
 				}
 				AttachmentOverviewDetialsAdapter adapter = new AttachmentOverviewDetialsAdapter(this, attachments);
 				attachmentListView.setAdapter(adapter);
@@ -205,10 +193,13 @@ public class DeclareActivity extends Activity {
 		}
 	}
 	
-	public JSONObject createDeclaration() {
+	public JSONObject createDeclaration() throws JSONException {
 		MultiAutoCompleteTextView comment = (MultiAutoCompleteTextView) findViewById(R.id.commentTextView);
 		Supervisor temp = (Supervisor) spinnerSupervisors.getSelectedItem();
 		JSONObject decl = new JSONObject();
+		for(int i = 0; i < attachments.size(); i++){
+			attachmentsJSON.add(new JSONObject(BitmapToBase64String(attachments.get(i).getAttachment(), attachments.get(i).getAttachmentName())));
+		}
 		try {
 			decl.put("state", "open");
 			decl.put("created_at", new Date());
