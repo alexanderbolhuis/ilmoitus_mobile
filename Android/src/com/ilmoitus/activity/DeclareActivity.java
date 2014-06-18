@@ -172,6 +172,7 @@ public class DeclareActivity extends Activity {
 	}
 
 	public void addDeclaration(View v){
+		validation = true;
 		if (!isValidDeclaration()) {
 			validation = false;
 		}
